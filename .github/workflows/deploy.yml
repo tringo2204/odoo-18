@@ -14,7 +14,7 @@ on:
         options:
           - none
           - odoo18
-          - manufacturing
+          - odoo18_manufacturing_demo
       modules:
         description: 'Modules to upgrade (comma-separated, e.g. sht_hr_base,sht_hr_training)'
         required: false
@@ -36,18 +36,31 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
-      - name: Pull latest code on server
+      - name: Pull latest custom modules on server
         run: |
           ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            cd /opt/odoo18/custom_addons
-            git pull origin main
+            set -e
+            cd /opt/odoo18
+
+            # Fetch latest from our GitHub repo
+            git fetch https://github.com/tringo2204/odoo-18.git main
+
+            # Only checkout our custom module folders — never touch Odoo core
+            MODULES="sht_hr_base sht_hr_reward_discipline sht_hr_training \
+                     sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding \
+                     mfg_dashboard theme_omux .github"
+
+            for MODULE in $MODULES; do
+              git checkout FETCH_HEAD -- $MODULE 2>/dev/null && echo "✅ Updated $MODULE" || echo "⚠️  Skipped $MODULE (not found)"
+            done
+
             echo "✅ Code updated successfully"
           EOF
 
       - name: Restart Odoo service
         run: |
           ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            sudo systemctl restart odoo18
+            systemctl restart odoo18
             sleep 5
             systemctl is-active odoo18 && echo "✅ Odoo restarted successfully" || echo "❌ Odoo failed to restart"
           EOF
@@ -57,15 +70,15 @@ jobs:
         run: |
           DB="${{ github.event.inputs.database }}"
           MODULES="${{ github.event.inputs.modules }}"
-          echo "Upgrading modules [$MODULES] on database [$DB]..."
+          echo "Upgrading [$MODULES] on [$DB]..."
           ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << EOF
-            sudo systemctl stop odoo18
-            /opt/odoo18/venv/bin/python /opt/odoo18/odoo-bin \
-              -c /etc/odoo18.conf \
+            systemctl stop odoo18
+            /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
+              -c /opt/odoo18/odoo.conf \
               -d $DB \
               -u $MODULES \
               --stop-after-init \
               --no-http
-            sudo systemctl start odoo18
+            systemctl start odoo18
             echo "✅ Modules upgraded on $DB"
           EOF
