@@ -48,6 +48,8 @@ jobs:
             # Only checkout our custom module folders — never touch Odoo core
             MODULES="sht_hr_base sht_hr_reward_discipline sht_hr_training \
                      sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding \
+                     hr_payroll_vietnam hr_social_insurance_vn hr_request_vn \
+                     hr_decision_vn hr_asset_vn \
                      mfg_dashboard theme_omux .github"
 
             for MODULE in $MODULES; do

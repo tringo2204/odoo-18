@@ -3,6 +3,9 @@
     'version': '18.0.1.0.0',
     'category': 'Human Resources/Payroll',
     'summary': 'BHXH, thuế TNCN lũy tiến 7 bậc, giảm trừ gia cảnh, gross-up',
+    'description': """
+Requires Odoo Enterprise: hr_payroll, hr_work_entry_contract_enterprise.
+    """,
     'author': 'SHT',
     'depends': ['hr_payroll', 'hr_work_entry_contract_enterprise', 'sht_hr_base', 'sht_hr_contract', 'mail'],
     'data': [

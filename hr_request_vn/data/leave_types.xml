@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="leave_type_absence" model="hr.leave.type">
+            <field name="name">Vắng mặt</field>
+            <field name="requires_allocation">no</field>
+            <field name="leave_validation_type">hr</field>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="sequence">100</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="leave_type_business_trip" model="hr.leave.type">
+            <field name="name">Công tác</field>
+            <field name="requires_allocation">no</field>
+            <field name="leave_validation_type">hr</field>
+            <field name="request_unit">day</field>
+            <field name="time_type">other</field>
+            <field name="sequence">110</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

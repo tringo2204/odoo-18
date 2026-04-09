@@ -7,6 +7,9 @@ from odoo.exceptions import UserError, ValidationError
 _logger = logging.getLogger(__name__)
 
 
+HOURS_PER_DAY = 8
+
+
 class HrRequest(models.Model):
     _name = 'hr.request'
     _description = 'Đơn từ'
@@ -128,7 +131,7 @@ class HrRequest(models.Model):
             if rec.date_from and rec.date_to and rec.date_to > rec.date_from:
                 delta = rec.date_to - rec.date_from
                 rec.duration_hours = delta.total_seconds() / 3600.0
-                rec.duration_days = delta.total_seconds() / (3600.0 * 8)
+                rec.duration_days = delta.total_seconds() / (3600.0 * HOURS_PER_DAY)
             else:
                 rec.duration_hours = 0.0
                 rec.duration_days = 0.0
@@ -283,10 +286,9 @@ class HrRequest(models.Model):
 
     def _side_effect_absence(self):
         """Tạo hr.leave loại vắng mặt."""
-        # Tìm leave type cho absence (hoặc dùng unpaid)
-        absence_type = self.env['hr.leave.type'].search([
-            ('name', 'ilike', 'vắng mặt'),
-        ], limit=1) or self.env['hr.leave.type'].search([
+        absence_type = self.env.ref(
+            'hr_request_vn.leave_type_absence', raise_if_not_found=False
+        ) or self.env['hr.leave.type'].search([
             ('requires_allocation', '=', 'no'),
         ], limit=1)
         if not absence_type:
@@ -378,9 +380,9 @@ class HrRequest(models.Model):
 
     def _side_effect_business_trip(self):
         """Tạo hr.leave loại công tác."""
-        trip_type = self.env['hr.leave.type'].search([
-            ('name', 'ilike', 'công tác'),
-        ], limit=1) or self.env['hr.leave.type'].search([
+        trip_type = self.env.ref(
+            'hr_request_vn.leave_type_business_trip', raise_if_not_found=False
+        ) or self.env['hr.leave.type'].search([
             ('requires_allocation', '=', 'no'),
         ], limit=1)
         if not trip_type:

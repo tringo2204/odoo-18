@@ -10,6 +10,7 @@
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
         'data/request_types.xml',
+        'data/leave_types.xml',
         'views/hr_request_views.xml',
         'views/hr_request_type_views.xml',
         'views/portal_templates.xml',
