@@ -1,5 +1,7 @@
 .mfg-dashboard {
-    min-height: 100vh;
+    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
     background: #f4f6f9;
 
     .mfg-dashboard-header {
