@@ -9,5 +9,5 @@
         name="Dashboard"
         action="action_mfg_dashboard"
         parent="mrp.menu_mrp_root"
-        sequence="0"/>
+        sequence="999"/>
 </odoo>
