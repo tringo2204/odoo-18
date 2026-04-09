@@ -1,0 +1,71 @@
+name: Deploy to Odoo Server
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      database:
+        description: 'Database to upgrade modules on'
+        required: true
+        default: 'none'
+        type: choice
+        options:
+          - none
+          - odoo18
+          - manufacturing
+      modules:
+        description: 'Modules to upgrade (comma-separated, e.g. sht_hr_base,sht_hr_training)'
+        required: false
+        default: ''
+
+jobs:
+  deploy:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Pull latest code on server
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            cd /opt/odoo18/custom_addons
+            git pull origin main
+            echo "✅ Code updated successfully"
+          EOF
+
+      - name: Restart Odoo service
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            sudo systemctl restart odoo18
+            sleep 5
+            systemctl is-active odoo18 && echo "✅ Odoo restarted successfully" || echo "❌ Odoo failed to restart"
+          EOF
+
+      - name: Upgrade modules on database (if specified)
+        if: ${{ github.event.inputs.database != 'none' && github.event.inputs.database != '' && github.event.inputs.modules != '' }}
+        run: |
+          DB="${{ github.event.inputs.database }}"
+          MODULES="${{ github.event.inputs.modules }}"
+          echo "Upgrading modules [$MODULES] on database [$DB]..."
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << EOF
+            sudo systemctl stop odoo18
+            /opt/odoo18/venv/bin/python /opt/odoo18/odoo-bin \
+              -c /etc/odoo18.conf \
+              -d $DB \
+              -u $MODULES \
+              --stop-after-init \
+              --no-http
+            sudo systemctl start odoo18
+            echo "✅ Modules upgraded on $DB"
+          EOF
