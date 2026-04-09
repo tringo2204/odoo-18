@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_onboarding_sht_hr_checklist_template_view_list" model="ir.ui.view">
+        <field name="name">sht.hr.checklist.template.list</field>
+        <field name="model">sht.hr.checklist.template</field>
+        <field name="arch" type="xml">
+            <list string="Checklist Templates">
+                <field name="name"/>
+                <field name="checklist_type"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sht_hr_onboarding_sht_hr_checklist_template_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.checklist.template.form</field>
+        <field name="model">sht.hr.checklist.template</field>
+        <field name="arch" type="xml">
+            <form string="Checklist Template">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="checklist_type"/>
+                        <field name="is_active"/>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="line_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="responsible_role"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sht_hr_onboarding_sht_hr_checklist_template_action" model="ir.actions.act_window">
+        <field name="name">Templates</field>
+        <field name="res_model">sht.hr.checklist.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

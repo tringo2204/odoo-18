@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sht_hr_contract_type_probation" model="sht.hr.contract.type">
+            <field name="name">Hợp đồng thử việc</field>
+            <field name="code">PROBATION</field>
+            <field name="max_duration_months">0</field>
+            <field name="description">Theo Bộ luật Lao động, thời gian thử việc tối đa 60 ngày (trường hợp đặc biệt theo quy định).</field>
+        </record>
+        <record id="sht_hr_contract_type_fixed_term" model="sht.hr.contract.type">
+            <field name="name">HĐ lao động xác định thời hạn</field>
+            <field name="code">FIXED_TERM</field>
+            <field name="max_duration_months">36</field>
+            <field name="description">Hợp đồng lao động xác định thời hạn, tối đa 36 tháng theo từng lần ký (trừ trường hợp đặc biệt).</field>
+        </record>
+        <record id="sht_hr_contract_type_indefinite" model="sht.hr.contract.type">
+            <field name="name">HĐ lao động không xác định thời hạn</field>
+            <field name="code">INDEFINITE</field>
+            <field name="max_duration_months">0</field>
+            <field name="description">Hợp đồng lao động không xác định thời hạn.</field>
+        </record>
+        <record id="sht_hr_contract_type_seasonal" model="sht.hr.contract.type">
+            <field name="name">Hợp đồng mùa vụ</field>
+            <field name="code">SEASONAL</field>
+            <field name="max_duration_months">12</field>
+            <field name="description">Hợp đồng theo mùa vụ hoặc công việc nhất định có thời hạn dưới 12 tháng.</field>
+        </record>
+    </data>
+    <data>
+        <record id="sht_hr_contract_ir_cron_check_expiring" model="ir.cron">
+            <field name="name">SHT HR Contract: check expiring contracts</field>
+            <field name="model_id" ref="hr_contract.model_hr_contract"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_check_expiring_contracts()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

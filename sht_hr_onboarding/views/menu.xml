@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="sht_hr_onboarding_menu_root"
+        name="Onboarding / Offboarding"
+        parent="hr.menu_hr_root"
+        sequence="30"
+        groups="hr.group_hr_user"/>
+
+    <menuitem id="sht_hr_onboarding_menu_checklists"
+        name="Checklists"
+        parent="sht_hr_onboarding_menu_root"
+        action="sht_hr_onboarding_sht_hr_checklist_action"
+        sequence="10"/>
+
+    <menuitem id="sht_hr_onboarding_menu_templates"
+        name="Templates"
+        parent="hr.menu_human_resources_configuration"
+        action="sht_hr_onboarding_sht_hr_checklist_template_action"
+        sequence="55"
+        groups="hr.group_hr_user"/>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_rd_type_view_tree" model="ir.ui.view">
+        <field name="name">sht.hr.rd.type.tree</field>
+        <field name="model">sht.hr.rd.type</field>
+        <field name="arch" type="xml">
+            <list string="Reward &amp; Discipline Types">
+                <field name="name"/>
+                <field name="code" optional="show"/>
+                <field name="category"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sht_hr_rd_type_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.rd.type.form</field>
+        <field name="model">sht.hr.rd.type</field>
+        <field name="arch" type="xml">
+            <form string="Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="category"/>
+                    </group>
+                    <group>
+                        <field name="description" colspan="2" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sht_hr_rd_type_view_search" model="ir.ui.view">
+        <field name="name">sht.hr.rd.type.search</field>
+        <field name="model">sht.hr.rd.type</field>
+        <field name="arch" type="xml">
+            <search string="Types">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category"/>
+                <separator/>
+                <filter string="Rewards" name="filter_reward" domain="[('category', '=', 'reward')]"/>
+                <filter string="Disciplines" name="filter_discipline" domain="[('category', '=', 'discipline')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sht_hr_rd_type" model="ir.actions.act_window">
+        <field name="name">Reward Types</field>
+        <field name="res_model">sht.hr.rd.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sht_hr_rd_type_view_search"/>
+    </record>
+</odoo>

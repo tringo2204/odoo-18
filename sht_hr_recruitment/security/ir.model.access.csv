@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sht_hr_recruitment_access_headcount_plan_user,sht.hr.headcount.plan user,model_sht_hr_headcount_plan,hr.group_hr_user,1,0,0,0
+sht_hr_recruitment_access_headcount_plan_manager,sht.hr.headcount.plan manager,model_sht_hr_headcount_plan,hr.group_hr_manager,1,1,1,1

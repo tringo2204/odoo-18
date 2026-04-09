@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sht_hr_leave_type_annual" model="hr.leave.type">
+            <field name="name">Nghỉ phép năm</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">yes</field>
+            <field name="leave_validation_type">hr</field>
+            <field name="allocation_validation_type">hr</field>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+            <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="sequence">10</field>
+            <field name="company_id" eval="False"/>
+            <field name="sht_is_vietnam_legal" eval="True"/>
+            <field name="sht_seniority_bonus" eval="True"/>
+            <field name="sht_max_days" eval="12.0"/>
+        </record>
+        <record id="sht_hr_leave_type_sick" model="hr.leave.type">
+            <field name="name">Nghỉ ốm</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">no</field>
+            <field name="leave_validation_type">hr</field>
+            <field name="allocation_validation_type">hr</field>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_sick"/>
+            <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+            <field name="support_document" eval="True"/>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="sequence">20</field>
+            <field name="company_id" eval="False"/>
+            <field name="sht_is_vietnam_legal" eval="True"/>
+            <field name="sht_max_days" eval="30.0"/>
+        </record>
+        <record id="sht_hr_leave_type_maternity" model="hr.leave.type">
+            <field name="name">Nghỉ thai sản</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">no</field>
+            <field name="leave_validation_type">hr</field>
+            <field name="allocation_validation_type">hr</field>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+            <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="sequence">30</field>
+            <field name="company_id" eval="False"/>
+            <field name="sht_is_vietnam_legal" eval="True"/>
+            <field name="sht_max_days" eval="180.0"/>
+        </record>
+        <record id="sht_hr_leave_type_marriage" model="hr.leave.type">
+            <field name="name">Nghỉ kết hôn</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">yes</field>
+            <field name="leave_validation_type">manager</field>
+            <field name="allocation_validation_type">manager</field>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+            <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="sequence">40</field>
+            <field name="company_id" eval="False"/>
+            <field name="sht_is_vietnam_legal" eval="True"/>
+            <field name="sht_max_days" eval="3.0"/>
+        </record>
+        <record id="sht_hr_leave_type_bereavement" model="hr.leave.type">
+            <field name="name">Nghỉ tang</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">yes</field>
+            <field name="leave_validation_type">manager</field>
+            <field name="allocation_validation_type">manager</field>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
+            <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="sequence">50</field>
+            <field name="company_id" eval="False"/>
+            <field name="sht_is_vietnam_legal" eval="True"/>
+            <field name="sht_max_days" eval="3.0"/>
+        </record>
+        <record id="sht_hr_leave_type_unpaid" model="hr.leave.type">
+            <field name="name">Nghỉ không lương</field>
+            <field name="requires_allocation">no</field>
+            <field name="leave_validation_type">hr</field>
+            <field name="allocation_validation_type">hr</field>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_unpaid"/>
+            <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="unpaid" eval="True"/>
+            <field name="sequence">60</field>
+            <field name="company_id" eval="False"/>
+            <field name="sht_is_vietnam_legal" eval="False"/>
+            <field name="sht_max_days" eval="0.0"/>
+        </record>
+        <record id="sht_hr_leave_type_child_sick" model="hr.leave.type">
+            <field name="name">Nghỉ con ốm</field>
+            <field name="requires_allocation">yes</field>
+            <field name="employee_requests">yes</field>
+            <field name="leave_validation_type">hr</field>
+            <field name="allocation_validation_type">hr</field>
+            <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_sick"/>
+            <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
+            <field name="support_document" eval="True"/>
+            <field name="request_unit">day</field>
+            <field name="time_type">leave</field>
+            <field name="sequence">70</field>
+            <field name="company_id" eval="False"/>
+            <field name="sht_is_vietnam_legal" eval="True"/>
+            <field name="sht_max_days" eval="20.0"/>
+        </record>
+    </data>
+</odoo>

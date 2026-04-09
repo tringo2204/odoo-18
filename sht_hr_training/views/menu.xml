@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="sht_hr_training_menu_root"
+        name="Training"
+        parent="hr.menu_hr_root"
+        sequence="50"
+        groups="hr.group_hr_user"/>
+
+    <menuitem id="sht_hr_training_menu_records"
+        name="Training Records"
+        parent="sht_hr_training_menu_root"
+        action="sht_hr_training_action"
+        sequence="10"/>
+
+    <menuitem id="sht_hr_training_menu_courses"
+        name="Courses"
+        parent="hr.menu_human_resources_configuration"
+        action="sht_hr_training_course_action"
+        sequence="55"
+        groups="hr.group_hr_user"/>
+</odoo>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_sht_hr_rd_root"
+              name="Rewards &amp; Discipline"
+              parent="hr.menu_hr_root"
+              groups="hr.group_hr_user"
+              sequence="25"/>
+
+    <menuitem id="menu_sht_hr_rd_all"
+              name="All Records"
+              parent="menu_sht_hr_rd_root"
+              action="action_sht_hr_rd"
+              sequence="10"/>
+
+    <menuitem id="menu_sht_hr_rd_types"
+              name="Reward Types"
+              parent="hr.menu_human_resources_configuration"
+              action="action_sht_hr_rd_type"
+              groups="hr.group_hr_user"
+              sequence="55"/>
+</odoo>

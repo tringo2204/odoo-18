@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_rd_view_tree" model="ir.ui.view">
+        <field name="name">sht.hr.rd.tree</field>
+        <field name="model">sht.hr.rd</field>
+        <field name="arch" type="xml">
+            <list string="Rewards &amp; Discipline"
+                  decoration-success="state == 'confirmed'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="department_id" optional="show"/>
+                <field name="rd_type_id"/>
+                <field name="category" optional="show"/>
+                <field name="date"/>
+                <field name="amount" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sht_hr_rd_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.rd.form</field>
+        <field name="model">sht.hr.rd</field>
+        <field name="arch" type="xml">
+            <form string="Reward &amp; Discipline">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary" invisible="state != 'draft'" groups="sht_hr_reward_discipline.group_rd_manager"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state == 'cancelled'" groups="sht_hr_reward_discipline.group_rd_manager"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object" invisible="state == 'draft'" groups="sht_hr_reward_discipline.group_rd_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                            <field name="rd_type_id"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Decision">
+                        <group>
+                            <field name="date"/>
+                            <field name="decision_number"/>
+                            <field name="decision_date"/>
+                            <field name="amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="reason" colspan="2"/>
+                    </group>
+                    <group>
+                        <field name="description" colspan="2"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="sht_hr_rd_view_search" model="ir.ui.view">
+        <field name="name">sht.hr.rd.search</field>
+        <field name="model">sht.hr.rd</field>
+        <field name="arch" type="xml">
+            <search string="Rewards &amp; Discipline">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="rd_type_id"/>
+                <separator/>
+                <filter string="Rewards" name="filter_reward" domain="[('category', '=', 'reward')]"/>
+                <filter string="Disciplines" name="filter_discipline" domain="[('category', '=', 'discipline')]"/>
+                <separator/>
+                <filter string="Draft" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Confirmed" name="filter_confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Employee" name="group_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Category" name="group_category" context="{'group_by': 'category'}"/>
+                    <filter string="Month" name="group_month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sht_hr_rd" model="ir.actions.act_window">
+        <field name="name">Rewards &amp; Discipline</field>
+        <field name="res_model">sht.hr.rd</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sht_hr_rd_view_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a reward or discipline record for an employee.
+            </p>
+        </field>
+    </record>
+</odoo>

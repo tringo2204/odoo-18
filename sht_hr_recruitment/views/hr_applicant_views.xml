@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_recruitment_applicant_view_form_headcount" model="ir.ui.view">
+        <field name="name">hr.applicant.form.headcount</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@string='Job']" position="inside">
+                <field name="headcount_plan_id"/>
+                <field name="is_over_budget" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sht_hr_recruitment_applicant_view_list_headcount" model="ir.ui.view">
+        <field name="name">hr.applicant.list.headcount</field>
+        <field name="model">hr.applicant</field>
+        <field name="inherit_id" ref="hr_recruitment.crm_case_tree_view_job"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='job_id']" position="after">
+                <field name="headcount_plan_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

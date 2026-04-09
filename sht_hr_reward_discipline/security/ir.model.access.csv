@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sht_hr_rd_type_hr_user,sht.hr.rd.type.hr.user,model_sht_hr_rd_type,hr.group_hr_user,1,0,0,0
+access_sht_hr_rd_type_rd_manager,sht.hr.rd.type.rd.manager,model_sht_hr_rd_type,group_rd_manager,1,1,1,1
+access_sht_hr_rd_hr_user,sht.hr.rd.hr.user,model_sht_hr_rd,hr.group_hr_user,1,0,0,0
+access_sht_hr_rd_rd_manager,sht.hr.rd.rd.manager,model_sht_hr_rd,group_rd_manager,1,1,1,1

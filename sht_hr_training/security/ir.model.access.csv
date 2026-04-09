@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sht_hr_training_course_hr_user,sht.hr.training.course.hr.user,model_sht_hr_training_course,hr.group_hr_user,1,0,0,0
+access_sht_hr_training_course_hr_manager,sht.hr.training.course.hr.manager,model_sht_hr_training_course,hr.group_hr_manager,1,1,1,1
+access_sht_hr_training_hr_user,sht.hr.training.hr.user,model_sht_hr_training,hr.group_hr_user,1,0,0,0
+access_sht_hr_training_hr_manager,sht.hr.training.hr.manager,model_sht_hr_training,hr.group_hr_manager,1,1,1,1

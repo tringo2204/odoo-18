@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_training_hr_employee_view_form" model="ir.ui.view">
+        <field name="name">hr.employee.form.sht.hr.training</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_sht_hr_training" type="object" class="oe_stat_button" icon="fa-graduation-cap" groups="hr.group_hr_user">
+                    <field name="training_count" widget="statinfo" string="Training"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

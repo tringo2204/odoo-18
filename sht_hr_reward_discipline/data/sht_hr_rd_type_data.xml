@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="seq_sht_hr_rd" model="ir.sequence">
+            <field name="name">Reward &amp; Discipline</field>
+            <field name="code">sht.hr.rd</field>
+            <field name="prefix">RD</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="sht_hr_rd_type_reward_khen_thuong" model="sht.hr.rd.type">
+            <field name="name">Khen thưởng</field>
+            <field name="code">REWARD_KT</field>
+            <field name="category">reward</field>
+        </record>
+        <record id="sht_hr_rd_type_reward_bieu_duong" model="sht.hr.rd.type">
+            <field name="name">Biểu dương</field>
+            <field name="code">REWARD_BD</field>
+            <field name="category">reward</field>
+        </record>
+        <record id="sht_hr_rd_type_reward_cuoi_nam" model="sht.hr.rd.type">
+            <field name="name">Thưởng cuối năm</field>
+            <field name="code">REWARD_CN</field>
+            <field name="category">reward</field>
+        </record>
+
+        <record id="sht_hr_rd_type_discipline_khien_trach" model="sht.hr.rd.type">
+            <field name="name">Khiển trách</field>
+            <field name="code">DISC_KT</field>
+            <field name="category">discipline</field>
+        </record>
+        <record id="sht_hr_rd_type_discipline_canh_cao" model="sht.hr.rd.type">
+            <field name="name">Cảnh cáo</field>
+            <field name="code">DISC_CC</field>
+            <field name="category">discipline</field>
+        </record>
+        <record id="sht_hr_rd_type_discipline_sa_thai" model="sht.hr.rd.type">
+            <field name="name">Sa thải</field>
+            <field name="code">DISC_ST</field>
+            <field name="category">discipline</field>
+        </record>
+    </data>
+</odoo>

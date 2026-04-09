@@ -1,0 +1,19 @@
+{
+    'name': 'SHT HR Base',
+    'version': '18.0.1.0.0',
+    'category': 'Human Resources',
+    'summary': 'Vietnam HR Employee Extensions - Base Module',
+    'description': 'Extends employee with Vietnam-specific fields, document management, and custom form layout.',
+    'author': 'SHT',
+    'depends': ['hr', 'hr_maintenance'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/hr_employee_views.xml',
+        'views/sht_hr_document_type_views.xml',
+        'views/sht_hr_employee_document_views.xml',
+        'views/menu.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+}

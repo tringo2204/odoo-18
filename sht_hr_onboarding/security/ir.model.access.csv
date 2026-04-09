@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sht_hr_checklist_template_hr_user,sht.hr.checklist.template hr user,model_sht_hr_checklist_template,hr.group_hr_user,1,0,0,0
+access_sht_hr_checklist_template_hr_manager,sht.hr.checklist.template hr manager,model_sht_hr_checklist_template,hr.group_hr_manager,1,1,1,1
+access_sht_hr_checklist_template_line_hr_user,sht.hr.checklist.template.line hr user,model_sht_hr_checklist_template_line,hr.group_hr_user,1,0,0,0
+access_sht_hr_checklist_template_line_hr_manager,sht.hr.checklist.template.line hr manager,model_sht_hr_checklist_template_line,hr.group_hr_manager,1,1,1,1
+access_sht_hr_checklist_hr_user,sht.hr.checklist hr user,model_sht_hr_checklist,hr.group_hr_user,1,0,0,0
+access_sht_hr_checklist_hr_manager,sht.hr.checklist hr manager,model_sht_hr_checklist,hr.group_hr_manager,1,1,1,1
+access_sht_hr_checklist_line_hr_user,sht.hr.checklist.line hr user,model_sht_hr_checklist_line,hr.group_hr_user,1,0,0,0
+access_sht_hr_checklist_line_hr_manager,sht.hr.checklist.line hr manager,model_sht_hr_checklist_line,hr.group_hr_manager,1,1,1,1

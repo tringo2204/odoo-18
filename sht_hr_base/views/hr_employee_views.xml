@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_base_view_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form.sht.hr.base</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_employee_documents" type="object"
+                    class="o_stat_button" icon="fa-folder-open"
+                    groups="hr.group_hr_user" invisible="not id">
+                    <field name="document_count" widget="statinfo" string="Documents"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='identification_id']" position="replace">
+                <field name="identification_number"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="sht_vietnam_info" string="Vietnam Info" groups="hr.group_hr_user">
+                    <group>
+                        <field name="tax_id"/>
+                        <field name="social_insurance_id"/>
+                        <field name="seniority_start_date"/>
+                        <field name="seniority_years" readonly="1"/>
+                        <field name="children_under_72m"/>
+                    </group>
+                </page>
+                <page name="sht_bank_info" string="Bank Info" groups="hr.group_hr_user">
+                    <group>
+                        <field name="bank_name"/>
+                        <field name="bank_account_number"/>
+                    </group>
+                </page>
+                <page name="sht_emergency_contact" string="Emergency Contact" groups="hr.group_hr_user">
+                    <group>
+                        <field name="emergency_contact_name"/>
+                        <field name="emergency_contact_phone" widget="phone"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

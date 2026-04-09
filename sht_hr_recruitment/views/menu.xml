@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="sht_hr_recruitment_menu_headcount_plans"
+        name="Headcount Plans"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        action="sht_hr_recruitment_headcount_plan_action"
+        sequence="25"
+        groups="hr.group_hr_user"/>
+</odoo>
