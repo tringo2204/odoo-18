@@ -1,0 +1,94 @@
+.mfg-dashboard {
+    min-height: 100vh;
+    background: #f4f6f9;
+
+    .mfg-dashboard-header {
+        background: #fff;
+        border-bottom: 1px solid #e0e4ea;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06);
+
+        h3 { font-weight: 700; color: #2c3e50; }
+    }
+
+    .mfg-dashboard-body {
+        padding-top: 1.5rem;
+    }
+
+    // Section cards
+    .mfg-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.07);
+        overflow: hidden;
+
+        .mfg-card-header {
+            background: linear-gradient(135deg, #2c3e50, #3d5a80);
+            color: #fff;
+            font-weight: 600;
+            font-size: .9rem;
+            padding: .75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            letter-spacing: .3px;
+        }
+    }
+
+    .mfg-divider {
+        border-top: 1px dashed #e0e4ea;
+        margin: .5rem 0;
+    }
+
+    // KPI tiles
+    .kpi-tile {
+        border-radius: 8px;
+        padding: .9rem 1rem;
+        cursor: pointer;
+        transition: transform .15s, box-shadow .15s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        user-select: none;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.12);
+        }
+
+        &:active { transform: scale(.97); }
+
+        .kpi-num {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: .25rem;
+        }
+
+        .kpi-lbl {
+            font-size: .75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            opacity: .85;
+        }
+
+        // Wide horizontal tile
+        &.kpi-wide {
+            flex-direction: row;
+            justify-content: center;
+            gap: .4rem;
+
+            .kpi-num-inline { font-size: 1.4rem; font-weight: 800; }
+            .kpi-lbl-inline { font-size: .85rem; font-weight: 600; align-self: center; }
+        }
+    }
+
+    // Color variants
+    .kpi-draft   { background: #f0f2f5; color: #5a6a7e; }
+    .kpi-info    { background: #e8f4fd; color: #1a7cbf; }
+    .kpi-primary { background: #e8edf9; color: #3d5a80; }
+    .kpi-success { background: #e6f4ea; color: #2d7a46; }
+    .kpi-warning { background: #fff8e6; color: #b07b00; }
+    .kpi-danger  { background: #fdecea; color: #c0392b; }
+}

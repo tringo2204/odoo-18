@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<t t-name="mfg_dashboard.Dashboard">
+<div class="mfg-dashboard o_action">
+
+    <!-- Header -->
+    <div class="mfg-dashboard-header d-flex align-items-center justify-content-between px-4 py-3">
+        <div class="d-flex align-items-center gap-3">
+            <i class="fa fa-industry fa-2x text-primary"/>
+            <div>
+                <h3 class="mb-0">Manufacturing Dashboard</h3>
+                <small class="text-muted" t-if="state.lastRefresh">
+                    Last updated: <t t-esc="state.lastRefresh"/>
+                </small>
+            </div>
+        </div>
+        <button class="btn btn-outline-primary btn-sm" t-on-click="loadData">
+            <i t-att-class="state.loading ? 'fa fa-spinner fa-spin' : 'fa fa-refresh'"/> Refresh
+        </button>
+    </div>
+
+    <!-- Loading -->
+    <t t-if="state.loading and !state.data">
+        <div class="text-center p-5 text-muted">
+            <i class="fa fa-spinner fa-spin fa-3x mb-3 d-block"/>
+            <span>Loading dashboard...</span>
+        </div>
+    </t>
+
+    <t t-elif="state.data">
+    <div class="mfg-dashboard-body px-4 pb-4">
+
+        <!-- Row 1: Production Orders + Work Orders -->
+        <div class="row g-4 mb-4">
+
+            <!-- Production Orders -->
+            <div class="col-lg-6">
+                <div class="mfg-card h-100">
+                    <div class="mfg-card-header">
+                        <i class="fa fa-cogs"/> Production Orders
+                        <span class="badge bg-secondary ms-2" t-esc="state.data.month_label"/>
+                    </div>
+                    <div class="row g-2 p-3">
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-draft" t-on-click="() => this.openProduction('draft')">
+                                <div class="kpi-num" t-esc="state.data.production.draft"/>
+                                <div class="kpi-lbl">Draft</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-info" t-on-click="() => this.openProduction('confirmed')">
+                                <div class="kpi-num" t-esc="state.data.production.confirmed"/>
+                                <div class="kpi-lbl">Confirmed</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-primary" t-on-click="() => this.openProduction('progress')">
+                                <div class="kpi-num" t-esc="state.data.production.progress"/>
+                                <div class="kpi-lbl">In Progress</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-success" t-on-click="() => this.openProduction('done')">
+                                <div class="kpi-num" t-esc="state.data.production.done"/>
+                                <div class="kpi-lbl">Done (Month)</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="kpi-tile kpi-danger kpi-wide" t-on-click="() => this.openProduction('late')">
+                                <i class="fa fa-exclamation-triangle me-2"/>
+                                <span class="kpi-num-inline" t-esc="state.data.production.late"/>
+                                <span class="kpi-lbl-inline"> Late Orders</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Orders -->
+            <div class="col-lg-6">
+                <div class="mfg-card h-100">
+                    <div class="mfg-card-header">
+                        <i class="fa fa-wrench"/> Shop Floor — Work Orders
+                    </div>
+                    <div class="row g-2 p-3">
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-success" t-on-click="() => this.openWorkorder('ready')">
+                                <div class="kpi-num" t-esc="state.data.workorders.ready"/>
+                                <div class="kpi-lbl">Ready</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-primary" t-on-click="() => this.openWorkorder('progress')">
+                                <div class="kpi-num" t-esc="state.data.workorders.progress"/>
+                                <div class="kpi-lbl">In Progress</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-warning" t-on-click="() => this.openWorkorder('pending')">
+                                <div class="kpi-num" t-esc="state.data.workorders.pending"/>
+                                <div class="kpi-lbl">Pending</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="kpi-tile kpi-draft" t-on-click="() => this.openWorkorder('waiting')">
+                                <div class="kpi-num" t-esc="state.data.workorders.waiting"/>
+                                <div class="kpi-lbl">Waiting Material</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: Quality + Maintenance + PLM -->
+        <div class="row g-4">
+
+            <!-- Quality -->
+            <div class="col-lg-4">
+                <div class="mfg-card h-100">
+                    <div class="mfg-card-header">
+                        <i class="fa fa-check-circle"/> Quality Control
+                    </div>
+                    <div class="p-3">
+                        <div class="kpi-tile kpi-warning mb-2" t-on-click="() => this.openQuality('none')">
+                            <div class="kpi-num" t-esc="state.data.quality.pending"/>
+                            <div class="kpi-lbl">Checks Pending</div>
+                        </div>
+                        <div class="kpi-tile kpi-danger mb-2" t-on-click="() => this.openQuality('fail')">
+                            <div class="kpi-num" t-esc="state.data.quality.failed"/>
+                            <div class="kpi-lbl">Failed</div>
+                        </div>
+                        <div class="kpi-tile kpi-success mb-2" t-on-click="() => this.openQuality('pass')">
+                            <div class="kpi-num" t-esc="state.data.quality.passed"/>
+                            <div class="kpi-lbl">Passed (Month)</div>
+                        </div>
+                        <div class="mfg-divider"/>
+                        <div class="kpi-tile kpi-info mb-2" t-on-click="() => this.openAlerts(false)">
+                            <div class="kpi-num" t-esc="state.data.alerts.open"/>
+                            <div class="kpi-lbl">Open Alerts</div>
+                        </div>
+                        <div class="kpi-tile kpi-danger" t-on-click="() => this.openAlerts(true)">
+                            <div class="kpi-num" t-esc="state.data.alerts.critical"/>
+                            <div class="kpi-lbl">Critical Alerts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maintenance -->
+            <div class="col-lg-4">
+                <div class="mfg-card h-100">
+                    <div class="mfg-card-header">
+                        <i class="fa fa-tools"/> Maintenance
+                    </div>
+                    <div class="p-3">
+                        <div class="kpi-tile kpi-info mb-2" t-on-click="() => this.openMaintenance(false)">
+                            <div class="kpi-num" t-esc="state.data.maintenance.open"/>
+                            <div class="kpi-lbl">Open Requests</div>
+                        </div>
+                        <div class="kpi-tile kpi-danger mb-2" t-on-click="() => this.openMaintenance(true)">
+                            <div class="kpi-num" t-esc="state.data.maintenance.urgent"/>
+                            <div class="kpi-lbl">Urgent</div>
+                        </div>
+                        <div class="kpi-tile kpi-success" t-on-click="() => this.openMaintenance(false)">
+                            <div class="kpi-num" t-esc="state.data.maintenance.done"/>
+                            <div class="kpi-lbl">Resolved (Month)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLM / ECO -->
+            <div class="col-lg-4">
+                <div class="mfg-card h-100">
+                    <div class="mfg-card-header">
+                        <i class="fa fa-code-fork"/> PLM — Change Orders
+                    </div>
+                    <div class="p-3">
+                        <div class="kpi-tile kpi-info mb-2" t-on-click="() => this.openECO('confirmed')">
+                            <div class="kpi-num" t-esc="state.data.ecos.new"/>
+                            <div class="kpi-lbl">New ECOs</div>
+                        </div>
+                        <div class="kpi-tile kpi-primary mb-2" t-on-click="() => this.openECO('progress')">
+                            <div class="kpi-num" t-esc="state.data.ecos.progress"/>
+                            <div class="kpi-lbl">In Progress</div>
+                        </div>
+                        <div class="kpi-tile kpi-success" t-on-click="() => this.openECO('done')">
+                            <div class="kpi-num" t-esc="state.data.ecos.done"/>
+                            <div class="kpi-lbl">Done (Month)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </t>
+
+</div>
+</t>
+</templates>
