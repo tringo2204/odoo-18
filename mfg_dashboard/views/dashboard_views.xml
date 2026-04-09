@@ -9,6 +9,5 @@
         name="Dashboard"
         action="action_mfg_dashboard"
         parent="mrp.menu_mrp_root"
-        sequence="0"
-        web_icon="mfg_dashboard,static/description/icon.png"/>
+        sequence="0"/>
 </odoo>
