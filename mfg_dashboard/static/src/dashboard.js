@@ -46,17 +46,20 @@ export class MfgDashboard extends Component {
     }
 
     openProduction(state) {
-        const domain = state ? [["state", "=", state]] : [];
-        const labels = {
-            draft: "Draft Orders", confirmed: "Confirmed Orders",
-            progress: "In Progress", done: "Completed This Month",
-            late: "Late Orders",
-        };
+        const now = new Date();
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
         if (state === "late") {
             this.openList("mrp.production",
-                [["state", "in", ["confirmed", "progress", "to_close"]], ["date_deadline", "<", new Date().toISOString()], ["date_deadline", "!=", false]],
+                [["state", "in", ["confirmed", "progress", "to_close"]], ["date_deadline", "<", now.toISOString()], ["date_deadline", "!=", false]],
                 "Late Production Orders");
+        } else if (state === "done") {
+            this.openList("mrp.production",
+                [["state", "=", "done"], ["date_finished", ">=", monthStart]],
+                "Completed This Month");
         } else {
+            const domain = state ? [["state", "=", state]] : [];
+            const labels = { draft: "Draft Orders", confirmed: "Confirmed Orders", progress: "In Progress" };
             this.openList("mrp.production", domain, labels[state] || "Production Orders");
         }
     }
