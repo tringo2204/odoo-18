@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="hr_vn_si_record_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.si.record.form</field>
+        <field name="model">hr.vn.si.record</field>
+        <field name="arch" type="xml">
+            <form string="Hồ sơ bảo hiểm">
+                <header>
+                    <button name="action_activate" string="Kích hoạt" type="object"
+                            class="btn-primary"
+                            invisible="current_status == 'active'"/>
+                    <button name="action_suspend" string="Tạm dừng" type="object"
+                            invisible="current_status != 'active'"/>
+                    <button name="action_close" string="Chốt sổ" type="object"
+                            class="btn-danger"
+                            invisible="current_status == 'closed'"
+                            confirm="Chốt sổ BHXH cho nhân viên này?"/>
+                    <button name="action_create_increase" string="Tạo biến động tăng"
+                            type="object" class="btn-secondary"
+                            invisible="current_status != 'active'"/>
+                    <field name="current_status" widget="statusbar"
+                           statusbar_visible="active,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_history" type="object"
+                                class="oe_stat_button" icon="fa-history">
+                            <field name="history_count" widget="statinfo"
+                                   string="Biến động"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin nhân viên">
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                            <field name="bhxh_number"/>
+                            <field name="registration_date"/>
+                        </group>
+                        <group string="Thông tin BHYT">
+                            <field name="bhyt_card_number"/>
+                            <field name="bhyt_hospital_id"/>
+                            <field name="insurance_salary"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lịch sử biến động" name="history">
+                            <field name="history_ids">
+                                <list>
+                                    <field name="effective_date"/>
+                                    <field name="change_type"/>
+                                    <field name="old_salary"/>
+                                    <field name="new_salary"/>
+                                    <field name="reason"/>
+                                    <field name="state" widget="badge"
+                                           decoration-info="state == 'draft'"
+                                           decoration-success="state == 'confirmed'"
+                                           decoration-warning="state == 'reported'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="note" placeholder="Ghi chú..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="hr_vn_si_record_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.si.record.list</field>
+        <field name="model">hr.vn.si.record</field>
+        <field name="arch" type="xml">
+            <list decoration-success="current_status == 'active'"
+                  decoration-warning="current_status == 'suspended'"
+                  decoration-muted="current_status == 'closed'">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="bhxh_number"/>
+                <field name="bhyt_card_number"/>
+                <field name="insurance_salary"/>
+                <field name="registration_date"/>
+                <field name="current_status" widget="badge"
+                       decoration-success="current_status == 'active'"
+                       decoration-warning="current_status == 'suspended'"
+                       decoration-danger="current_status == 'closed'"/>
+                <field name="company_id" optional="hide"
+                       groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hr_vn_si_record_view_search" model="ir.ui.view">
+        <field name="name">hr.vn.si.record.search</field>
+        <field name="model">hr.vn.si.record</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="bhxh_number"/>
+                <field name="bhyt_card_number"/>
+                <separator/>
+                <filter string="Đang tham gia" name="active_status"
+                        domain="[('current_status', '=', 'active')]"/>
+                <filter string="Tạm dừng" name="suspended"
+                        domain="[('current_status', '=', 'suspended')]"/>
+                <filter string="Đã chốt sổ" name="closed"
+                        domain="[('current_status', '=', 'closed')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Trạng thái" name="group_status"
+                            context="{'group_by': 'current_status'}"/>
+                    <filter string="Phòng ban" name="group_dept"
+                            context="{'group_by': 'department_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hr_vn_si_record_action" model="ir.actions.act_window">
+        <field name="name">Hồ sơ bảo hiểm</field>
+        <field name="res_model">hr.vn.si.record</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="hr_vn_si_record_view_search"/>
+        <field name="context">{'search_default_active_status': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo hồ sơ bảo hiểm đầu tiên
+            </p>
+        </field>
+    </record>
+</odoo>

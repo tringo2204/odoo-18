@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root menu under HR -->
+    <menuitem id="menu_hr_si_root"
+              name="Bảo hiểm"
+              parent="hr.menu_hr_root"
+              sequence="35"/>
+
+    <!-- Sub menus -->
+    <menuitem id="menu_hr_si_record"
+              name="Hồ sơ bảo hiểm"
+              parent="menu_hr_si_root"
+              action="hr_vn_si_record_action"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_si_history"
+              name="Biến động BHXH"
+              parent="menu_hr_si_root"
+              action="hr_vn_si_history_action"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_si_monthly_list"
+              name="DS tăng/giảm tháng"
+              parent="menu_hr_si_root"
+              action="hr_vn_si_monthly_list_action"
+              sequence="30"/>
+
+    <menuitem id="menu_hr_si_d02_report"
+              name="Báo cáo D02-LT"
+              parent="menu_hr_si_root"
+              action="hr_vn_si_d02_report_action"
+              sequence="40"/>
+
+    <menuitem id="menu_hr_si_c12_lookup"
+              name="Tra cứu C12"
+              parent="menu_hr_si_root"
+              action="hr_vn_si_c12_lookup_action"
+              sequence="50"/>
+</odoo>

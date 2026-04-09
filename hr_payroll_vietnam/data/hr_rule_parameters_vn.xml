@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- BHXH / BHYT / BHTN — Tỷ lệ nhân viên                       -->
+    <!-- ============================================================ -->
+    <record id="vn_param_bhxh_ee_rate" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ BHXH nhân viên (%)</field>
+        <field name="code">vn_bhxh_ee_rate</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_bhxh_ee_rate_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">8.0</field>
+        <field name="rule_parameter_id" ref="vn_param_bhxh_ee_rate"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_bhyt_ee_rate" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ BHYT nhân viên (%)</field>
+        <field name="code">vn_bhyt_ee_rate</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_bhyt_ee_rate_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">1.5</field>
+        <field name="rule_parameter_id" ref="vn_param_bhyt_ee_rate"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_bhtn_ee_rate" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ BHTN nhân viên (%)</field>
+        <field name="code">vn_bhtn_ee_rate</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_bhtn_ee_rate_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">1.0</field>
+        <field name="rule_parameter_id" ref="vn_param_bhtn_ee_rate"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- BHXH / BHYT / BHTN — Tỷ lệ doanh nghiệp                   -->
+    <!-- ============================================================ -->
+    <record id="vn_param_bhxh_er_rate" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ BHXH doanh nghiệp (%)</field>
+        <field name="code">vn_bhxh_er_rate</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_bhxh_er_rate_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">17.5</field>
+        <field name="rule_parameter_id" ref="vn_param_bhxh_er_rate"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_bhyt_er_rate" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ BHYT doanh nghiệp (%)</field>
+        <field name="code">vn_bhyt_er_rate</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_bhyt_er_rate_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">3.0</field>
+        <field name="rule_parameter_id" ref="vn_param_bhyt_er_rate"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_bhtn_er_rate" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ BHTN doanh nghiệp (%)</field>
+        <field name="code">vn_bhtn_er_rate</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_bhtn_er_rate_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">1.0</field>
+        <field name="rule_parameter_id" ref="vn_param_bhtn_er_rate"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Lương cơ sở + Hệ số trần                                    -->
+    <!-- ============================================================ -->
+    <record id="vn_param_base_salary" model="hr.rule.parameter">
+        <field name="name">VN: Lương cơ sở</field>
+        <field name="code">vn_base_salary</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_base_salary_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">2340000</field>
+        <field name="rule_parameter_id" ref="vn_param_base_salary"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_bhxh_cap_multiplier" model="hr.rule.parameter">
+        <field name="name">VN: Hệ số trần BHXH (x lương cơ sở)</field>
+        <field name="code">vn_bhxh_cap_multiplier</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_bhxh_cap_multiplier_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">20</field>
+        <field name="rule_parameter_id" ref="vn_param_bhxh_cap_multiplier"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Giảm trừ gia cảnh                                            -->
+    <!-- ============================================================ -->
+    <record id="vn_param_self_deduction" model="hr.rule.parameter">
+        <field name="name">VN: Giảm trừ bản thân</field>
+        <field name="code">vn_self_deduction</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_self_deduction_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">11000000</field>
+        <field name="rule_parameter_id" ref="vn_param_self_deduction"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_dependent_deduction" model="hr.rule.parameter">
+        <field name="name">VN: Giảm trừ mỗi người phụ thuộc</field>
+        <field name="code">vn_dependent_deduction</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_dependent_deduction_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">4400000</field>
+        <field name="rule_parameter_id" ref="vn_param_dependent_deduction"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Biểu thuế TNCN 7 bậc (list of tuples)                       -->
+    <!-- ============================================================ -->
+    <record id="vn_param_pit_brackets" model="hr.rule.parameter">
+        <field name="name">VN: Biểu thuế TNCN lũy tiến (from, to, rate%)</field>
+        <field name="code">vn_pit_brackets</field>
+        <field name="country_id" ref="base.vn"/>
+        <field name="description"><![CDATA[
+            <p>Biểu thuế TNCN lũy tiến 7 bậc.</p>
+            <p>Format: [(income_from, income_to, tax_rate_percent), ...]</p>
+            <p>income_to = 0 nghĩa là không giới hạn (bậc cuối).</p>
+        ]]></field>
+    </record>
+    <record id="vn_param_pit_brackets_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">[(0, 5000000, 5), (5000000, 10000000, 10), (10000000, 18000000, 15), (18000000, 32000000, 20), (32000000, 52000000, 25), (52000000, 80000000, 30), (80000000, 0, 35)]</field>
+        <field name="rule_parameter_id" ref="vn_param_pit_brackets"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- Lương vùng (dict)                                            -->
+    <!-- ============================================================ -->
+    <record id="vn_param_regional_wages" model="hr.rule.parameter">
+        <field name="name">VN: Lương tối thiểu vùng</field>
+        <field name="code">vn_regional_wages</field>
+        <field name="country_id" ref="base.vn"/>
+        <field name="description"><![CDATA[
+            <p>Lương tối thiểu vùng I-IV. Dùng để tính trần BHTN.</p>
+            <p>Format: {'1': amount, '2': amount, '3': amount, '4': amount}</p>
+        ]]></field>
+    </record>
+    <record id="vn_param_regional_wages_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">{'1': 4960000, '2': 4410000, '3': 3860000, '4': 3450000}</field>
+        <field name="rule_parameter_id" ref="vn_param_regional_wages"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+</odoo>

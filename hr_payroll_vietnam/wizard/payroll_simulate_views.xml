@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_vn_payroll_simulate_form" model="ir.ui.view">
+        <field name="name">hr.vn.payroll.simulate.form</field>
+        <field name="model">hr.vn.payroll.simulate</field>
+        <field name="arch" type="xml">
+            <form string="Tính thử lương VN">
+                <group>
+                    <group string="Thông tin nhân viên">
+                        <field name="employee_id"/>
+                        <field name="wage"/>
+                        <field name="insurance_salary"/>
+                        <field name="tax_resident"/>
+                        <field name="dependent_count"/>
+                        <field name="tax_policy"/>
+                    </group>
+                    <group string="Phụ cấp chịu thuế">
+                        <field name="allowance_position"/>
+                        <field name="allowance_responsibility"/>
+                        <field name="allowance_seniority"/>
+                    </group>
+                </group>
+                <group>
+                    <group string="Phụ cấp không chịu thuế">
+                        <field name="allowance_phone"/>
+                        <field name="allowance_meal"/>
+                        <field name="allowance_transport"/>
+                        <field name="allowance_uniform"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button name="action_compute" string="Tính lương" type="object" class="btn-primary"/>
+                    <button string="Đóng" class="btn-secondary" special="cancel"/>
+                </footer>
+
+                <!-- KẾT QUẢ -->
+                <group invisible="not computed" string="KẾT QUẢ TÍNH LƯƠNG">
+                    <field name="computed" invisible="1"/>
+                    <group string="Thu nhập">
+                        <field name="result_gross" widget="monetary"/>
+                        <field name="result_nontax" widget="monetary"/>
+                    </group>
+                    <group string="Khấu trừ bảo hiểm (NV)">
+                        <field name="result_bhxh_ee" widget="monetary"/>
+                        <field name="result_bhyt_ee" widget="monetary"/>
+                        <field name="result_bhtn_ee" widget="monetary"/>
+                        <field name="result_total_ins_ee" widget="monetary"/>
+                    </group>
+                </group>
+                <group invisible="not computed">
+                    <group string="Thuế TNCN">
+                        <field name="result_self_deduction" widget="monetary"/>
+                        <field name="result_dep_deduction" widget="monetary"/>
+                        <field name="result_taxable" widget="monetary"/>
+                        <field name="result_pit" widget="monetary"/>
+                    </group>
+                    <group string="Kết quả">
+                        <field name="result_net" widget="monetary"
+                               style="font-size: 1.4em; font-weight: bold; color: #28a745;"/>
+                    </group>
+                </group>
+                <group invisible="not computed" string="Chi phí doanh nghiệp">
+                    <group>
+                        <field name="result_bhxh_er" widget="monetary"/>
+                        <field name="result_bhyt_er" widget="monetary"/>
+                        <field name="result_bhtn_er" widget="monetary"/>
+                    </group>
+                    <group>
+                        <field name="result_total_cost" widget="monetary"
+                               style="font-size: 1.2em; font-weight: bold; color: #dc3545;"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_simulate" model="ir.actions.act_window">
+        <field name="name">Tính thử lương</field>
+        <field name="res_model">hr.vn.payroll.simulate</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

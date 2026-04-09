@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="allowance_meal_2024" model="hr.vn.allowance.config">
+        <field name="year">2024</field>
+        <field name="allowance_type">meal</field>
+        <field name="max_amount">730000</field>
+        <field name="legal_reference">TT25/2018/TT-BTC</field>
+    </record>
+    <record id="allowance_phone_2024" model="hr.vn.allowance.config">
+        <field name="year">2024</field>
+        <field name="allowance_type">phone</field>
+        <field name="max_amount">92000</field>
+        <field name="legal_reference">TT96/2015/TT-BTC</field>
+    </record>
+    <record id="allowance_uniform_2024" model="hr.vn.allowance.config">
+        <field name="year">2024</field>
+        <field name="allowance_type">uniform</field>
+        <field name="max_amount">416667</field>
+        <field name="legal_reference">TT96/2015/TT-BTC (5tr/năm)</field>
+    </record>
+    <record id="allowance_transport_2024" model="hr.vn.allowance.config">
+        <field name="year">2024</field>
+        <field name="allowance_type">transport</field>
+        <field name="max_amount">0</field>
+        <field name="legal_reference">Theo thực tế chi trả</field>
+    </record>
+</odoo>

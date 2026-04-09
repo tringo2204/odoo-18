@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_vn_dependent_user,hr.vn.dependent.user,model_hr_vn_dependent,hr.group_hr_user,1,1,1,0
+access_hr_vn_dependent_manager,hr.vn.dependent.manager,model_hr_vn_dependent,hr.group_hr_manager,1,1,1,1
+access_hr_vn_insurance_config_user,hr.vn.insurance.config.user,model_hr_vn_insurance_config,hr.group_hr_user,1,0,0,0
+access_hr_vn_insurance_config_manager,hr.vn.insurance.config.manager,model_hr_vn_insurance_config,hr.group_hr_manager,1,1,1,1
+access_hr_vn_regional_wage_user,hr.vn.regional.wage.user,model_hr_vn_regional_wage,hr.group_hr_user,1,0,0,0
+access_hr_vn_regional_wage_manager,hr.vn.regional.wage.manager,model_hr_vn_regional_wage,hr.group_hr_manager,1,1,1,1
+access_hr_vn_pit_bracket_user,hr.vn.pit.bracket.user,model_hr_vn_pit_bracket,hr.group_hr_user,1,0,0,0
+access_hr_vn_pit_bracket_manager,hr.vn.pit.bracket.manager,model_hr_vn_pit_bracket,hr.group_hr_manager,1,1,1,1
+access_hr_vn_personal_deduction_user,hr.vn.personal.deduction.user,model_hr_vn_personal_deduction,hr.group_hr_user,1,0,0,0
+access_hr_vn_personal_deduction_manager,hr.vn.personal.deduction.manager,model_hr_vn_personal_deduction,hr.group_hr_manager,1,1,1,1
+access_hr_vn_allowance_config_user,hr.vn.allowance.config.user,model_hr_vn_allowance_config,hr.group_hr_user,1,0,0,0
+access_hr_vn_allowance_config_manager,hr.vn.allowance.config.manager,model_hr_vn_allowance_config,hr.group_hr_manager,1,1,1,1
+access_hr_vn_payroll_simulate_user,hr.vn.payroll.simulate.user,model_hr_vn_payroll_simulate,hr.group_hr_user,1,1,1,1
+access_hr_vn_payroll_config_manager,hr.vn.payroll.config.manager,model_hr_vn_payroll_config,hr.group_hr_manager,1,1,1,1

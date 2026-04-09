@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- D02 Report Form -->
+    <record id="hr_vn_si_d02_report_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.si.d02.report.form</field>
+        <field name="model">hr.vn.si.d02.report</field>
+        <field name="arch" type="xml">
+            <form string="Báo cáo D02-LT">
+                <header>
+                    <button name="action_generate_lines" string="Tạo dòng chi tiết"
+                            type="object" class="btn-secondary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm" string="Xác nhận" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_submit" string="Đã nộp" type="object"
+                            class="btn-primary" invisible="state != 'confirmed'"
+                            confirm="Xác nhận đã nộp báo cáo này lên cơ quan BHXH?"/>
+                    <button name="action_draft" string="Về nháp" type="object"
+                            invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,submitted"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="month"/>
+                            <field name="year"/>
+                            <field name="monthly_list_id"/>
+                        </group>
+                        <group>
+                            <field name="line_count"/>
+                            <field name="export_file" filename="export_filename"/>
+                            <field name="export_filename" invisible="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chi tiết biến động" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="employee_id"/>
+                                    <field name="bhxh_number"/>
+                                    <field name="full_name"/>
+                                    <field name="change_type"/>
+                                    <field name="old_salary"/>
+                                    <field name="new_salary"/>
+                                    <field name="effective_date"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="note" placeholder="Ghi chú..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- D02 Report List -->
+    <record id="hr_vn_si_d02_report_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.si.d02.report.list</field>
+        <field name="model">hr.vn.si.d02.report</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'"
+                  decoration-success="state == 'confirmed'"
+                  decoration-muted="state == 'submitted'">
+                <field name="name"/>
+                <field name="month"/>
+                <field name="year"/>
+                <field name="line_count"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'confirmed'"
+                       decoration-warning="state == 'submitted'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hr_vn_si_d02_report_action" model="ir.actions.act_window">
+        <field name="name">Báo cáo D02-LT</field>
+        <field name="res_model">hr.vn.si.d02.report</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo báo cáo D02-LT đầu tiên
+            </p>
+        </field>
+    </record>
+</odoo>

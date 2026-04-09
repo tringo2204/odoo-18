@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="si_import_history_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.si.import.history.form</field>
+        <field name="model">hr.vn.si.import.history</field>
+        <field name="arch" type="xml">
+            <form string="Import lịch sử biến động BHXH">
+                <group>
+                    <field name="import_type"/>
+                    <field name="file" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                </group>
+                <div class="alert alert-info" role="alert">
+                    <strong>Định dạng file Excel:</strong><br/>
+                    Cột 1: Số sổ BHXH | Cột 2: Mức lương cũ | Cột 3: Mức lương mới |
+                    Cột 4: Ngày hiệu lực | Cột 5: Lý do
+                </div>
+                <footer>
+                    <button name="action_import" string="Import" type="object"
+                            class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="si_import_history_action" model="ir.actions.act_window">
+        <field name="name">Import lịch sử BHXH</field>
+        <field name="res_model">hr.vn.si.import.history</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

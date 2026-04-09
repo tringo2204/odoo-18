@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="pit_2024_1" model="hr.vn.pit.bracket">
+        <field name="year">2024</field>
+        <field name="bracket_no">1</field>
+        <field name="income_from">0</field>
+        <field name="income_to">5000000</field>
+        <field name="tax_rate">5</field>
+    </record>
+    <record id="pit_2024_2" model="hr.vn.pit.bracket">
+        <field name="year">2024</field>
+        <field name="bracket_no">2</field>
+        <field name="income_from">5000000</field>
+        <field name="income_to">10000000</field>
+        <field name="tax_rate">10</field>
+    </record>
+    <record id="pit_2024_3" model="hr.vn.pit.bracket">
+        <field name="year">2024</field>
+        <field name="bracket_no">3</field>
+        <field name="income_from">10000000</field>
+        <field name="income_to">18000000</field>
+        <field name="tax_rate">15</field>
+    </record>
+    <record id="pit_2024_4" model="hr.vn.pit.bracket">
+        <field name="year">2024</field>
+        <field name="bracket_no">4</field>
+        <field name="income_from">18000000</field>
+        <field name="income_to">32000000</field>
+        <field name="tax_rate">20</field>
+    </record>
+    <record id="pit_2024_5" model="hr.vn.pit.bracket">
+        <field name="year">2024</field>
+        <field name="bracket_no">5</field>
+        <field name="income_from">32000000</field>
+        <field name="income_to">52000000</field>
+        <field name="tax_rate">25</field>
+    </record>
+    <record id="pit_2024_6" model="hr.vn.pit.bracket">
+        <field name="year">2024</field>
+        <field name="bracket_no">6</field>
+        <field name="income_from">52000000</field>
+        <field name="income_to">80000000</field>
+        <field name="tax_rate">30</field>
+    </record>
+    <record id="pit_2024_7" model="hr.vn.pit.bracket">
+        <field name="year">2024</field>
+        <field name="bracket_no">7</field>
+        <field name="income_from">80000000</field>
+        <field name="income_to">0</field>
+        <field name="tax_rate">35</field>
+    </record>
+</odoo>

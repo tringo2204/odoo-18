@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_payroll_structure_form_vn_simulate" model="ir.ui.view">
+        <field name="name">hr.payroll.structure.form.vn.simulate</field>
+        <field name="model">hr.payroll.structure</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_employee_grade_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Tính thử lương" name="vn_simulate">
+                    <group>
+                        <group string="Thông tin mẫu">
+                            <field name="sim_wage"/>
+                            <field name="sim_insurance_salary"/>
+                            <field name="sim_tax_resident"/>
+                            <field name="sim_dependent_count"/>
+                        </group>
+                        <group string="Phụ cấp chịu thuế">
+                            <field name="sim_alw_position"/>
+                            <field name="sim_alw_responsibility"/>
+                            <field name="sim_alw_seniority"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Phụ cấp không chịu thuế">
+                            <field name="sim_alw_phone"/>
+                            <field name="sim_alw_meal"/>
+                            <field name="sim_alw_transport"/>
+                            <field name="sim_alw_uniform"/>
+                        </group>
+                    </group>
+                    <separator/>
+                    <field name="sim_result_html" nolabel="1"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

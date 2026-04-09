@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- THƯỞNG / THÁNG 13 — Chỉ GROSS + PIT, không BHXH             -->
+    <!-- Gộp vào tháng chi trả, cảnh báo bậc thuế tăng               -->
+    <!-- ============================================================ -->
+    <record id="structure_vn_bonus" model="hr.payroll.structure">
+        <field name="name">Thưởng / Tháng 13 VN</field>
+        <field name="code">VN_BONUS</field>
+        <field name="type_id" ref="structure_type_vn_employee"/>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+
+    <!-- BASIC: Số tiền thưởng (nhập từ input hoặc = wage) -->
+    <record id="bonus_rule_basic" model="hr.salary.rule">
+        <field name="name">Tiền thưởng</field>
+        <field name="code">BASIC</field>
+        <field name="sequence">1</field>
+        <field name="category_id" ref="hr_payroll.BASIC"/>
+        <field name="struct_id" ref="structure_vn_bonus"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Nếu có input BONUS_AMOUNT → dùng, không thì = 1 tháng lương
+if 'BONUS_AMOUNT' in inputs and inputs['BONUS_AMOUNT'].amount:
+    result = inputs['BONUS_AMOUNT'].amount
+else:
+    result = contract.wage
+        </field>
+    </record>
+
+    <!-- GROSS = BASIC -->
+    <record id="bonus_rule_gross" model="hr.salary.rule">
+        <field name="name">GROSS (Tổng thưởng)</field>
+        <field name="code">GROSS</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="hr_payroll.GROSS"/>
+        <field name="struct_id" ref="structure_vn_bonus"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC']
+        </field>
+    </record>
+
+    <!-- PIT: Thuế TNCN trên thưởng (gộp vào thu nhập tháng) -->
+    <record id="bonus_rule_pit" model="hr.salary.rule">
+        <field name="name">Thuế TNCN (trên thưởng)</field>
+        <field name="code">PIT</field>
+        <field name="sequence">300</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_bonus"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Thưởng chịu thuế TNCN nhưng KHÔNG được giảm trừ gia cảnh riêng
+# (giảm trừ đã tính trong lương tháng)
+# Thuế tạm tính: áp bậc thuế lũy tiến trên toàn bộ thưởng
+taxable = categories['GROSS']
+if taxable &lt;= 0:
+    result = 0
+elif not employee.tax_resident:
+    result = -round(taxable * 0.20)
+else:
+    blist = payslip._rule_parameter('vn_pit_brackets')
+    pit = 0.0
+    for fr, to, rate in blist:
+        if taxable &lt;= fr:
+            break
+        upper = taxable if (to == 0 or taxable &lt; to) else to
+        pit += (upper - fr) * rate / 100.0
+    result = -round(pit)
+        </field>
+    </record>
+
+    <!-- NET -->
+    <record id="bonus_rule_net" model="hr.salary.rule">
+        <field name="name">NET (Thực nhận)</field>
+        <field name="code">NET</field>
+        <field name="sequence">999</field>
+        <field name="category_id" ref="hr_payroll.NET"/>
+        <field name="struct_id" ref="structure_vn_bonus"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['GROSS'] + categories['DED']
+        </field>
+    </record>
+
+    <!-- Input type for bonus amount -->
+    <record id="input_type_bonus_amount" model="hr.payslip.input.type">
+        <field name="name">Số tiền thưởng</field>
+        <field name="code">BONUS_AMOUNT</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+
+</odoo>

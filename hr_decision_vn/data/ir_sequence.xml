@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_hr_vn_decision" model="ir.sequence">
+        <field name="name">Quyết định nhân sự</field>
+        <field name="code">hr.vn.decision</field>
+        <field name="prefix">QD-%(year)s%(month)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Insurance Config -->
+    <record id="hr_vn_insurance_config_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.insurance.config.form</field>
+        <field name="model">hr.vn.insurance.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group string="Thông tin chung">
+                            <field name="year"/>
+                            <field name="base_salary"/>
+                            <field name="bhxh_salary_cap"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Tỷ lệ NV (%)">
+                            <field name="bhxh_employee_rate"/>
+                            <field name="bhyt_employee_rate"/>
+                            <field name="bhtn_employee_rate"/>
+                        </group>
+                        <group string="Tỷ lệ DN (%)">
+                            <field name="bhxh_employer_rate"/>
+                            <field name="bhyt_employer_rate"/>
+                            <field name="bhtn_employer_rate"/>
+                        </group>
+                    </group>
+                    <separator string="Lương tối thiểu vùng"/>
+                    <field name="regional_wage_ids">
+                        <list editable="bottom">
+                            <field name="region"/>
+                            <field name="wage_amount"/>
+                            <field name="bhtn_cap"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_vn_insurance_config_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.insurance.config.list</field>
+        <field name="model">hr.vn.insurance.config</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="year"/>
+                <field name="base_salary"/>
+                <field name="bhxh_salary_cap"/>
+                <field name="bhxh_employee_rate"/>
+                <field name="bhyt_employee_rate"/>
+                <field name="bhtn_employee_rate"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_vn_insurance_config_action" model="ir.actions.act_window">
+        <field name="name">Cấu hình BHXH</field>
+        <field name="res_model">hr.vn.insurance.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- PIT Brackets -->
+    <record id="hr_vn_pit_bracket_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.pit.bracket.list</field>
+        <field name="model">hr.vn.pit.bracket</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="year"/>
+                <field name="bracket_no"/>
+                <field name="income_from"/>
+                <field name="income_to"/>
+                <field name="tax_rate"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_vn_pit_bracket_action" model="ir.actions.act_window">
+        <field name="name">Biểu thuế TNCN</field>
+        <field name="res_model">hr.vn.pit.bracket</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Personal Deduction -->
+    <record id="hr_vn_personal_deduction_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.personal.deduction.list</field>
+        <field name="model">hr.vn.personal.deduction</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="year"/>
+                <field name="self_deduction"/>
+                <field name="dependent_deduction"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_vn_personal_deduction_action" model="ir.actions.act_window">
+        <field name="name">Giảm trừ gia cảnh</field>
+        <field name="res_model">hr.vn.personal.deduction</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Allowance Config -->
+    <record id="hr_vn_allowance_config_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.allowance.config.list</field>
+        <field name="model">hr.vn.allowance.config</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="year"/>
+                <field name="allowance_type"/>
+                <field name="max_amount"/>
+                <field name="legal_reference"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_vn_allowance_config_action" model="ir.actions.act_window">
+        <field name="name">Giới hạn phụ cấp KCT</field>
+        <field name="res_model">hr.vn.allowance.config</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

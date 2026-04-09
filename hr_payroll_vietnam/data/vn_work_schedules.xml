@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- CA HÀNH CHÍNH: T2-T6, 08:00-12:00 + 13:00-17:00             -->
+    <!-- ============================================================ -->
+    <record id="resource_calendar_vn_office" model="resource.calendar">
+        <field name="name">Ca hành chính (VN)</field>
+        <field name="tz">Asia/Ho_Chi_Minh</field>
+        <field name="hours_per_day">8</field>
+        <field name="attendance_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'name': 'T2 Sáng',  'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T2 Chiều', 'dayofweek': '0', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T3 Sáng',  'dayofweek': '1', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T3 Chiều', 'dayofweek': '1', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T4 Sáng',  'dayofweek': '2', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T4 Chiều', 'dayofweek': '2', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T5 Sáng',  'dayofweek': '3', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T5 Chiều', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T6 Sáng',  'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T6 Chiều', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 17, 'day_period': 'afternoon'}),
+        ]"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CA SÁNG: T2-T7, 06:00-14:00                                 -->
+    <!-- ============================================================ -->
+    <record id="resource_calendar_vn_morning" model="resource.calendar">
+        <field name="name">Ca sáng (VN)</field>
+        <field name="tz">Asia/Ho_Chi_Minh</field>
+        <field name="hours_per_day">8</field>
+        <field name="attendance_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'name': 'T2', 'dayofweek': '0', 'hour_from': 6, 'hour_to': 14, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T3', 'dayofweek': '1', 'hour_from': 6, 'hour_to': 14, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T4', 'dayofweek': '2', 'hour_from': 6, 'hour_to': 14, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T5', 'dayofweek': '3', 'hour_from': 6, 'hour_to': 14, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T6', 'dayofweek': '4', 'hour_from': 6, 'hour_to': 14, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T7', 'dayofweek': '5', 'hour_from': 6, 'hour_to': 14, 'day_period': 'morning'}),
+        ]"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CA CHIỀU: T2-T7, 14:00-22:00                                -->
+    <!-- ============================================================ -->
+    <record id="resource_calendar_vn_afternoon" model="resource.calendar">
+        <field name="name">Ca chiều (VN)</field>
+        <field name="tz">Asia/Ho_Chi_Minh</field>
+        <field name="hours_per_day">8</field>
+        <field name="attendance_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'name': 'T2', 'dayofweek': '0', 'hour_from': 14, 'hour_to': 22, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T3', 'dayofweek': '1', 'hour_from': 14, 'hour_to': 22, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T4', 'dayofweek': '2', 'hour_from': 14, 'hour_to': 22, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T5', 'dayofweek': '3', 'hour_from': 14, 'hour_to': 22, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T6', 'dayofweek': '4', 'hour_from': 14, 'hour_to': 22, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T7', 'dayofweek': '5', 'hour_from': 14, 'hour_to': 22, 'day_period': 'afternoon'}),
+        ]"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- CA ĐÊM: T2-T7, 22:00-06:00                                  -->
+    <!-- ============================================================ -->
+    <record id="resource_calendar_vn_night" model="resource.calendar">
+        <field name="name">Ca đêm (VN)</field>
+        <field name="tz">Asia/Ho_Chi_Minh</field>
+        <field name="hours_per_day">8</field>
+        <field name="attendance_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'name': 'T2', 'dayofweek': '0', 'hour_from': 22, 'hour_to': 24, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T3a', 'dayofweek': '1', 'hour_from': 0, 'hour_to': 6, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T3', 'dayofweek': '1', 'hour_from': 22, 'hour_to': 24, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T4a', 'dayofweek': '2', 'hour_from': 0, 'hour_to': 6, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T4', 'dayofweek': '2', 'hour_from': 22, 'hour_to': 24, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T5a', 'dayofweek': '3', 'hour_from': 0, 'hour_to': 6, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T5', 'dayofweek': '3', 'hour_from': 22, 'hour_to': 24, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T6a', 'dayofweek': '4', 'hour_from': 0, 'hour_to': 6, 'day_period': 'morning'}),
+            (0, 0, {'name': 'T6', 'dayofweek': '4', 'hour_from': 22, 'hour_to': 24, 'day_period': 'afternoon'}),
+            (0, 0, {'name': 'T7a', 'dayofweek': '5', 'hour_from': 0, 'hour_to': 6, 'day_period': 'morning'}),
+        ]"/>
+    </record>
+
+</odoo>

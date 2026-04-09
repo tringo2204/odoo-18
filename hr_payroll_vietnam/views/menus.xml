@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tính thử lương — under Payroll, after default menus -->
+    <menuitem id="menu_payroll_vn_simulate"
+              name="Tính thử lương"
+              parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
+              action="action_payroll_simulate"
+              sequence="90"/>
+
+    <!-- Cài đặt lương VN — under Payroll > Configuration -->
+    <menuitem id="menu_payroll_vn_settings"
+              name="Cài đặt lương VN"
+              parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration"
+              action="action_vn_payroll_config"
+              sequence="99"/>
+
+    <!-- Config submenu under Payroll -->
+    <menuitem id="menu_payroll_vn_config"
+              name="Cấu hình VN"
+              parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration"
+              sequence="100"/>
+
+    <menuitem id="menu_payroll_vn_insurance"
+              name="Cấu hình BHXH"
+              parent="menu_payroll_vn_config"
+              action="hr_vn_insurance_config_action"
+              sequence="10"/>
+
+    <menuitem id="menu_payroll_vn_pit"
+              name="Biểu thuế TNCN"
+              parent="menu_payroll_vn_config"
+              action="hr_vn_pit_bracket_action"
+              sequence="20"/>
+
+    <menuitem id="menu_payroll_vn_deduction"
+              name="Giảm trừ gia cảnh"
+              parent="menu_payroll_vn_config"
+              action="hr_vn_personal_deduction_action"
+              sequence="30"/>
+
+    <menuitem id="menu_payroll_vn_allowance"
+              name="Giới hạn phụ cấp KCT"
+              parent="menu_payroll_vn_config"
+              action="hr_vn_allowance_config_action"
+              sequence="40"/>
+
+    <menuitem id="menu_payroll_vn_dependent"
+              name="Người phụ thuộc"
+              parent="menu_payroll_vn_config"
+              action="hr_vn_dependent_action"
+              sequence="50"/>
+</odoo>

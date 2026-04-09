@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- LƯƠNG THỬ VIỆC — 85% lương, có BHXH nếu HĐ >= 1 tháng      -->
+    <!-- ============================================================ -->
+    <record id="structure_vn_probation" model="hr.payroll.structure">
+        <field name="name">Lương thử việc VN</field>
+        <field name="code">VN_PROB</field>
+        <field name="type_id" ref="structure_type_vn_employee"/>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+
+    <!-- BASIC: 85% lương -->
+    <record id="prob_rule_basic" model="hr.salary.rule">
+        <field name="name">Lương cơ bản (85%)</field>
+        <field name="code">BASIC</field>
+        <field name="sequence">1</field>
+        <field name="category_id" ref="hr_payroll.BASIC"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.paid_amount * 0.85
+        </field>
+    </record>
+
+    <!-- Allowances -->
+    <record id="prob_rule_alw_position" model="hr.salary.rule">
+        <field name="name">PC chức vụ</field>
+        <field name="code">ALW_POS</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.allowance_position > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = contract.allowance_position</field>
+    </record>
+
+    <record id="prob_rule_alw_responsibility" model="hr.salary.rule">
+        <field name="name">PC trách nhiệm</field>
+        <field name="code">ALW_RESP</field>
+        <field name="sequence">11</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.allowance_responsibility > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = contract.allowance_responsibility</field>
+    </record>
+
+    <!-- GROSS -->
+    <record id="prob_rule_gross" model="hr.salary.rule">
+        <field name="name">GROSS (Tổng thu nhập)</field>
+        <field name="code">GROSS</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="hr_payroll.GROSS"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC'] + categories['ALW']
+        </field>
+    </record>
+
+    <!-- NON_TAX -->
+    <record id="prob_rule_nontax" model="hr.salary.rule">
+        <field name="name">Tổng PC không chịu thuế</field>
+        <field name="code">NON_TAX</field>
+        <field name="sequence">105</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (contract.allowance_phone + contract.allowance_meal +
+          contract.allowance_transport + contract.allowance_uniform +
+          contract.allowance_other_nontax)
+        </field>
+    </record>
+
+    <!-- BHXH NV — chỉ tính nếu có insurance_salary trên contract -->
+    <record id="prob_rule_bhxh_ee" model="hr.salary.rule">
+        <field name="name">BHXH (NV)</field>
+        <field name="code">BHXH_EE</field>
+        <field name="sequence">200</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = (contract.insurance_salary or 0) > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhxh_ee_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="prob_rule_bhyt_ee" model="hr.salary.rule">
+        <field name="name">BHYT (NV)</field>
+        <field name="code">BHYT_EE</field>
+        <field name="sequence">201</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = (contract.insurance_salary or 0) > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhyt_ee_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="prob_rule_bhtn_ee" model="hr.salary.rule">
+        <field name="name">BHTN (NV)</field>
+        <field name="code">BHTN_EE</field>
+        <field name="sequence">202</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = (contract.insurance_salary or 0) > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhtn_ee_rate')
+regional = payslip._rule_parameter('vn_regional_wages')
+bhtn_cap = regional.get('1', 4960000) * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, bhtn_cap) * rate / 100)
+        </field>
+    </record>
+
+    <!-- PIT -->
+    <record id="prob_rule_pit" model="hr.salary.rule">
+        <field name="name">Thuế TNCN</field>
+        <field name="code">PIT</field>
+        <field name="sequence">300</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+self_ded = payslip._rule_parameter('vn_self_deduction')
+dep_ded = payslip._rule_parameter('vn_dependent_deduction')
+dep_count = employee.dependent_count or 0
+total_insurance = abs(categories['DED'])
+taxable = categories['GROSS'] - total_insurance - self_ded - (dep_count * dep_ded)
+if taxable &lt;= 0:
+    result = 0
+elif not employee.tax_resident:
+    result = -round(taxable * 0.20)
+else:
+    blist = payslip._rule_parameter('vn_pit_brackets')
+    pit = 0.0
+    for fr, to, rate in blist:
+        if taxable &lt;= fr:
+            break
+        upper = taxable if (to == 0 or taxable &lt; to) else to
+        pit += (upper - fr) * rate / 100.0
+    result = -round(pit)
+        </field>
+    </record>
+
+    <!-- NET -->
+    <record id="prob_rule_net" model="hr.salary.rule">
+        <field name="name">NET (Thực nhận)</field>
+        <field name="code">NET</field>
+        <field name="sequence">999</field>
+        <field name="category_id" ref="hr_payroll.NET"/>
+        <field name="struct_id" ref="structure_vn_probation"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['GROSS'] + categories['DED'] + (contract.allowance_phone +
+    contract.allowance_meal + contract.allowance_transport +
+    contract.allowance_uniform + contract.allowance_other_nontax)
+        </field>
+    </record>
+
+</odoo>

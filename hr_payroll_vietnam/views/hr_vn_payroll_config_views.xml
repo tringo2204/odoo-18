@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_vn_payroll_config_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.payroll.config.form</field>
+        <field name="model">hr.vn.payroll.config</field>
+        <field name="arch" type="xml">
+            <form string="Cài đặt lương Việt Nam">
+                <sheet>
+                    <div class="oe_title mb-3">
+                        <h1>Cấu hình Bảng lương Việt Nam</h1>
+                        <p class="text-muted">Thay đổi tham số sẽ áp dụng cho tất cả payslip tính sau khi lưu.</p>
+                    </div>
+
+                    <group string="Bảo hiểm xã hội — Tỷ lệ đóng (%)">
+                        <group string="Phần nhân viên">
+                            <field name="vn_bhxh_ee_rate"/>
+                            <field name="vn_bhyt_ee_rate"/>
+                            <field name="vn_bhtn_ee_rate"/>
+                        </group>
+                        <group string="Phần doanh nghiệp">
+                            <field name="vn_bhxh_er_rate"/>
+                            <field name="vn_bhyt_er_rate"/>
+                            <field name="vn_bhtn_er_rate"/>
+                        </group>
+                    </group>
+
+                    <group string="Lương cơ sở &amp; Mức trần BHXH">
+                        <group>
+                            <field name="vn_base_salary"/>
+                            <field name="vn_bhxh_cap_multiplier"/>
+                        </group>
+                        <group>
+                            <field name="vn_bhxh_cap_computed"/>
+                        </group>
+                    </group>
+
+                    <group string="Giảm trừ gia cảnh (Thuế TNCN)">
+                        <group>
+                            <field name="vn_self_deduction"/>
+                            <field name="vn_dependent_deduction"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_save" string="Lưu cấu hình" type="object" class="btn-primary"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vn_payroll_config" model="ir.actions.act_window">
+        <field name="name">Cài đặt lương VN</field>
+        <field name="res_model">hr.vn.payroll.config</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

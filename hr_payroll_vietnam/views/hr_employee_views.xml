@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_view_form_payroll_vn" model="ir.ui.view">
+        <field name="name">hr.employee.form.payroll.vn</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Thuế &amp; Người phụ thuộc" name="vn_tax_dependent" groups="hr.group_hr_user">
+                    <group>
+                        <group string="Thông tin thuế">
+                            <field name="tax_resident"/>
+                            <field name="dependent_count"/>
+                        </group>
+                    </group>
+                    <separator string="Người phụ thuộc"/>
+                    <field name="dependent_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="id_number"/>
+                            <field name="relationship"/>
+                            <field name="date_of_birth"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="tax_office_confirmed"/>
+                            <field name="status" widget="badge"
+                                   decoration-info="status == 'pending'"
+                                   decoration-success="status == 'approved'"
+                                   decoration-muted="status == 'expired'"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

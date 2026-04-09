@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree -->
+    <record id="hr_vn_decision_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.decision.list</field>
+        <field name="model">hr.vn.decision</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'" decoration-success="state == 'done'"
+                  decoration-muted="state == 'cancelled'" decoration-warning="state == 'confirmed'">
+                <field name="name"/>
+                <field name="decision_type"/>
+                <field name="employee_id"/>
+                <field name="effective_date"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'confirmed'"
+                       decoration-success="state == 'done'"
+                       decoration-danger="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="hr_vn_decision_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.decision.form</field>
+        <field name="model">hr.vn.decision</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" string="Xác nhận" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_done" string="Áp dụng" type="object"
+                            class="btn-primary" invisible="state != 'confirmed'"
+                            confirm="Quyết định sẽ được áp dụng và cập nhật hồ sơ nhân viên. Tiếp tục?"/>
+                    <button name="action_cancel" string="Hủy" type="object"
+                            invisible="state in ('done', 'cancelled')"/>
+                    <button name="action_draft" string="Đặt lại nháp" type="object"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="decision_type"/>
+                            <field name="employee_id"/>
+                            <field name="effective_date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="department_id" invisible="decision_type not in ('transfer',)"/>
+                            <field name="job_id" invisible="decision_type not in ('appointment', 'transfer')"/>
+                            <field name="old_wage" invisible="decision_type != 'salary_adjustment'"/>
+                            <field name="new_wage" invisible="decision_type != 'salary_adjustment'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Ghi chú">
+                            <field name="note"/>
+                        </page>
+                        <page string="Tài liệu đính kèm">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="hr_vn_decision_view_search" model="ir.ui.view">
+        <field name="name">hr.vn.decision.search</field>
+        <field name="model">hr.vn.decision</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="decision_type"/>
+                <filter string="Nháp" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Đã xác nhận" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Có hiệu lực" name="done" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter string="Điều chuyển" name="transfer" domain="[('decision_type', '=', 'transfer')]"/>
+                <filter string="Điều chỉnh lương" name="salary" domain="[('decision_type', '=', 'salary_adjustment')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Loại" name="group_type" context="{'group_by': 'decision_type'}"/>
+                    <filter string="Trạng thái" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Phòng ban" name="group_dept" context="{'group_by': 'employee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hr_vn_decision_action" model="ir.actions.act_window">
+        <field name="name">Quyết định nhân sự</field>
+        <field name="res_model">hr.vn.decision</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="hr_vn_decision_view_search"/>
+        <field name="context">{'search_default_done': 0}</field>
+    </record>
+</odoo>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- LƯƠNG KHOÁN — NET cố định, DN chịu thuế + BHXH (gross-up)   -->
+    <!-- ============================================================ -->
+    <record id="structure_vn_fixednet" model="hr.payroll.structure">
+        <field name="name">Lương khoán (NET cố định) VN</field>
+        <field name="code">VN_FNET</field>
+        <field name="type_id" ref="structure_type_vn_employee"/>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+
+    <!-- NET_DESIRED: Lương NET mong muốn = wage trên HĐ -->
+    <record id="fnet_rule_net_desired" model="hr.salary.rule">
+        <field name="name">Lương NET mong muốn</field>
+        <field name="code">NET_DESIRED</field>
+        <field name="sequence">1</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = contract.wage
+        </field>
+    </record>
+
+    <!-- BHXH/BHYT/BHTN (NV) — tính trên insurance_salary -->
+    <record id="fnet_rule_bhxh_ee" model="hr.salary.rule">
+        <field name="name">BHXH (NV)</field>
+        <field name="code">BHXH_EE</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhxh_ee_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="fnet_rule_bhyt_ee" model="hr.salary.rule">
+        <field name="name">BHYT (NV)</field>
+        <field name="code">BHYT_EE</field>
+        <field name="sequence">11</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhyt_ee_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="fnet_rule_bhtn_ee" model="hr.salary.rule">
+        <field name="name">BHTN (NV)</field>
+        <field name="code">BHTN_EE</field>
+        <field name="sequence">12</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhtn_ee_rate')
+regional = payslip._rule_parameter('vn_regional_wages')
+bhtn_cap = regional.get('1', 4960000) * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, bhtn_cap) * rate / 100)
+        </field>
+    </record>
+
+    <!-- GROSS-UP: Tính ngược từ NET → GROSS (DN chịu thuế) -->
+    <record id="fnet_rule_basic" model="hr.salary.rule">
+        <field name="name">GROSS (tính ngược từ NET)</field>
+        <field name="code">BASIC</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="hr_payroll.BASIC"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+# Gross-up: NET + BHXH_NV + PIT = GROSS
+# PIT phụ thuộc vào GROSS → cần tính lặp
+net_desired = contract.wage
+insurance_ee = abs(result_rules['BHXH_EE']['total'] + result_rules['BHYT_EE']['total'] + result_rules['BHTN_EE']['total'])
+
+self_ded = payslip._rule_parameter('vn_self_deduction')
+dep_ded = payslip._rule_parameter('vn_dependent_deduction')
+dep_count = employee.dependent_count or 0
+total_ded = self_ded + dep_count * dep_ded
+
+blist = payslip._rule_parameter('vn_pit_brackets')
+
+# Lặp để tìm GROSS
+gross = net_desired + insurance_ee
+for _i in range(50):
+    taxable = gross - insurance_ee - total_ded
+    if taxable &lt;= 0:
+        pit = 0
+    elif not employee.tax_resident:
+        pit = round(taxable * 0.20)
+    else:
+        pit = 0.0
+        for fr, to, rate in blist:
+            if taxable &lt;= fr:
+                break
+            upper = taxable if (to == 0 or taxable &lt; to) else to
+            pit += (upper - fr) * rate / 100.0
+        pit = round(pit)
+    new_gross = net_desired + insurance_ee + pit
+    if abs(new_gross - gross) &lt; 1:
+        gross = new_gross
+        break
+    gross = new_gross
+
+result = gross
+        </field>
+    </record>
+
+    <!-- GROSS -->
+    <record id="fnet_rule_gross" model="hr.salary.rule">
+        <field name="name">GROSS (Tổng thu nhập)</field>
+        <field name="code">GROSS</field>
+        <field name="sequence">110</field>
+        <field name="category_id" ref="hr_payroll.GROSS"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC']
+        </field>
+    </record>
+
+    <!-- PIT (tính từ GROSS đã gross-up) -->
+    <record id="fnet_rule_pit" model="hr.salary.rule">
+        <field name="name">Thuế TNCN (DN chịu)</field>
+        <field name="code">PIT</field>
+        <field name="sequence">300</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+self_ded = payslip._rule_parameter('vn_self_deduction')
+dep_ded = payslip._rule_parameter('vn_dependent_deduction')
+dep_count = employee.dependent_count or 0
+insurance_ee = abs(result_rules['BHXH_EE']['total'] + result_rules['BHYT_EE']['total'] + result_rules['BHTN_EE']['total'])
+taxable = categories['GROSS'] - insurance_ee - self_ded - (dep_count * dep_ded)
+
+if taxable &lt;= 0:
+    result = 0
+elif not employee.tax_resident:
+    result = -round(taxable * 0.20)
+else:
+    blist = payslip._rule_parameter('vn_pit_brackets')
+    pit = 0.0
+    for fr, to, rate in blist:
+        if taxable &lt;= fr:
+            break
+        upper = taxable if (to == 0 or taxable &lt; to) else to
+        pit += (upper - fr) * rate / 100.0
+    result = -round(pit)
+        </field>
+    </record>
+
+    <!-- NET = GROSS + DED (verify = NET_DESIRED) -->
+    <record id="fnet_rule_net" model="hr.salary.rule">
+        <field name="name">NET (Thực nhận = Lương khoán)</field>
+        <field name="code">NET</field>
+        <field name="sequence">999</field>
+        <field name="category_id" ref="hr_payroll.NET"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['GROSS'] + categories['DED']
+        </field>
+    </record>
+
+    <!-- Employer cost -->
+    <record id="fnet_rule_bhxh_er" model="hr.salary.rule">
+        <field name="name">BHXH (DN)</field>
+        <field name="code">BHXH_ER</field>
+        <field name="sequence">400</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="appears_on_employee_cost_dashboard">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhxh_er_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="fnet_rule_bhyt_er" model="hr.salary.rule">
+        <field name="name">BHYT (DN)</field>
+        <field name="code">BHYT_ER</field>
+        <field name="sequence">401</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="appears_on_employee_cost_dashboard">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhyt_er_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="fnet_rule_bhtn_er" model="hr.salary.rule">
+        <field name="name">BHTN (DN)</field>
+        <field name="code">BHTN_ER</field>
+        <field name="sequence">402</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_fixednet"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="appears_on_employee_cost_dashboard">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhtn_er_rate')
+regional = payslip._rule_parameter('vn_regional_wages')
+bhtn_cap = regional.get('1', 4960000) * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = round(min(ins_salary, bhtn_cap) * rate / 100)
+        </field>
+    </record>
+
+</odoo>

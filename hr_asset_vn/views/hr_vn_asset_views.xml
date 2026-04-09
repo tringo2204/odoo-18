@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_vn_asset_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.asset.list</field>
+        <field name="model">hr.vn.asset</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'available'" decoration-info="state == 'allocated'"
+                  decoration-warning="state == 'maintenance'" decoration-muted="state == 'disposed'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="purchase_value"/>
+                <field name="residual_value"/>
+                <field name="current_employee_id"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'available'"
+                       decoration-info="state == 'allocated'"
+                       decoration-warning="state == 'maintenance'"
+                       decoration-danger="state == 'disposed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_vn_asset_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.asset.form</field>
+        <field name="model">hr.vn.asset</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_allocate" string="Cấp phát" type="object"
+                            class="btn-primary" invisible="state not in ('available', 'maintenance')"/>
+                    <button name="action_return" string="Thu hồi" type="object"
+                            class="btn-primary" invisible="state != 'allocated'"/>
+                    <button name="action_maintenance" string="Bảo trì" type="object"
+                            invisible="state not in ('available', 'allocated')"/>
+                    <button name="action_available" string="Sẵn có" type="object"
+                            invisible="state not in ('maintenance',)"/>
+                    <button name="action_dispose" string="Thanh lý" type="object"
+                            class="btn-danger" invisible="state == 'disposed'"
+                            confirm="Thanh lý tài sản này?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="available,allocated"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="code" string="Mã tài sản"/>
+                        <h1><field name="code" readonly="1"/> — <field name="name" placeholder="Tên tài sản"/></h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin chung">
+                            <field name="category_id"/>
+                            <field name="serial_number"/>
+                            <field name="purchase_date"/>
+                            <field name="purchase_value"/>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
+                        <group string="Khấu hao">
+                            <field name="depreciation_years"/>
+                            <field name="monthly_depreciation"/>
+                            <field name="accumulated_depreciation"/>
+                            <field name="residual_value"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Đang cấp cho">
+                            <field name="current_employee_id"/>
+                            <field name="current_department_id"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lịch sử cấp phát / thu hồi">
+                            <field name="allocation_ids">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="allocation_type" widget="badge"
+                                           decoration-success="allocation_type == 'allocate'"
+                                           decoration-warning="allocation_type == 'return'"/>
+                                    <field name="employee_id"/>
+                                    <field name="department_id"/>
+                                    <field name="condition_on_return"/>
+                                    <field name="approved_by_id"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Ghi chú">
+                            <field name="note" placeholder="Ghi chú..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_vn_asset_view_search" model="ir.ui.view">
+        <field name="name">hr.vn.asset.search</field>
+        <field name="model">hr.vn.asset</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category_id"/>
+                <field name="current_employee_id"/>
+                <filter string="Sẵn có" name="available" domain="[('state', '=', 'available')]"/>
+                <filter string="Đã cấp" name="allocated" domain="[('state', '=', 'allocated')]"/>
+                <filter string="Bảo trì" name="maintenance" domain="[('state', '=', 'maintenance')]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Danh mục" name="group_cat" context="{'group_by': 'category_id'}"/>
+                    <filter string="Trạng thái" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Nhân viên" name="group_emp" context="{'group_by': 'current_employee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_vn_asset_action" model="ir.actions.act_window">
+        <field name="name">Tài sản</field>
+        <field name="res_model">hr.vn.asset</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

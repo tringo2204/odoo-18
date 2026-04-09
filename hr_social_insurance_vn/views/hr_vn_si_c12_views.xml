@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="hr_vn_si_c12_lookup_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.si.c12.lookup.list</field>
+        <field name="model">hr.vn.si.c12.lookup</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="employee_id"/>
+                <field name="bhxh_number"/>
+                <field name="month"/>
+                <field name="year"/>
+                <field name="bhxh_status"/>
+                <field name="bhxh_amount" sum="Tổng BHXH"/>
+                <field name="bhyt_amount" sum="Tổng BHYT"/>
+                <field name="bhtn_amount" sum="Tổng BHTN"/>
+                <field name="total_amount" sum="Tổng cộng"/>
+                <field name="import_date"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hr_vn_si_c12_lookup_view_search" model="ir.ui.view">
+        <field name="name">hr.vn.si.c12.lookup.search</field>
+        <field name="model">hr.vn.si.c12.lookup</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="bhxh_number"/>
+                <field name="year"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Nhân viên" name="group_employee"
+                            context="{'group_by': 'employee_id'}"/>
+                    <filter string="Tháng" name="group_month"
+                            context="{'group_by': 'month'}"/>
+                    <filter string="Năm" name="group_year"
+                            context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hr_vn_si_c12_lookup_action" model="ir.actions.act_window">
+        <field name="name">Tra cứu C12</field>
+        <field name="res_model">hr.vn.si.c12.lookup</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="hr_vn_si_c12_lookup_view_search"/>
+    </record>
+</odoo>

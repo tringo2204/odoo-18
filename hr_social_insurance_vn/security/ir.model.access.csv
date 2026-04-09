@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_vn_si_record_user,hr.vn.si.record.user,model_hr_vn_si_record,hr.group_hr_user,1,0,0,0
+access_hr_vn_si_record_manager,hr.vn.si.record.manager,model_hr_vn_si_record,hr.group_hr_manager,1,1,1,1
+access_hr_vn_si_history_user,hr.vn.si.history.user,model_hr_vn_si_history,hr.group_hr_user,1,0,0,0
+access_hr_vn_si_history_manager,hr.vn.si.history.manager,model_hr_vn_si_history,hr.group_hr_manager,1,1,1,1
+access_hr_vn_si_monthly_list_user,hr.vn.si.monthly.list.user,model_hr_vn_si_monthly_list,hr.group_hr_user,1,0,0,0
+access_hr_vn_si_monthly_list_manager,hr.vn.si.monthly.list.manager,model_hr_vn_si_monthly_list,hr.group_hr_manager,1,1,1,1
+access_hr_vn_si_d02_report_user,hr.vn.si.d02.report.user,model_hr_vn_si_d02_report,hr.group_hr_user,1,0,0,0
+access_hr_vn_si_d02_report_manager,hr.vn.si.d02.report.manager,model_hr_vn_si_d02_report,hr.group_hr_manager,1,1,1,1
+access_hr_vn_si_d02_line_user,hr.vn.si.d02.line.user,model_hr_vn_si_d02_line,hr.group_hr_user,1,0,0,0
+access_hr_vn_si_d02_line_manager,hr.vn.si.d02.line.manager,model_hr_vn_si_d02_line,hr.group_hr_manager,1,1,1,1
+access_hr_vn_si_c12_lookup_user,hr.vn.si.c12.lookup.user,model_hr_vn_si_c12_lookup,hr.group_hr_user,1,0,0,0
+access_hr_vn_si_c12_lookup_manager,hr.vn.si.c12.lookup.manager,model_hr_vn_si_c12_lookup,hr.group_hr_manager,1,1,1,1
+access_hr_vn_si_import_history_manager,hr.vn.si.import.history.manager,model_hr_vn_si_import_history,hr.group_hr_manager,1,1,1,0
+access_hr_vn_si_c12_import_manager,hr.vn.si.c12.import.manager,model_hr_vn_si_c12_import,hr.group_hr_manager,1,1,1,0
+access_hr_vn_si_d02_export_manager,hr.vn.si.d02.export.manager,model_hr_vn_si_d02_export,hr.group_hr_manager,1,1,1,0

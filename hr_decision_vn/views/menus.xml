@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_hr_decision_root"
+              name="Quyết định"
+              parent="hr.menu_hr_root"
+              sequence="25"
+              groups="hr.group_hr_user"/>
+
+    <menuitem id="menu_hr_decision_list"
+              name="Quyết định nhân sự"
+              parent="menu_hr_decision_root"
+              action="hr_vn_decision_action"
+              sequence="10"/>
+</odoo>

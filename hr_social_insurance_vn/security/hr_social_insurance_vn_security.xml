@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Multi-company rules -->
+        <record id="hr_vn_si_record_comp_rule" model="ir.rule">
+            <field name="name">Hồ sơ BH: Multi-company</field>
+            <field name="model_id" ref="model_hr_vn_si_record"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hr_vn_si_history_comp_rule" model="ir.rule">
+            <field name="name">Biến động BH: Multi-company</field>
+            <field name="model_id" ref="model_hr_vn_si_history"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hr_vn_si_monthly_list_comp_rule" model="ir.rule">
+            <field name="name">DS tăng/giảm: Multi-company</field>
+            <field name="model_id" ref="model_hr_vn_si_monthly_list"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hr_vn_si_d02_report_comp_rule" model="ir.rule">
+            <field name="name">D02-LT: Multi-company</field>
+            <field name="model_id" ref="model_hr_vn_si_d02_report"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hr_vn_si_d02_line_comp_rule" model="ir.rule">
+            <field name="name">Dòng D02: Multi-company</field>
+            <field name="model_id" ref="model_hr_vn_si_d02_line"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+
+        <record id="hr_vn_si_c12_lookup_comp_rule" model="ir.rule">
+            <field name="name">Tra cứu C12: Multi-company</field>
+            <field name="model_id" ref="model_hr_vn_si_c12_lookup"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

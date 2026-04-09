@@ -1,0 +1,21 @@
+{
+    'name': 'Đơn từ & Phê duyệt',
+    'version': '18.0.1.0.0',
+    'category': 'Human Resources',
+    'summary': 'Hệ thống đơn từ: nghỉ phép, OT, chấm công, đổi ca, công tác, thôi việc',
+    'author': 'SHT',
+    'depends': ['hr', 'hr_holidays', 'hr_attendance', 'planning', 'portal', 'mail'],
+    'data': [
+        'security/hr_request_security.xml',
+        'security/ir.model.access.csv',
+        'data/ir_sequence.xml',
+        'data/request_types.xml',
+        'views/hr_request_views.xml',
+        'views/hr_request_type_views.xml',
+        'views/portal_templates.xml',
+        'views/menus.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+}

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Add "Đơn từ" to /my home page -->
+    <template id="portal_my_home_request" name="Portal: Đơn từ"
+              inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[@id='portal_client_category']" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Đơn từ</t>
+                <t t-set="url" t-value="'/my/requests'"/>
+                <t t-set="text">Xem và theo dõi đơn từ của bạn</t>
+                <t t-set="placeholder_count" t-value="'request_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- List of requests -->
+    <template id="portal_my_requests" name="Portal: Danh sách đơn từ">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Đơn từ</t>
+            </t>
+
+            <t t-if="not requests">
+                <div class="alert alert-info" role="alert">
+                    Bạn chưa có đơn từ nào.
+                </div>
+            </t>
+            <t t-if="requests">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Số đơn</th>
+                            <th>Loại đơn</th>
+                            <th>Từ ngày</th>
+                            <th>Đến ngày</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="requests" t-as="req">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/requests/#{req.id}">
+                                        <t t-out="req.name"/>
+                                    </a>
+                                </td>
+                                <td><t t-out="req.request_type_id.name"/></td>
+                                <td><t t-out="req.date_from" t-options="{'widget': 'datetime'}"/></td>
+                                <td><t t-out="req.date_to" t-options="{'widget': 'datetime'}"/></td>
+                                <td>
+                                    <span t-if="req.state == 'draft'" class="badge bg-info">Nháp</span>
+                                    <span t-if="req.state == 'submitted'" class="badge bg-warning">Đã nộp</span>
+                                    <span t-if="req.state == 'approved'" class="badge bg-success">Đã duyệt</span>
+                                    <span t-if="req.state == 'refused'" class="badge bg-danger">Từ chối</span>
+                                    <span t-if="req.state == 'cancelled'" class="badge bg-secondary">Đã hủy</span>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <div t-if="pager" class="o_portal_pager text-center">
+                    <t t-call="portal.pager"/>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Request detail -->
+    <template id="portal_my_request_detail" name="Portal: Chi tiết đơn từ">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-3">
+                <div class="row mb-3">
+                    <div class="col">
+                        <a href="/my/requests" class="btn btn-sm btn-secondary">
+                            ← Quay lại
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="mb-0"><t t-out="hr_request.name"/></h4>
+                        <span t-if="hr_request.state == 'draft'" class="badge bg-info fs-6">Nháp</span>
+                        <span t-if="hr_request.state == 'submitted'" class="badge bg-warning fs-6">Đã nộp</span>
+                        <span t-if="hr_request.state == 'approved'" class="badge bg-success fs-6">Đã duyệt</span>
+                        <span t-if="hr_request.state == 'refused'" class="badge bg-danger fs-6">Từ chối</span>
+                        <span t-if="hr_request.state == 'cancelled'" class="badge bg-secondary fs-6">Đã hủy</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-5">Loại đơn</dt>
+                                    <dd class="col-sm-7"><t t-out="hr_request.request_type_id.name"/></dd>
+                                    <dt class="col-sm-5">Nhân viên</dt>
+                                    <dd class="col-sm-7"><t t-out="hr_request.employee_id.name"/></dd>
+                                    <dt class="col-sm-5">Lý do</dt>
+                                    <dd class="col-sm-7"><t t-out="hr_request.reason_id.name or '-'"/></dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-5">Từ ngày</dt>
+                                    <dd class="col-sm-7"><t t-out="hr_request.date_from" t-options="{'widget': 'datetime'}"/></dd>
+                                    <dt class="col-sm-5">Đến ngày</dt>
+                                    <dd class="col-sm-7"><t t-out="hr_request.date_to" t-options="{'widget': 'datetime'}"/></dd>
+                                    <dt class="col-sm-5">Số ngày</dt>
+                                    <dd class="col-sm-7"><t t-out="'%.1f' % hr_request.duration_days"/></dd>
+                                </dl>
+                            </div>
+                        </div>
+                        <t t-if="hr_request.description">
+                            <h6>Mô tả</h6>
+                            <p><t t-out="hr_request.description"/></p>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Approval history -->
+                <t t-if="hr_request.approval_ids">
+                    <div class="card mt-3">
+                        <div class="card-header"><h5 class="mb-0">Lịch sử phê duyệt</h5></div>
+                        <div class="card-body p-0">
+                            <table class="table table-sm mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Người duyệt</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày duyệt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="hr_request.approval_ids" t-as="approval">
+                                        <tr>
+                                            <td><t t-out="approval.sequence"/></td>
+                                            <td><t t-out="approval.approver_id.name"/></td>
+                                            <td>
+                                                <span t-if="approval.status == 'pending'" class="badge bg-warning">Chờ duyệt</span>
+                                                <span t-if="approval.status == 'approved'" class="badge bg-success">Đã duyệt</span>
+                                                <span t-if="approval.status == 'refused'" class="badge bg-danger">Từ chối</span>
+                                            </td>
+                                            <td><t t-out="approval.approved_date" t-options="{'widget': 'datetime'}"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+
+</odoo>

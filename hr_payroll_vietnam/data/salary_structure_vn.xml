@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- SALARY STRUCTURE TYPE + STRUCTURE                            -->
+    <!-- ============================================================ -->
+    <record id="structure_type_vn_employee" model="hr.payroll.structure.type">
+        <field name="name">Nhân viên Việt Nam</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+
+    <record id="structure_vn_payroll" model="hr.payroll.structure">
+        <field name="name">Bảng lương Việt Nam</field>
+        <field name="code">VN_PAY</field>
+        <field name="type_id" ref="structure_type_vn_employee"/>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- SALARY RULES (all configurable via hr.rule.parameter)        -->
+    <!-- ============================================================ -->
+
+    <!-- 1. BASIC -->
+    <record id="vn_rule_basic" model="hr.salary.rule">
+        <field name="name">Lương cơ bản</field>
+        <field name="code">BASIC</field>
+        <field name="sequence">1</field>
+        <field name="category_id" ref="hr_payroll.BASIC"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.paid_amount
+        </field>
+    </record>
+
+    <!-- 2-5. Allowances (chịu thuế) -->
+    <record id="vn_rule_alw_position" model="hr.salary.rule">
+        <field name="name">PC chức vụ</field>
+        <field name="code">ALW_POS</field>
+        <field name="sequence">10</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.allowance_position > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = contract.allowance_position</field>
+    </record>
+
+    <record id="vn_rule_alw_responsibility" model="hr.salary.rule">
+        <field name="name">PC trách nhiệm</field>
+        <field name="code">ALW_RESP</field>
+        <field name="sequence">11</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.allowance_responsibility > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = contract.allowance_responsibility</field>
+    </record>
+
+    <record id="vn_rule_alw_seniority" model="hr.salary.rule">
+        <field name="name">PC thâm niên</field>
+        <field name="code">ALW_SEN</field>
+        <field name="sequence">12</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.allowance_seniority > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = contract.allowance_seniority</field>
+    </record>
+
+    <record id="vn_rule_alw_other_taxable" model="hr.salary.rule">
+        <field name="name">PC khác (chịu thuế)</field>
+        <field name="code">ALW_OTX</field>
+        <field name="sequence">13</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.allowance_other_taxable > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = contract.allowance_other_taxable</field>
+    </record>
+
+    <!-- 6. GROSS -->
+    <record id="vn_rule_gross" model="hr.salary.rule">
+        <field name="name">GROSS (Tổng thu nhập)</field>
+        <field name="code">GROSS</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="hr_payroll.GROSS"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC'] + categories['ALW']
+        </field>
+    </record>
+
+    <!-- 7. NON_TAX -->
+    <record id="vn_rule_nontax" model="hr.salary.rule">
+        <field name="name">Tổng PC không chịu thuế</field>
+        <field name="code">NON_TAX</field>
+        <field name="sequence">105</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = (contract.allowance_phone + contract.allowance_meal +
+          contract.allowance_transport + contract.allowance_uniform +
+          contract.allowance_other_nontax)
+        </field>
+    </record>
+
+    <!-- 8. BHXH_EE — uses rule parameters -->
+    <record id="vn_rule_bhxh_ee" model="hr.salary.rule">
+        <field name="name">BHXH (NV)</field>
+        <field name="code">BHXH_EE</field>
+        <field name="sequence">200</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhxh_ee_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap_mult = payslip._rule_parameter('vn_bhxh_cap_multiplier')
+cap = base_sal * cap_mult
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <!-- 9. BHYT_EE -->
+    <record id="vn_rule_bhyt_ee" model="hr.salary.rule">
+        <field name="name">BHYT (NV)</field>
+        <field name="code">BHYT_EE</field>
+        <field name="sequence">201</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhyt_ee_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap_mult = payslip._rule_parameter('vn_bhxh_cap_multiplier')
+cap = base_sal * cap_mult
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <!-- 10. BHTN_EE -->
+    <record id="vn_rule_bhtn_ee" model="hr.salary.rule">
+        <field name="name">BHTN (NV)</field>
+        <field name="code">BHTN_EE</field>
+        <field name="sequence">202</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhtn_ee_rate')
+regional = payslip._rule_parameter('vn_regional_wages')
+bhtn_cap = regional.get('1', 4960000) * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = -round(min(ins_salary, bhtn_cap) * rate / 100)
+        </field>
+    </record>
+
+    <!-- 11. TOTAL INS EE -->
+    <record id="vn_rule_total_ins_ee" model="hr.salary.rule">
+        <field name="name">Tổng BHXH+BHYT+BHTN (NV)</field>
+        <field name="code">INS_EE</field>
+        <field name="sequence">210</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = result_rules['BHXH_EE']['total'] + result_rules['BHYT_EE']['total'] + result_rules['BHTN_EE']['total']
+        </field>
+    </record>
+
+    <!-- 12. PIT — uses rule parameters -->
+    <record id="vn_rule_pit" model="hr.salary.rule">
+        <field name="name">Thuế TNCN</field>
+        <field name="code">PIT</field>
+        <field name="sequence">300</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+self_ded = payslip._rule_parameter('vn_self_deduction')
+dep_ded = payslip._rule_parameter('vn_dependent_deduction')
+dep_count = employee.dependent_count or 0
+
+total_insurance = abs(result_rules['BHXH_EE']['total'] + result_rules['BHYT_EE']['total'] + result_rules['BHTN_EE']['total'])
+taxable = categories['GROSS'] - total_insurance - self_ded - (dep_count * dep_ded)
+
+if taxable &lt;= 0:
+    result = 0
+elif not employee.tax_resident:
+    result = -round(taxable * 0.20)
+else:
+    blist = payslip._rule_parameter('vn_pit_brackets')
+    pit = 0.0
+    for fr, to, rate in blist:
+        if taxable &lt;= fr:
+            break
+        upper = taxable if (to == 0 or taxable &lt; to) else to
+        pit += (upper - fr) * rate / 100.0
+    result = -round(pit)
+        </field>
+    </record>
+
+    <!-- 13. NET -->
+    <record id="vn_rule_net" model="hr.salary.rule">
+        <field name="name">NET (Thực nhận)</field>
+        <field name="code">NET</field>
+        <field name="sequence">999</field>
+        <field name="category_id" ref="hr_payroll.NET"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['GROSS'] + categories['DED'] + (contract.allowance_phone +
+    contract.allowance_meal + contract.allowance_transport +
+    contract.allowance_uniform + contract.allowance_other_nontax)
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- EMPLOYER COST                                                -->
+    <!-- ============================================================ -->
+    <record id="vn_rule_bhxh_er" model="hr.salary.rule">
+        <field name="name">BHXH (DN)</field>
+        <field name="code">BHXH_ER</field>
+        <field name="sequence">400</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="appears_on_employee_cost_dashboard">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhxh_er_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="vn_rule_bhyt_er" model="hr.salary.rule">
+        <field name="name">BHYT (DN)</field>
+        <field name="code">BHYT_ER</field>
+        <field name="sequence">401</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="appears_on_employee_cost_dashboard">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhyt_er_rate')
+base_sal = payslip._rule_parameter('vn_base_salary')
+cap = base_sal * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = round(min(ins_salary, cap) * rate / 100)
+        </field>
+    </record>
+
+    <record id="vn_rule_bhtn_er" model="hr.salary.rule">
+        <field name="name">BHTN (DN)</field>
+        <field name="code">BHTN_ER</field>
+        <field name="sequence">402</field>
+        <field name="category_id" ref="hr_payroll.COMP"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="appears_on_payslip">False</field>
+        <field name="appears_on_employee_cost_dashboard">True</field>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+rate = payslip._rule_parameter('vn_bhtn_er_rate')
+regional = payslip._rule_parameter('vn_regional_wages')
+bhtn_cap = regional.get('1', 4960000) * payslip._rule_parameter('vn_bhxh_cap_multiplier')
+ins_salary = contract.insurance_salary or contract.wage
+result = round(min(ins_salary, bhtn_cap) * rate / 100)
+        </field>
+    </record>
+
+</odoo>

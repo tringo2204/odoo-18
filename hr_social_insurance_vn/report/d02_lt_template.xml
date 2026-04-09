@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_d02_lt_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-center">
+                            DANH SÁCH LAO ĐỘNG THAM GIA BHXH, BHYT, BHTN
+                        </h2>
+                        <h4 class="text-center">
+                            Tháng <t t-esc="o.month"/>/<t t-esc="o.year"/>
+                        </h4>
+                        <h5 class="text-center mb-4">
+                            (Mẫu D02-LT)
+                        </h5>
+
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr class="bg-200">
+                                    <th class="text-center" style="width: 5%">STT</th>
+                                    <th style="width: 25%">Họ và tên</th>
+                                    <th style="width: 15%">Số sổ BHXH</th>
+                                    <th class="text-center" style="width: 15%">Loại biến động</th>
+                                    <th class="text-end" style="width: 15%">Mức lương cũ</th>
+                                    <th class="text-end" style="width: 15%">Mức lương mới</th>
+                                    <th class="text-center" style="width: 10%">Từ ngày</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="idx" t-value="0"/>
+                                <tr t-foreach="o.line_ids" t-as="line">
+                                    <t t-set="idx" t-value="idx + 1"/>
+                                    <td class="text-center"><t t-esc="idx"/></td>
+                                    <td><t t-esc="line.full_name"/></td>
+                                    <td><t t-esc="line.bhxh_number"/></td>
+                                    <td class="text-center">
+                                        <t t-if="line.change_type == 'increase'">Tăng</t>
+                                        <t t-if="line.change_type == 'decrease'">Giảm</t>
+                                        <t t-if="line.change_type == 'adjust'">Điều chỉnh</t>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="'{:,.0f}'.format(line.old_salary)"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <t t-esc="'{:,.0f}'.format(line.new_salary)"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-esc="line.effective_date" t-options="{'widget': 'date'}"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <p><strong>Người lập</strong></p>
+                            </div>
+                            <div class="col-6 text-end">
+                                <p><strong>Giám đốc</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_d02_lt" model="ir.actions.report">
+        <field name="name">Báo cáo D02-LT</field>
+        <field name="model">hr.vn.si.d02.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_social_insurance_vn.report_d02_lt_document</field>
+        <field name="report_file">hr_social_insurance_vn.report_d02_lt_document</field>
+        <field name="binding_model_id" ref="model_hr_vn_si_d02_report"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

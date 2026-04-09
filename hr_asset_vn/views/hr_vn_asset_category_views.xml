@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_vn_asset_category_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.asset.category.list</field>
+        <field name="model">hr.vn.asset.category</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="depreciation_years"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_vn_asset_category_action" model="ir.actions.act_window">
+        <field name="name">Danh mục tài sản</field>
+        <field name="res_model">hr.vn.asset.category</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

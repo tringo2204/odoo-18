@@ -1,0 +1,20 @@
+{
+    'name': 'Quản lý Tài sản Nhân sự',
+    'version': '18.0.1.0.0',
+    'category': 'Human Resources',
+    'summary': 'Quản lý tài sản cấp phát, thu hồi, khấu hao cho nhân viên',
+    'author': 'SHT',
+    'depends': ['hr', 'mail'],
+    'data': [
+        'security/hr_asset_vn_security.xml',
+        'security/ir.model.access.csv',
+        'data/asset_categories.xml',
+        'views/hr_vn_asset_views.xml',
+        'views/hr_vn_asset_category_views.xml',
+        'views/hr_employee_views.xml',
+        'views/menus.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="hr_vn_si_monthly_list_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.si.monthly.list.form</field>
+        <field name="model">hr.vn.si.monthly.list</field>
+        <field name="arch" type="xml">
+            <form string="Danh sách tăng/giảm BHXH tháng">
+                <header>
+                    <button name="action_confirm" string="Xác nhận" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_export_d02" string="Xuất D02-LT" type="object"
+                            class="btn-primary" invisible="state != 'confirmed'"/>
+                    <button name="action_draft" string="Về nháp" type="object"
+                            invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,exported"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="month"/>
+                            <field name="year"/>
+                        </group>
+                        <group>
+                            <field name="total_increase"/>
+                            <field name="total_decrease"/>
+                            <field name="total_adjust"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tăng" name="increase">
+                            <field name="increase_ids" readonly="1">
+                                <list>
+                                    <field name="employee_id"/>
+                                    <field name="bhxh_number"/>
+                                    <field name="new_salary"/>
+                                    <field name="effective_date"/>
+                                    <field name="reason"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Giảm" name="decrease">
+                            <field name="decrease_ids" readonly="1">
+                                <list>
+                                    <field name="employee_id"/>
+                                    <field name="bhxh_number"/>
+                                    <field name="old_salary"/>
+                                    <field name="effective_date"/>
+                                    <field name="reason"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Điều chỉnh" name="adjust">
+                            <field name="adjust_ids" readonly="1">
+                                <list>
+                                    <field name="employee_id"/>
+                                    <field name="bhxh_number"/>
+                                    <field name="old_salary"/>
+                                    <field name="new_salary"/>
+                                    <field name="effective_date"/>
+                                    <field name="reason"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="note" placeholder="Ghi chú..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="hr_vn_si_monthly_list_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.si.monthly.list.list</field>
+        <field name="model">hr.vn.si.monthly.list</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'"
+                  decoration-success="state == 'confirmed'"
+                  decoration-muted="state == 'exported'">
+                <field name="name"/>
+                <field name="month"/>
+                <field name="year"/>
+                <field name="total_increase"/>
+                <field name="total_decrease"/>
+                <field name="total_adjust"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'confirmed'"
+                       decoration-warning="state == 'exported'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hr_vn_si_monthly_list_view_search" model="ir.ui.view">
+        <field name="name">hr.vn.si.monthly.list.search</field>
+        <field name="model">hr.vn.si.monthly.list</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="year"/>
+                <separator/>
+                <filter string="Nháp" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Đã xác nhận" name="confirmed"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Đã xuất" name="exported"
+                        domain="[('state', '=', 'exported')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Năm" name="group_year"
+                            context="{'group_by': 'year'}"/>
+                    <filter string="Trạng thái" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hr_vn_si_monthly_list_action" model="ir.actions.act_window">
+        <field name="name">DS tăng/giảm BHXH</field>
+        <field name="res_model">hr.vn.si.monthly.list</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="hr_vn_si_monthly_list_view_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Tạo danh sách tăng/giảm BHXH tháng mới
+            </p>
+        </field>
+    </record>
+</odoo>

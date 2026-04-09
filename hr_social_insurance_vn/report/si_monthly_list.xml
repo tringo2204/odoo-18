@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_si_monthly_list_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="text-center">
+                            DANH SÁCH TĂNG/GIẢM LAO ĐỘNG THAM GIA BHXH
+                        </h2>
+                        <h4 class="text-center mb-4">
+                            Tháng <t t-esc="o.month"/>/<t t-esc="o.year"/>
+                        </h4>
+
+                        <!-- Tăng -->
+                        <t t-if="o.increase_ids">
+                            <h5>I. DANH SÁCH TĂNG (<t t-esc="o.total_increase"/> người)</h5>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr class="bg-200">
+                                        <th class="text-center" style="width: 5%">STT</th>
+                                        <th>Họ và tên</th>
+                                        <th>Số sổ BHXH</th>
+                                        <th class="text-end">Mức lương mới</th>
+                                        <th class="text-center">Từ ngày</th>
+                                        <th>Lý do</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="idx" t-value="0"/>
+                                    <tr t-foreach="o.increase_ids" t-as="line">
+                                        <t t-set="idx" t-value="idx + 1"/>
+                                        <td class="text-center"><t t-esc="idx"/></td>
+                                        <td><t t-esc="line.employee_id.name"/></td>
+                                        <td><t t-esc="line.bhxh_number"/></td>
+                                        <td class="text-end">
+                                            <t t-esc="'{:,.0f}'.format(line.new_salary)"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-esc="line.effective_date" t-options="{'widget': 'date'}"/>
+                                        </td>
+                                        <td><t t-esc="line.reason"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- Giảm -->
+                        <t t-if="o.decrease_ids">
+                            <h5>II. DANH SÁCH GIẢM (<t t-esc="o.total_decrease"/> người)</h5>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr class="bg-200">
+                                        <th class="text-center" style="width: 5%">STT</th>
+                                        <th>Họ và tên</th>
+                                        <th>Số sổ BHXH</th>
+                                        <th class="text-end">Mức lương cũ</th>
+                                        <th class="text-center">Từ ngày</th>
+                                        <th>Lý do</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="idx" t-value="0"/>
+                                    <tr t-foreach="o.decrease_ids" t-as="line">
+                                        <t t-set="idx" t-value="idx + 1"/>
+                                        <td class="text-center"><t t-esc="idx"/></td>
+                                        <td><t t-esc="line.employee_id.name"/></td>
+                                        <td><t t-esc="line.bhxh_number"/></td>
+                                        <td class="text-end">
+                                            <t t-esc="'{:,.0f}'.format(line.old_salary)"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-esc="line.effective_date" t-options="{'widget': 'date'}"/>
+                                        </td>
+                                        <td><t t-esc="line.reason"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <!-- Điều chỉnh -->
+                        <t t-if="o.adjust_ids">
+                            <h5>III. DANH SÁCH ĐIỀU CHỈNH (<t t-esc="o.total_adjust"/> người)</h5>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr class="bg-200">
+                                        <th class="text-center" style="width: 5%">STT</th>
+                                        <th>Họ và tên</th>
+                                        <th>Số sổ BHXH</th>
+                                        <th class="text-end">Mức lương cũ</th>
+                                        <th class="text-end">Mức lương mới</th>
+                                        <th class="text-center">Từ ngày</th>
+                                        <th>Lý do</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="idx" t-value="0"/>
+                                    <tr t-foreach="o.adjust_ids" t-as="line">
+                                        <t t-set="idx" t-value="idx + 1"/>
+                                        <td class="text-center"><t t-esc="idx"/></td>
+                                        <td><t t-esc="line.employee_id.name"/></td>
+                                        <td><t t-esc="line.bhxh_number"/></td>
+                                        <td class="text-end">
+                                            <t t-esc="'{:,.0f}'.format(line.old_salary)"/>
+                                        </td>
+                                        <td class="text-end">
+                                            <t t-esc="'{:,.0f}'.format(line.new_salary)"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-esc="line.effective_date" t-options="{'widget': 'date'}"/>
+                                        </td>
+                                        <td><t t-esc="line.reason"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <p><strong>Người lập</strong></p>
+                            </div>
+                            <div class="col-6 text-end">
+                                <p><strong>Giám đốc</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_si_monthly_list" model="ir.actions.report">
+        <field name="name">DS tăng/giảm BHXH tháng</field>
+        <field name="model">hr.vn.si.monthly.list</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_social_insurance_vn.report_si_monthly_list_document</field>
+        <field name="report_file">hr_social_insurance_vn.report_si_monthly_list_document</field>
+        <field name="binding_model_id" ref="model_hr_vn_si_monthly_list"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_hr_vn_asset" model="ir.sequence">
+        <field name="name">Tài sản</field>
+        <field name="code">hr.vn.asset</field>
+        <field name="prefix">TS-</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="asset_cat_computer" model="hr.vn.asset.category">
+        <field name="name">Máy tính</field>
+        <field name="depreciation_years">3</field>
+    </record>
+    <record id="asset_cat_phone" model="hr.vn.asset.category">
+        <field name="name">Điện thoại</field>
+        <field name="depreciation_years">2</field>
+    </record>
+    <record id="asset_cat_monitor" model="hr.vn.asset.category">
+        <field name="name">Màn hình</field>
+        <field name="depreciation_years">5</field>
+    </record>
+    <record id="asset_cat_furniture" model="hr.vn.asset.category">
+        <field name="name">Nội thất</field>
+        <field name="depreciation_years">5</field>
+    </record>
+    <record id="asset_cat_uniform" model="hr.vn.asset.category">
+        <field name="name">Đồng phục</field>
+        <field name="depreciation_years">1</field>
+    </record>
+    <record id="asset_cat_vehicle" model="hr.vn.asset.category">
+        <field name="name">Phương tiện</field>
+        <field name="depreciation_years">8</field>
+    </record>
+    <record id="asset_cat_other" model="hr.vn.asset.category">
+        <field name="name">Khác</field>
+        <field name="depreciation_years">3</field>
+    </record>
+</odoo>

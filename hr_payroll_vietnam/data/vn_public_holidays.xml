@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- NGHỈ LỄ VIỆT NAM 2024                                       -->
+    <!-- ============================================================ -->
+
+    <record id="holiday_2024_tet_duong" model="resource.calendar.leaves">
+        <field name="name">Tết Dương lịch 2024</field>
+        <field name="date_from">2024-01-01 00:00:00</field>
+        <field name="date_to">2024-01-01 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2024_tet_nguyen_dan" model="resource.calendar.leaves">
+        <field name="name">Tết Nguyên đán 2024</field>
+        <field name="date_from">2024-02-08 00:00:00</field>
+        <field name="date_to">2024-02-14 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2024_hung_vuong" model="resource.calendar.leaves">
+        <field name="name">Giỗ Tổ Hùng Vương 2024</field>
+        <field name="date_from">2024-04-18 00:00:00</field>
+        <field name="date_to">2024-04-18 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2024_30_4" model="resource.calendar.leaves">
+        <field name="name">Ngày Giải phóng miền Nam 2024</field>
+        <field name="date_from">2024-04-30 00:00:00</field>
+        <field name="date_to">2024-04-30 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2024_1_5" model="resource.calendar.leaves">
+        <field name="name">Ngày Quốc tế Lao động 2024</field>
+        <field name="date_from">2024-05-01 00:00:00</field>
+        <field name="date_to">2024-05-01 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2024_quoc_khanh" model="resource.calendar.leaves">
+        <field name="name">Quốc khánh 2024</field>
+        <field name="date_from">2024-09-02 00:00:00</field>
+        <field name="date_to">2024-09-03 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- NGHỈ LỄ VIỆT NAM 2025                                       -->
+    <!-- ============================================================ -->
+
+    <record id="holiday_2025_tet_duong" model="resource.calendar.leaves">
+        <field name="name">Tết Dương lịch 2025</field>
+        <field name="date_from">2025-01-01 00:00:00</field>
+        <field name="date_to">2025-01-01 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2025_tet_nguyen_dan" model="resource.calendar.leaves">
+        <field name="name">Tết Nguyên đán 2025</field>
+        <field name="date_from">2025-01-25 00:00:00</field>
+        <field name="date_to">2025-02-02 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2025_hung_vuong" model="resource.calendar.leaves">
+        <field name="name">Giỗ Tổ Hùng Vương 2025</field>
+        <field name="date_from">2025-04-07 00:00:00</field>
+        <field name="date_to">2025-04-07 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2025_30_4" model="resource.calendar.leaves">
+        <field name="name">Ngày Giải phóng miền Nam 2025</field>
+        <field name="date_from">2025-04-30 00:00:00</field>
+        <field name="date_to">2025-04-30 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2025_1_5" model="resource.calendar.leaves">
+        <field name="name">Ngày Quốc tế Lao động 2025</field>
+        <field name="date_from">2025-05-01 00:00:00</field>
+        <field name="date_to">2025-05-01 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2025_quoc_khanh" model="resource.calendar.leaves">
+        <field name="name">Quốc khánh 2025</field>
+        <field name="date_from">2025-09-01 00:00:00</field>
+        <field name="date_to">2025-09-02 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+</odoo>

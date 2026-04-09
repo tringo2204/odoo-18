@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="insurance_config_2024" model="hr.vn.insurance.config">
+        <field name="year">2024</field>
+        <field name="bhxh_employee_rate">8.0</field>
+        <field name="bhyt_employee_rate">1.5</field>
+        <field name="bhtn_employee_rate">1.0</field>
+        <field name="bhxh_employer_rate">17.5</field>
+        <field name="bhyt_employer_rate">3.0</field>
+        <field name="bhtn_employer_rate">1.0</field>
+        <field name="base_salary">2340000</field>
+    </record>
+
+    <!-- Regional wages -->
+    <record id="regional_wage_1" model="hr.vn.regional.wage">
+        <field name="config_id" ref="insurance_config_2024"/>
+        <field name="region">1</field>
+        <field name="wage_amount">4960000</field>
+    </record>
+    <record id="regional_wage_2" model="hr.vn.regional.wage">
+        <field name="config_id" ref="insurance_config_2024"/>
+        <field name="region">2</field>
+        <field name="wage_amount">4410000</field>
+    </record>
+    <record id="regional_wage_3" model="hr.vn.regional.wage">
+        <field name="config_id" ref="insurance_config_2024"/>
+        <field name="region">3</field>
+        <field name="wage_amount">3860000</field>
+    </record>
+    <record id="regional_wage_4" model="hr.vn.regional.wage">
+        <field name="config_id" ref="insurance_config_2024"/>
+        <field name="region">4</field>
+        <field name="wage_amount">3450000</field>
+    </record>
+</odoo>

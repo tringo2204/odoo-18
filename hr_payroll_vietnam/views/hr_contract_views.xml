@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_contract_view_form_payroll_vn" model="ir.ui.view">
+        <field name="name">hr.contract.form.payroll.vn</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Phụ cấp &amp; Thuế" name="vn_allowance_tax" groups="hr.group_hr_user">
+                    <group>
+                        <group string="Bảo hiểm">
+                            <field name="insurance_salary"/>
+                        </group>
+                        <group string="Chính sách thuế">
+                            <field name="tax_policy"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Phụ cấp chịu thuế">
+                            <field name="allowance_position"/>
+                            <field name="allowance_responsibility"/>
+                            <field name="allowance_seniority"/>
+                            <field name="allowance_other_taxable"/>
+                        </group>
+                        <group string="Phụ cấp không chịu thuế">
+                            <field name="allowance_phone"/>
+                            <field name="allowance_meal"/>
+                            <field name="allowance_transport"/>
+                            <field name="allowance_uniform"/>
+                            <field name="allowance_other_nontax"/>
+                        </group>
+                    </group>
+                    <group string="Tỷ lệ OT">
+                        <group>
+                            <field name="ot_rate_weekday"/>
+                            <field name="ot_rate_weekend"/>
+                        </group>
+                        <group>
+                            <field name="ot_rate_holiday"/>
+                            <field name="ot_rate_night_extra"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- LƯƠNG PART-TIME — Theo giờ, không BHXH nếu < 14 ngày/tháng  -->
+    <!-- ============================================================ -->
+    <record id="structure_type_vn_parttime" model="hr.payroll.structure.type">
+        <field name="name">Part-time Việt Nam</field>
+        <field name="country_id" ref="base.vn"/>
+        <field name="default_schedule_pay">monthly</field>
+    </record>
+
+    <record id="structure_vn_parttime" model="hr.payroll.structure">
+        <field name="name">Lương part-time VN</field>
+        <field name="code">VN_PT</field>
+        <field name="type_id" ref="structure_type_vn_parttime"/>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+
+    <!-- BASIC: theo giờ thực tế -->
+    <record id="pt_rule_basic" model="hr.salary.rule">
+        <field name="name">Lương theo giờ</field>
+        <field name="code">BASIC</field>
+        <field name="sequence">1</field>
+        <field name="category_id" ref="hr_payroll.BASIC"/>
+        <field name="struct_id" ref="structure_vn_parttime"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.paid_amount
+        </field>
+    </record>
+
+    <!-- GROSS = BASIC (part-time thường không có phụ cấp) -->
+    <record id="pt_rule_gross" model="hr.salary.rule">
+        <field name="name">GROSS</field>
+        <field name="code">GROSS</field>
+        <field name="sequence">100</field>
+        <field name="category_id" ref="hr_payroll.GROSS"/>
+        <field name="struct_id" ref="structure_vn_parttime"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC'] + categories['ALW']
+        </field>
+    </record>
+
+    <!-- PIT: thuế TNCN (nếu vượt giảm trừ) -->
+    <record id="pt_rule_pit" model="hr.salary.rule">
+        <field name="name">Thuế TNCN</field>
+        <field name="code">PIT</field>
+        <field name="sequence">300</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_parttime"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+self_ded = payslip._rule_parameter('vn_self_deduction')
+dep_ded = payslip._rule_parameter('vn_dependent_deduction')
+dep_count = employee.dependent_count or 0
+taxable = categories['GROSS'] - self_ded - (dep_count * dep_ded)
+if taxable &lt;= 0:
+    result = 0
+elif not employee.tax_resident:
+    result = -round(taxable * 0.20)
+else:
+    blist = payslip._rule_parameter('vn_pit_brackets')
+    pit = 0.0
+    for fr, to, rate in blist:
+        if taxable &lt;= fr:
+            break
+        upper = taxable if (to == 0 or taxable &lt; to) else to
+        pit += (upper - fr) * rate / 100.0
+    result = -round(pit)
+        </field>
+    </record>
+
+    <!-- NET -->
+    <record id="pt_rule_net" model="hr.salary.rule">
+        <field name="name">NET (Thực nhận)</field>
+        <field name="code">NET</field>
+        <field name="sequence">999</field>
+        <field name="category_id" ref="hr_payroll.NET"/>
+        <field name="struct_id" ref="structure_vn_parttime"/>
+        <field name="condition_select">none</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['GROSS'] + categories['DED']
+        </field>
+    </record>
+
+</odoo>

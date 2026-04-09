@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="hr_vn_si_history_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.si.history.form</field>
+        <field name="model">hr.vn.si.history</field>
+        <field name="arch" type="xml">
+            <form string="Biến động BHXH">
+                <header>
+                    <button name="action_confirm" string="Xác nhận" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_draft" string="Về nháp" type="object"
+                            invisible="state != 'confirmed'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,reported"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Thông tin">
+                            <field name="record_id"/>
+                            <field name="employee_id"/>
+                            <field name="bhxh_number"/>
+                            <field name="change_type"/>
+                            <field name="effective_date"/>
+                        </group>
+                        <group string="Mức lương">
+                            <field name="old_salary"/>
+                            <field name="new_salary"/>
+                            <field name="reason"/>
+                            <field name="d02_line_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Ghi chú..."/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="hr_vn_si_history_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.si.history.list</field>
+        <field name="model">hr.vn.si.history</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'"
+                  decoration-success="state == 'confirmed'"
+                  decoration-warning="state == 'reported'">
+                <field name="effective_date"/>
+                <field name="employee_id"/>
+                <field name="bhxh_number"/>
+                <field name="change_type"/>
+                <field name="old_salary"/>
+                <field name="new_salary"/>
+                <field name="reason"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-success="state == 'confirmed'"
+                       decoration-warning="state == 'reported'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="hr_vn_si_history_view_search" model="ir.ui.view">
+        <field name="name">hr.vn.si.history.search</field>
+        <field name="model">hr.vn.si.history</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="bhxh_number"/>
+                <separator/>
+                <filter string="Tăng" name="increase"
+                        domain="[('change_type', '=', 'increase')]"/>
+                <filter string="Giảm" name="decrease"
+                        domain="[('change_type', '=', 'decrease')]"/>
+                <filter string="Điều chỉnh" name="adjust"
+                        domain="[('change_type', '=', 'adjust')]"/>
+                <separator/>
+                <filter string="Nháp" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Đã xác nhận" name="confirmed"
+                        domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Đã báo cáo" name="reported"
+                        domain="[('state', '=', 'reported')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Loại biến động" name="group_type"
+                            context="{'group_by': 'change_type'}"/>
+                    <filter string="Trạng thái" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Tháng" name="group_month"
+                            context="{'group_by': 'effective_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="hr_vn_si_history_action" model="ir.actions.act_window">
+        <field name="name">Biến động BHXH</field>
+        <field name="res_model">hr.vn.si.history</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="hr_vn_si_history_view_search"/>
+    </record>
+</odoo>

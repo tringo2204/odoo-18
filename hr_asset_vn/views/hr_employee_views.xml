@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_employee_view_form_asset" model="ir.ui.view">
+        <field name="name">hr.employee.form.asset</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_assets" type="object"
+                        class="o_stat_button" icon="fa-laptop"
+                        groups="hr.group_hr_user" invisible="not id">
+                    <field name="asset_count" widget="statinfo" string="Tài sản"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
