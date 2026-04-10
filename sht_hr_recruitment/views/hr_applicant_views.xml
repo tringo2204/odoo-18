@@ -5,9 +5,14 @@
         <field name="model">hr.applicant</field>
         <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//group[@string='Job']" position="inside">
-                <field name="headcount_plan_id"/>
-                <field name="is_over_budget" invisible="1"/>
+            <xpath expr="//field[@name='department_id']/.." position="after">
+                <group string="Tuyển dụng mở rộng">
+                    <field name="campaign_id"/>
+                    <field name="headcount_plan_id"/>
+                    <field name="source_channel"/>
+                    <field name="evaluation_score"/>
+                    <field name="is_over_budget" invisible="1"/>
+                </group>
             </xpath>
         </field>
     </record>
@@ -18,7 +23,9 @@
         <field name="inherit_id" ref="hr_recruitment.crm_case_tree_view_job"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='job_id']" position="after">
-                <field name="headcount_plan_id" optional="show"/>
+                <field name="campaign_id" optional="hide"/>
+                <field name="evaluation_score" optional="hide"/>
+                <field name="headcount_plan_id" optional="hide"/>
             </xpath>
         </field>
     </record>

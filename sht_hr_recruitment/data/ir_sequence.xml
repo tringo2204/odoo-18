@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_sht_hr_recruitment_request" model="ir.sequence">
+            <field name="name">Đề xuất tuyển dụng</field>
+            <field name="code">sht.hr.recruitment.request</field>
+            <field name="prefix">DXTD-%(year)s/</field>
+            <field name="padding">4</field>
+        </record>
+    </data>
+</odoo>

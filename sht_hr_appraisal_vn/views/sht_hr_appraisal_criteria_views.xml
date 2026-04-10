@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_appraisal_criteria_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.appraisal.criteria.form</field>
+        <field name="model">sht.hr.appraisal.criteria</field>
+        <field name="arch" type="xml">
+            <form string="Tiêu chí đánh giá">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="weight"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Mô tả tiêu chí..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sht_hr_appraisal_criteria_view_list" model="ir.ui.view">
+        <field name="name">sht.hr.appraisal.criteria.list</field>
+        <field name="model">sht.hr.appraisal.criteria</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category" widget="badge"/>
+                <field name="weight"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sht_hr_appraisal_criteria_view_search" model="ir.ui.view">
+        <field name="name">sht.hr.appraisal.criteria.search</field>
+        <field name="model">sht.hr.appraisal.criteria</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <filter string="Thái độ" name="attitude" domain="[('category', '=', 'attitude')]"/>
+                <filter string="Kỹ năng" name="skill" domain="[('category', '=', 'skill')]"/>
+                <filter string="Kiến thức" name="knowledge" domain="[('category', '=', 'knowledge')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Nhóm ASK" name="group_cat" context="{'group_by': 'category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="sht_hr_appraisal_criteria_action" model="ir.actions.act_window">
+        <field name="name">Tiêu chí đánh giá</field>
+        <field name="res_model">sht.hr.appraisal.criteria</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sht_hr_appraisal_criteria_view_search"/>
+    </record>
+</odoo>

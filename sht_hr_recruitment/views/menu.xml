@@ -2,9 +2,30 @@
 <odoo>
     <menuitem
         id="sht_hr_recruitment_menu_headcount_plans"
-        name="Headcount Plans"
+        name="Định biên"
         parent="hr_recruitment.menu_hr_recruitment_root"
         action="sht_hr_recruitment_headcount_plan_action"
         sequence="25"
         groups="hr.group_hr_user"/>
+
+    <menuitem
+        id="sht_hr_recruitment_menu_request"
+        name="Đề xuất tuyển dụng"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        action="sht_hr_recruitment_request_action"
+        sequence="26"/>
+
+    <menuitem
+        id="sht_hr_recruitment_menu_campaign"
+        name="Chiến dịch tuyển dụng"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        action="sht_hr_recruitment_campaign_action"
+        sequence="27"/>
+
+    <menuitem
+        id="sht_hr_recruitment_menu_evaluation"
+        name="Đánh giá ứng viên"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        action="sht_hr_applicant_evaluation_action"
+        sequence="28"/>
 </odoo>

@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+from odoo import api, fields, models
+
+
+class ShtHrApplicantEvaluation(models.Model):
+    _name = 'sht.hr.applicant.evaluation'
+    _description = 'Đánh giá ứng viên'
+    _order = 'evaluation_date desc'
+
+    applicant_id = fields.Many2one(
+        'hr.applicant', string='Ứng viên', required=True, ondelete='cascade',
+    )
+    evaluator_id = fields.Many2one(
+        'res.users', string='Người đánh giá',
+        default=lambda self: self.env.user, required=True,
+    )
+    evaluation_date = fields.Date(
+        string='Ngày đánh giá', default=fields.Date.today,
+    )
+    criteria_ids = fields.One2many(
+        'sht.hr.evaluation.criteria', 'evaluation_id',
+        string='Tiêu chí đánh giá',
+    )
+    overall_score = fields.Float(
+        string='Điểm tổng', compute='_compute_overall_score', store=True,
+    )
+    recommendation = fields.Selection([
+        ('hire', 'Tuyển'),
+        ('reject', 'Từ chối'),
+        ('hold', 'Giữ hồ sơ'),
+    ], string='Khuyến nghị')
+    note = fields.Text(string='Nhận xét')
+    company_id = fields.Many2one(
+        'res.company', string='Công ty',
+        default=lambda self: self.env.company,
+    )
+
+    @api.depends('criteria_ids.score', 'criteria_ids.weight')
+    def _compute_overall_score(self):
+        for rec in self:
+            criteria = rec.criteria_ids
+            if not criteria:
+                rec.overall_score = 0
+                continue
+            total_weight = sum(criteria.mapped('weight'))
+            if total_weight:
+                rec.overall_score = sum(
+                    c.score * c.weight for c in criteria
+                ) / total_weight
+            else:
+                rec.overall_score = (
+                    sum(criteria.mapped('score')) / len(criteria)
+                )
+
+
+class ShtHrEvaluationCriteria(models.Model):
+    _name = 'sht.hr.evaluation.criteria'
+    _description = 'Tiêu chí đánh giá ứng viên'
+    _order = 'sequence'
+
+    evaluation_id = fields.Many2one(
+        'sht.hr.applicant.evaluation', string='Đánh giá',
+        required=True, ondelete='cascade',
+    )
+    name = fields.Char(string='Tiêu chí', required=True)
+    sequence = fields.Integer(string='Thứ tự', default=10)
+    score = fields.Float(string='Điểm (1-5)')
+    weight = fields.Float(string='Trọng số', default=1.0)
+    note = fields.Text(string='Nhận xét')

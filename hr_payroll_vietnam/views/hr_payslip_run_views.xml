@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_payslip_run_view_form_inherit_vn" model="ir.ui.view">
+        <field name="name">hr.payslip.run.form.inherit.vn</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_compute" string="Tính lương" type="object"
+                        class="btn-primary" invisible="approval_state != 'draft'"/>
+                <button name="action_verify" string="Kiểm tra" type="object"
+                        invisible="approval_state != 'computed'"/>
+                <button name="action_approve" string="Phê duyệt" type="object"
+                        class="btn-primary" invisible="approval_state != 'verified'"
+                        groups="hr.group_hr_manager"/>
+                <button name="action_mark_paid" string="Đã trả lương" type="object"
+                        class="btn-success" invisible="approval_state != 'approved'"/>
+                <button name="action_open_bank_export" string="Xuất file NH" type="object"
+                        class="btn-secondary" invisible="approval_state not in ('approved', 'paid')"/>
+                <button name="action_reset_draft" string="Về nháp" type="object"
+                        invisible="approval_state in ('draft', 'paid')"/>
+                <field name="approval_state" widget="statusbar"
+                       statusbar_visible="draft,computed,verified,approved,paid"/>
+            </xpath>
+            <xpath expr="//group" position="after">
+                <group string="Tổng hợp lương">
+                    <group>
+                        <field name="employee_count"/>
+                        <field name="total_gross"/>
+                        <field name="total_net"/>
+                    </group>
+                    <group>
+                        <field name="total_insurance"/>
+                        <field name="total_pit"/>
+                        <field name="approved_by"/>
+                        <field name="approved_date"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

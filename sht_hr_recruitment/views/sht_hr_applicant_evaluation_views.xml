@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_applicant_evaluation_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.applicant.evaluation.form</field>
+        <field name="model">sht.hr.applicant.evaluation</field>
+        <field name="arch" type="xml">
+            <form string="Đánh giá ứng viên">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="applicant_id"/>
+                            <field name="evaluator_id"/>
+                            <field name="evaluation_date"/>
+                        </group>
+                        <group>
+                            <field name="overall_score"/>
+                            <field name="recommendation" widget="badge"
+                                   decoration-success="recommendation == 'hire'"
+                                   decoration-danger="recommendation == 'reject'"
+                                   decoration-warning="recommendation == 'hold'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tiêu chí" name="criteria">
+                            <field name="criteria_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="score"/>
+                                    <field name="weight"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <field name="note" placeholder="Nhận xét tổng quát..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sht_hr_applicant_evaluation_view_list" model="ir.ui.view">
+        <field name="name">sht.hr.applicant.evaluation.list</field>
+        <field name="model">sht.hr.applicant.evaluation</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="applicant_id"/>
+                <field name="evaluator_id"/>
+                <field name="evaluation_date"/>
+                <field name="overall_score"/>
+                <field name="recommendation" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sht_hr_applicant_evaluation_action" model="ir.actions.act_window">
+        <field name="name">Đánh giá ứng viên</field>
+        <field name="res_model">sht.hr.applicant.evaluation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

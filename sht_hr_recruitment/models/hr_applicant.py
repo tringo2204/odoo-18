@@ -10,6 +10,24 @@ _logger = logging.getLogger(__name__)
 class HrApplicant(models.Model):
     _inherit = 'hr.applicant'
 
+    campaign_id = fields.Many2one(
+        'sht.hr.recruitment.campaign', string='Chiến dịch tuyển dụng',
+    )
+    evaluation_ids = fields.One2many(
+        'sht.hr.applicant.evaluation', 'applicant_id',
+        string='Đánh giá ứng viên',
+    )
+    evaluation_score = fields.Float(
+        string='Điểm đánh giá', compute='_compute_evaluation_score',
+    )
+    source_channel = fields.Selection([
+        ('website', 'Website'),
+        ('referral', 'Giới thiệu'),
+        ('agency', 'Đơn vị TD'),
+        ('social', 'Mạng XH'),
+        ('other', 'Khác'),
+    ], string='Nguồn ứng viên')
+
     headcount_plan_id = fields.Many2one(
         'sht.hr.headcount.plan',
         string='Headcount Plan',
@@ -38,3 +56,14 @@ class HrApplicant(models.Model):
                     user_id=applicant.user_id.id or self.env.user.id,
                 )
         return applicants
+
+    @api.depends('evaluation_ids.overall_score')
+    def _compute_evaluation_score(self):
+        for rec in self:
+            evals = rec.evaluation_ids
+            if evals:
+                rec.evaluation_score = sum(
+                    evals.mapped('overall_score')
+                ) / len(evals)
+            else:
+                rec.evaluation_score = 0

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sht_hr_offboarding_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.offboarding.form</field>
+        <field name="model">sht.hr.offboarding</field>
+        <field name="arch" type="xml">
+            <form string="Quy trình thôi việc">
+                <header>
+                    <button name="action_start" type="object" string="Bắt đầu xử lý"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_complete" type="object" string="Hoàn thành"
+                            class="btn-primary" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" type="object" string="Hủy"
+                            invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_draft" type="object" string="Về nháp"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_checklist" type="object"
+                                class="oe_stat_button" icon="fa-tasks"
+                                invisible="not checklist_id">
+                            <field name="checklist_progress" widget="statinfo" string="Checklist %"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="department_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="resignation_date"/>
+                            <field name="last_working_day"/>
+                        </group>
+                    </group>
+                    <field name="reason" placeholder="Lý do nghỉ việc..."/>
+                    <field name="note" placeholder="Ghi chú..."/>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="sht_hr_offboarding_view_list" model="ir.ui.view">
+        <field name="name">sht.hr.offboarding.list</field>
+        <field name="model">sht.hr.offboarding</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'completed'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="resignation_date"/>
+                <field name="last_working_day"/>
+                <field name="checklist_progress" widget="progressbar"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'in_progress'"
+                       decoration-success="state == 'completed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="sht_hr_offboarding_view_search" model="ir.ui.view">
+        <field name="name">sht.hr.offboarding.search</field>
+        <field name="model">sht.hr.offboarding</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <filter string="Đang xử lý" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Hoàn thành" name="completed" domain="[('state', '=', 'completed')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Phòng ban" name="group_dept" context="{'group_by': 'department_id'}"/>
+                    <filter string="Trạng thái" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="sht_hr_offboarding_action" model="ir.actions.act_window">
+        <field name="name">Quy trình thôi việc</field>
+        <field name="res_model">sht.hr.offboarding</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sht_hr_offboarding_view_search"/>
+        <field name="context">{'search_default_in_progress': 1}</field>
+    </record>
+</odoo>

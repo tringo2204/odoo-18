@@ -1,3 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 sht_hr_recruitment_access_headcount_plan_user,sht.hr.headcount.plan user,model_sht_hr_headcount_plan,hr.group_hr_user,1,0,0,0
 sht_hr_recruitment_access_headcount_plan_manager,sht.hr.headcount.plan manager,model_sht_hr_headcount_plan,hr.group_hr_manager,1,1,1,1
+sht_hr_recruitment_access_request_user,sht.hr.recruitment.request user,model_sht_hr_recruitment_request,hr.group_hr_user,1,0,0,0
+sht_hr_recruitment_access_request_manager,sht.hr.recruitment.request manager,model_sht_hr_recruitment_request,hr.group_hr_manager,1,1,1,1
+sht_hr_recruitment_access_campaign_user,sht.hr.recruitment.campaign user,model_sht_hr_recruitment_campaign,hr.group_hr_user,1,0,0,0
+sht_hr_recruitment_access_campaign_manager,sht.hr.recruitment.campaign manager,model_sht_hr_recruitment_campaign,hr.group_hr_manager,1,1,1,1
+sht_hr_recruitment_access_evaluation_user,sht.hr.applicant.evaluation user,model_sht_hr_applicant_evaluation,hr.group_hr_user,1,0,0,0
+sht_hr_recruitment_access_evaluation_manager,sht.hr.applicant.evaluation manager,model_sht_hr_applicant_evaluation,hr.group_hr_manager,1,1,1,1
+sht_hr_recruitment_access_eval_criteria_user,sht.hr.evaluation.criteria user,model_sht_hr_evaluation_criteria,hr.group_hr_user,1,0,0,0
+sht_hr_recruitment_access_eval_criteria_manager,sht.hr.evaluation.criteria manager,model_sht_hr_evaluation_criteria,hr.group_hr_manager,1,1,1,1

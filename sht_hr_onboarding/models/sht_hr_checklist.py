@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -6,42 +7,31 @@ from odoo.exceptions import UserError
 class ShtHrChecklist(models.Model):
     _name = 'sht.hr.checklist'
     _description = 'Employee Checklist'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date_start desc, id desc'
 
     name = fields.Char(compute='_compute_name', store=True, readonly=True)
     employee_id = fields.Many2one(
-        'hr.employee',
-        required=True,
-        ondelete='cascade',
+        'hr.employee', required=True, ondelete='cascade', tracking=True,
     )
     department_id = fields.Many2one(
-        'hr.department',
-        related='employee_id.department_id',
-        store=True,
-        readonly=True,
+        'hr.department', related='employee_id.department_id', store=True,
     )
     template_id = fields.Many2one('sht.hr.checklist.template', ondelete='set null')
-    checklist_type = fields.Selection(
-        [('onboarding', 'Onboarding'), ('offboarding', 'Offboarding')],
-        required=True,
-    )
+    checklist_type = fields.Selection([
+        ('onboarding', 'Onboarding'), ('offboarding', 'Offboarding'),
+    ], required=True, tracking=True)
     line_ids = fields.One2many('sht.hr.checklist.line', 'checklist_id', string='Lines')
-    progress = fields.Float(compute='_compute_progress', string='Progress')
-    state = fields.Selection(
-        [
-            ('in_progress', 'In Progress'),
-            ('done', 'Done'),
-            ('cancelled', 'Cancelled'),
-        ],
-        default='in_progress',
-        required=True,
-    )
+    progress = fields.Float(compute='_compute_progress', store=True)
+    total_tasks = fields.Integer(compute='_compute_progress', store=True)
+    done_tasks = fields.Integer(compute='_compute_progress', store=True)
+    state = fields.Selection([
+        ('in_progress', 'In Progress'), ('done', 'Done'), ('cancelled', 'Cancelled'),
+    ], default='in_progress', required=True, tracking=True)
     date_start = fields.Date(default=fields.Date.today)
     date_completed = fields.Date()
     company_id = fields.Many2one(
-        'res.company',
-        required=True,
-        default=lambda self: self.env.company,
+        'res.company', required=True, default=lambda self: self.env.company,
     )
 
     @api.depends('checklist_type', 'employee_id', 'employee_id.name')
@@ -49,20 +39,15 @@ class ShtHrChecklist(models.Model):
         labels = dict(self._fields['checklist_type'].selection)
         for rec in self:
             label = labels.get(rec.checklist_type, '')
-            if rec.employee_id:
-                rec.name = '%s - %s' % (label, rec.employee_id.name or '')
-            else:
-                rec.name = label
+            rec.name = '%s - %s' % (label, rec.employee_id.name or '') if rec.employee_id else label
 
-    @api.depends('line_ids.is_done')
+    @api.depends('line_ids.is_done', 'line_ids.state')
     def _compute_progress(self):
         for rec in self:
-            lines = rec.line_ids
-            if not lines:
-                rec.progress = 0.0
-            else:
-                done = sum(1 for line in lines if line.is_done)
-                rec.progress = 100.0 * done / len(lines)
+            lines = rec.line_ids.filtered(lambda l: l.state != 'cancelled')
+            rec.total_tasks = len(lines)
+            rec.done_tasks = len(lines.filtered(lambda l: l.is_done))
+            rec.progress = 100.0 * rec.done_tasks / len(lines) if lines else 0.0
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -79,25 +64,30 @@ class ShtHrChecklist(models.Model):
             checklist.line_ids.unlink()
             line_vals = []
             for tmpl_line in checklist.template_id.line_ids.sorted('sequence'):
+                deadline = False
+                if tmpl_line.default_deadline_days and checklist.date_start:
+                    deadline = checklist.date_start + timedelta(days=tmpl_line.default_deadline_days)
                 line_vals.append((0, 0, {
                     'name': tmpl_line.name,
                     'sequence': tmpl_line.sequence,
                     'responsible_role': tmpl_line.responsible_role,
+                    'deadline_date': deadline,
+                    'state': 'pending',
                 }))
-            checklist.write({
-                'line_ids': line_vals,
-                'checklist_type': checklist.template_id.checklist_type,
-            })
-        return True
+            checklist.write({'line_ids': line_vals, 'checklist_type': checklist.template_id.checklist_type})
 
     def action_mark_done(self):
-        todo = self.filtered(lambda c: c.state == 'in_progress')
-        todo.write({
-            'state': 'done',
-            'date_completed': fields.Date.today(),
+        self.filtered(lambda c: c.state == 'in_progress').write({
+            'state': 'done', 'date_completed': fields.Date.today(),
         })
-        return True
 
     def action_cancel(self):
         self.write({'state': 'cancelled'})
-        return True
+
+    def _check_auto_complete(self):
+        for rec in self:
+            if rec.state != 'in_progress':
+                continue
+            active_lines = rec.line_ids.filtered(lambda l: l.state != 'cancelled')
+            if active_lines and all(l.is_done for l in active_lines):
+                rec.action_mark_done()

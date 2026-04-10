@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sht_hr_appraisal_criteria_comp_rule" model="ir.rule">
+            <field name="name">Tiêu chí ĐG: Multi-company</field>
+            <field name="model_id" ref="model_sht_hr_appraisal_criteria"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="sht_hr_appraisal_template_comp_rule" model="ir.rule">
+            <field name="name">Mẫu ĐG: Multi-company</field>
+            <field name="model_id" ref="model_sht_hr_appraisal_template"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="sht_hr_appraisal_cycle_comp_rule" model="ir.rule">
+            <field name="name">Kỳ ĐG: Multi-company</field>
+            <field name="model_id" ref="model_sht_hr_appraisal_cycle"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

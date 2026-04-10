@@ -9,19 +9,13 @@ class ShtHrChecklistTemplateLine(models.Model):
 
     name = fields.Char(required=True)
     template_id = fields.Many2one(
-        'sht.hr.checklist.template',
-        required=True,
-        ondelete='cascade',
+        'sht.hr.checklist.template', required=True, ondelete='cascade',
     )
     sequence = fields.Integer(default=10)
-    responsible_role = fields.Selection(
-        [
-            ('hr', 'HR'),
-            ('manager', 'Manager'),
-            ('it', 'IT'),
-            ('employee', 'Employee'),
-        ],
-        default='hr',
-        required=True,
-    )
+    responsible_role = fields.Selection([
+        ('hr', 'HR'), ('manager', 'Manager'), ('it', 'IT'), ('employee', 'Employee'),
+    ], default='hr', required=True)
     description = fields.Text()
+    default_deadline_days = fields.Integer(
+        string='Hạn hoàn thành (ngày)', default=0,
+    )

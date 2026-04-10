@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_vn_bank_export_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.bank.export.form</field>
+        <field name="model">hr.vn.bank.export</field>
+        <field name="arch" type="xml">
+            <form string="Xuất file ngân hàng">
+                <group>
+                    <field name="payslip_run_id"/>
+                    <field name="bank_format"/>
+                    <field name="export_file" filename="export_filename" invisible="not export_file"/>
+                    <field name="export_filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_export" string="Xuất file" type="object"
+                            class="btn-primary" invisible="export_file"/>
+                    <button string="Đóng" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

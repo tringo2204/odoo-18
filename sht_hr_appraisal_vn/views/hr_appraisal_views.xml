@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_appraisal_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.appraisal.form.inherit.vn</field>
+        <field name="model">hr.appraisal</field>
+        <field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <field name="appraisal_cycle_id"/>
+                <field name="sht_template_id"/>
+                <field name="evaluator_type"/>
+                <field name="overall_score"/>
+                <field name="rating" widget="badge"
+                       decoration-success="rating in ('excellent', 'good')"
+                       decoration-warning="rating == 'meet'"
+                       decoration-danger="rating == 'improve'"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Chi tiết đánh giá" name="evaluation_lines">
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="criteria_id"/>
+                            <field name="category" widget="badge"/>
+                            <field name="weight"/>
+                            <field name="self_score"/>
+                            <field name="manager_score"/>
+                            <field name="final_score"/>
+                            <field name="note"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

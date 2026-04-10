@@ -1,0 +1,26 @@
+{
+    'name': 'Đánh giá hiệu suất Việt Nam',
+    'version': '18.0.1.0.0',
+    'category': 'Human Resources',
+    'summary': 'Tiêu chí ASK, mẫu đánh giá, phiếu đánh giá, kỳ đánh giá',
+    'author': 'SHT',
+    'website': 'https://sht.vn',
+    'depends': [
+        'hr_appraisal',
+        'mail',
+    ],
+    'data': [
+        'security/sht_hr_appraisal_vn_security.xml',
+        'security/ir.model.access.csv',
+        'data/appraisal_criteria.xml',
+        'data/ir_sequence.xml',
+        'views/sht_hr_appraisal_criteria_views.xml',
+        'views/sht_hr_appraisal_template_views.xml',
+        'views/sht_hr_appraisal_cycle_views.xml',
+        'views/hr_appraisal_views.xml',
+        'views/menus.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+}

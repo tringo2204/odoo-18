@@ -13,3 +13,4 @@ access_hr_vn_allowance_config_user,hr.vn.allowance.config.user,model_hr_vn_allow
 access_hr_vn_allowance_config_manager,hr.vn.allowance.config.manager,model_hr_vn_allowance_config,hr.group_hr_manager,1,1,1,1
 access_hr_vn_payroll_simulate_user,hr.vn.payroll.simulate.user,model_hr_vn_payroll_simulate,hr.group_hr_user,1,1,1,1
 access_hr_vn_payroll_config_manager,hr.vn.payroll.config.manager,model_hr_vn_payroll_config,hr.group_hr_manager,1,1,1,1
+access_hr_vn_bank_export_manager,hr.vn.bank.export.manager,model_hr_vn_bank_export,hr.group_hr_manager,1,1,1,0

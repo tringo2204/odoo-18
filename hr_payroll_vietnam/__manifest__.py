@@ -27,6 +27,8 @@
         'views/hr_vn_payroll_config_views.xml',
         'views/hr_payroll_structure_views.xml',
         'wizard/payroll_simulate_views.xml',
+        'wizard/payroll_bank_export_views.xml',
+        'views/hr_payslip_run_views.xml',
         'views/menus.xml',
     ],
     'installable': True,

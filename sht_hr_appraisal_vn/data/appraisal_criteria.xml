@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Attitude (A) -->
+    <record id="criteria_a01" model="sht.hr.appraisal.criteria">
+        <field name="name">Tinh thần trách nhiệm</field>
+        <field name="code">A01</field>
+        <field name="category">attitude</field>
+        <field name="weight">10</field>
+        <field name="sequence">1</field>
+        <field name="description">Mức độ chủ động, cam kết hoàn thành công việc</field>
+    </record>
+    <record id="criteria_a02" model="sht.hr.appraisal.criteria">
+        <field name="name">Tinh thần hợp tác</field>
+        <field name="code">A02</field>
+        <field name="category">attitude</field>
+        <field name="weight">10</field>
+        <field name="sequence">2</field>
+        <field name="description">Khả năng phối hợp, hỗ trợ đồng nghiệp</field>
+    </record>
+    <record id="criteria_a03" model="sht.hr.appraisal.criteria">
+        <field name="name">Tuân thủ nội quy</field>
+        <field name="code">A03</field>
+        <field name="category">attitude</field>
+        <field name="weight">5</field>
+        <field name="sequence">3</field>
+        <field name="description">Chấp hành quy định công ty, đi làm đúng giờ</field>
+    </record>
+
+    <!-- Skill (S) -->
+    <record id="criteria_s01" model="sht.hr.appraisal.criteria">
+        <field name="name">Kỹ năng chuyên môn</field>
+        <field name="code">S01</field>
+        <field name="category">skill</field>
+        <field name="weight">20</field>
+        <field name="sequence">10</field>
+        <field name="description">Năng lực thực hiện công việc chuyên môn</field>
+    </record>
+    <record id="criteria_s02" model="sht.hr.appraisal.criteria">
+        <field name="name">Kỹ năng giao tiếp</field>
+        <field name="code">S02</field>
+        <field name="category">skill</field>
+        <field name="weight">10</field>
+        <field name="sequence">11</field>
+        <field name="description">Khả năng trình bày, thuyết phục, lắng nghe</field>
+    </record>
+    <record id="criteria_s03" model="sht.hr.appraisal.criteria">
+        <field name="name">Kỹ năng giải quyết vấn đề</field>
+        <field name="code">S03</field>
+        <field name="category">skill</field>
+        <field name="weight">10</field>
+        <field name="sequence">12</field>
+        <field name="description">Khả năng phân tích, đưa ra giải pháp</field>
+    </record>
+    <record id="criteria_s04" model="sht.hr.appraisal.criteria">
+        <field name="name">Kỹ năng quản lý thời gian</field>
+        <field name="code">S04</field>
+        <field name="category">skill</field>
+        <field name="weight">10</field>
+        <field name="sequence">13</field>
+        <field name="description">Hoàn thành đúng hạn, sắp xếp ưu tiên</field>
+    </record>
+
+    <!-- Knowledge (K) -->
+    <record id="criteria_k01" model="sht.hr.appraisal.criteria">
+        <field name="name">Kiến thức nghiệp vụ</field>
+        <field name="code">K01</field>
+        <field name="category">knowledge</field>
+        <field name="weight">15</field>
+        <field name="sequence">20</field>
+        <field name="description">Hiểu biết sâu về lĩnh vực công việc</field>
+    </record>
+    <record id="criteria_k02" model="sht.hr.appraisal.criteria">
+        <field name="name">Khả năng học hỏi</field>
+        <field name="code">K02</field>
+        <field name="category">knowledge</field>
+        <field name="weight">10</field>
+        <field name="sequence">21</field>
+        <field name="description">Chủ động cập nhật kiến thức, kỹ năng mới</field>
+    </record>
+</odoo>

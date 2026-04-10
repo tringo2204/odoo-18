@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_hr_appraisal_vn_config"
+              name="Đánh giá VN"
+              parent="hr_appraisal.menu_hr_appraisal_configuration"
+              sequence="50"/>
+
+    <menuitem id="menu_hr_appraisal_criteria"
+              name="Tiêu chí đánh giá"
+              parent="menu_hr_appraisal_vn_config"
+              action="sht_hr_appraisal_criteria_action"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_appraisal_template"
+              name="Mẫu đánh giá"
+              parent="menu_hr_appraisal_vn_config"
+              action="sht_hr_appraisal_template_action"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_appraisal_cycle"
+              name="Kỳ đánh giá"
+              parent="hr_appraisal.menu_hr_appraisal_root"
+              action="sht_hr_appraisal_cycle_action"
+              sequence="20"/>
+</odoo>

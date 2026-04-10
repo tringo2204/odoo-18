@@ -12,6 +12,12 @@
         action="sht_hr_onboarding_sht_hr_checklist_action"
         sequence="10"/>
 
+    <menuitem id="sht_hr_onboarding_menu_offboarding"
+        name="Thôi việc"
+        parent="sht_hr_onboarding_menu_root"
+        action="sht_hr_offboarding_action"
+        sequence="20"/>
+
     <menuitem id="sht_hr_onboarding_menu_templates"
         name="Templates"
         parent="hr.menu_human_resources_configuration"

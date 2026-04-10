@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_sht_hr_offboarding" model="ir.sequence">
+        <field name="name">Offboarding Sequence</field>
+        <field name="code">sht.hr.offboarding</field>
+        <field name="prefix">OFF/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="sht_hr_offboarding_template_default" model="sht.hr.checklist.template">
+        <field name="name">Checklist thôi việc - Mặc định</field>
+        <field name="checklist_type">offboarding</field>
+        <field name="is_active" eval="True"/>
+    </record>
+    <record id="sht_hr_offboarding_tmpl_line_01" model="sht.hr.checklist.template.line">
+        <field name="template_id" ref="sht_hr_offboarding_template_default"/>
+        <field name="name">Bàn giao công việc cho người kế nhiệm</field>
+        <field name="sequence">10</field>
+        <field name="responsible_role">manager</field>
+        <field name="default_deadline_days">7</field>
+    </record>
+    <record id="sht_hr_offboarding_tmpl_line_02" model="sht.hr.checklist.template.line">
+        <field name="template_id" ref="sht_hr_offboarding_template_default"/>
+        <field name="name">Thu hồi tài sản công ty</field>
+        <field name="sequence">20</field>
+        <field name="responsible_role">hr</field>
+        <field name="default_deadline_days">14</field>
+    </record>
+    <record id="sht_hr_offboarding_tmpl_line_03" model="sht.hr.checklist.template.line">
+        <field name="template_id" ref="sht_hr_offboarding_template_default"/>
+        <field name="name">Thu hồi quyền truy cập hệ thống</field>
+        <field name="sequence">30</field>
+        <field name="responsible_role">it</field>
+        <field name="default_deadline_days">14</field>
+    </record>
+    <record id="sht_hr_offboarding_tmpl_line_04" model="sht.hr.checklist.template.line">
+        <field name="template_id" ref="sht_hr_offboarding_template_default"/>
+        <field name="name">Chốt sổ bảo hiểm xã hội (BHXH)</field>
+        <field name="sequence">40</field>
+        <field name="responsible_role">hr</field>
+        <field name="default_deadline_days">30</field>
+    </record>
+    <record id="sht_hr_offboarding_tmpl_line_05" model="sht.hr.checklist.template.line">
+        <field name="template_id" ref="sht_hr_offboarding_template_default"/>
+        <field name="name">Thanh toán lương cuối và các khoản còn lại</field>
+        <field name="sequence">50</field>
+        <field name="responsible_role">hr</field>
+        <field name="default_deadline_days">30</field>
+    </record>
+    <record id="sht_hr_offboarding_tmpl_line_06" model="sht.hr.checklist.template.line">
+        <field name="template_id" ref="sht_hr_offboarding_template_default"/>
+        <field name="name">Phỏng vấn thôi việc (Exit Interview)</field>
+        <field name="sequence">60</field>
+        <field name="responsible_role">hr</field>
+        <field name="default_deadline_days">14</field>
+    </record>
+    <record id="sht_hr_offboarding_tmpl_line_07" model="sht.hr.checklist.template.line">
+        <field name="template_id" ref="sht_hr_offboarding_template_default"/>
+        <field name="name">Cấp giấy xác nhận thôi việc</field>
+        <field name="sequence">70</field>
+        <field name="responsible_role">hr</field>
+        <field name="default_deadline_days">30</field>
+    </record>
+</odoo>

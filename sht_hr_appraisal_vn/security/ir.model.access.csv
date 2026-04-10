@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sht_hr_appraisal_criteria_user,sht.hr.appraisal.criteria.user,model_sht_hr_appraisal_criteria,hr.group_hr_user,1,0,0,0
+access_sht_hr_appraisal_criteria_manager,sht.hr.appraisal.criteria.manager,model_sht_hr_appraisal_criteria,hr.group_hr_manager,1,1,1,1
+access_sht_hr_appraisal_template_user,sht.hr.appraisal.template.user,model_sht_hr_appraisal_template,hr.group_hr_user,1,0,0,0
+access_sht_hr_appraisal_template_manager,sht.hr.appraisal.template.manager,model_sht_hr_appraisal_template,hr.group_hr_manager,1,1,1,1
+access_sht_hr_appraisal_line_user,sht.hr.appraisal.line.user,model_sht_hr_appraisal_line,hr.group_hr_user,1,0,0,0
+access_sht_hr_appraisal_line_manager,sht.hr.appraisal.line.manager,model_sht_hr_appraisal_line,hr.group_hr_manager,1,1,1,1
+access_sht_hr_appraisal_cycle_user,sht.hr.appraisal.cycle.user,model_sht_hr_appraisal_cycle,hr.group_hr_user,1,0,0,0
+access_sht_hr_appraisal_cycle_manager,sht.hr.appraisal.cycle.manager,model_sht_hr_appraisal_cycle,hr.group_hr_manager,1,1,1,1

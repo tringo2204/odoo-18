@@ -19,6 +19,39 @@
                         <span class="o_stat_text">Checklists</span>
                     </div>
                 </button>
+                <button name="action_open_offboardings"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-sign-out"
+                    groups="hr.group_hr_user"
+                    invisible="not id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="offboarding_count"/>
+                        </span>
+                        <span class="o_stat_text">Thôi việc</span>
+                    </div>
+                </button>
+                <button name="action_create_onboarding"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-user-plus"
+                    groups="hr.group_hr_manager"
+                    invisible="not id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Tạo Onboarding</span>
+                    </div>
+                </button>
+                <button name="action_create_offboarding"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-user-times"
+                    groups="hr.group_hr_manager"
+                    invisible="not id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Tạo Offboarding</span>
+                    </div>
+                </button>
             </div>
         </field>
     </record>
