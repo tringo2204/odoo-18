@@ -29,5 +29,5 @@ jobs:
           flake8 . \
             --max-line-length=120 \
             --exclude=__manifest__.py,__openerp__.py \
-            --ignore=E501,W503,W504,E303,E302,E305,E261,E262,F401 \
+            --ignore=W503,W504,E303,E302,E305,E261,E262,F401 \
             --count --statistics

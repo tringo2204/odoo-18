@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from odoo.tests import TransactionCase, tagged
 from odoo.exceptions import UserError, ValidationError
 
@@ -109,7 +111,6 @@ class TestHrRequestWorkflow(TransactionCase):
         self.request_type_ot.write({'frequency_limit': 0})
 
     def test_duration_computation(self):
-        from datetime import datetime
         req = self._create_request(
             date_from=datetime(2025, 1, 10, 8, 0, 0),
             date_to=datetime(2025, 1, 10, 16, 0, 0),

@@ -1,9 +1,13 @@
+import logging
+
 from odoo import api, fields, models
 from odoo.addons.hr_payroll_vietnam.models.vn_tax_engine import (
     calculate_pit_progressive,
     calculate_pit_non_resident,
     calculate_insurance,
 )
+
+_logger = logging.getLogger(__name__)
 
 
 class HrPayrollStructure(models.Model):
@@ -53,8 +57,7 @@ class HrPayrollStructure(models.Model):
                 dep_ded = param('vn_dependent_deduction', raise_if_not_found=False) or 4400000
                 pit_brackets = param('vn_pit_brackets', raise_if_not_found=False)
             except (ValueError, KeyError) as e:
-                import logging
-                logging.getLogger(__name__).warning("VN payroll param error: %s", e)
+                _logger.warning("VN payroll param error: %s", e)
                 rec.sim_result_html = '<p class="text-danger">Lỗi: Chưa cấu hình tham số lương VN.</p>'
                 continue
 

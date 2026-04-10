@@ -1,3 +1,4 @@
+from odoo.fields import Date
 from odoo.tests import TransactionCase, tagged
 from odoo.exceptions import UserError
 
@@ -103,5 +104,4 @@ class TestHrVnDecision(TransactionCase):
         decision.action_confirm()
         decision.action_done()
 
-        from odoo.fields import Date
         self.assertEqual(self.employee.departure_date, Date.from_string('2025-12-31'))
