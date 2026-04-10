@@ -6,6 +6,7 @@ class HrKpiTemplate(models.Model):
     _name = 'hr.kpi.template'
     _description = 'Mẫu KPI'
     _order = 'name'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên mẫu', required=True)
     department_id = fields.Many2one('hr.department', string='Phòng ban')

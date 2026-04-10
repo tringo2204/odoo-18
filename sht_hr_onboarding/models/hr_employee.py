@@ -22,7 +22,7 @@ class HrEmployee(models.Model):
             onboarding = emp.checklist_ids.filtered(
                 lambda c: c.checklist_type == 'onboarding' and c.state == 'in_progress'
             )
-            emp.onboarding_progress = onboarding[0].progress if onboarding else 0.0
+            emp.onboarding_progress = onboarding[:1].progress if onboarding else 0.0
 
     @api.depends('offboarding_ids')
     def _compute_offboarding_count(self):

@@ -1,7 +1,7 @@
 import base64
 import io
 
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError
 from odoo.addons.hr_payroll_vietnam.models.vn_tax_engine import calculate_pit_progressive
 
@@ -21,7 +21,7 @@ class PitAnnualSettlement(models.TransientModel):
         default=lambda self: fields.Date.today().year - 1,
     )
     company_id = fields.Many2one(
-        'res.company', string='Công ty',
+        'res.company', string='Công ty', required=True,
         default=lambda self: self.env.company,
     )
     employee_ids = fields.Many2many(

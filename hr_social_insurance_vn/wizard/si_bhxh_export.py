@@ -1,7 +1,7 @@
 import base64
 import io
 
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError
 
 try:
@@ -79,8 +79,6 @@ class SiBhxhExport(models.TransientModel):
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = 'TK1-TS'
-        thin = Border(left=Side(style='thin'), right=Side(style='thin'),
-                      top=Side(style='thin'), bottom=Side(style='thin'))
 
         ws.merge_cells('A1:G1')
         ws['A1'] = f'TỜ KHAI ĐƠN VỊ THAM GIA BHXH, BHYT, BHTN — T{self.month}/{self.year}'

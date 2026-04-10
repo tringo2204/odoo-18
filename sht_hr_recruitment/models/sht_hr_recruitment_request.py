@@ -8,6 +8,7 @@ class ShtHrRecruitmentRequest(models.Model):
     _description = 'Đề xuất tuyển dụng'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc'
+    _check_company_auto = True
 
     name = fields.Char(
         string='Mã đề xuất', readonly=True, copy=False, default='Mới',

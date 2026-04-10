@@ -5,6 +5,7 @@ class HrKpiCriteria(models.Model):
     _name = 'hr.kpi.criteria'
     _description = 'Tiêu chí KPI'
     _order = 'category, sequence'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên tiêu chí', required=True)
     code = fields.Char(string='Mã')

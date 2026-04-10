@@ -7,6 +7,7 @@ class HrKpiPeriod(models.Model):
     _description = 'Kỳ đánh giá KPI'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date_from desc'
+    _check_company_auto = True
 
     name = fields.Char(string='Mã kỳ', readonly=True, copy=False, default='Mới')
     date_from = fields.Date(string='Từ ngày', required=True, tracking=True)

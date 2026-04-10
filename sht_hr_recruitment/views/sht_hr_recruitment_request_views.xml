@@ -19,7 +19,7 @@
                     <button name="action_draft" string="Về nháp" type="object"
                             invisible="state not in ('submitted', 'rejected')"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,approved"/>
+                           statusbar_visible="draft,submitted,approved,rejected"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

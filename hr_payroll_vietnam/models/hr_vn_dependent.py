@@ -25,7 +25,7 @@ class HrVnDependent(models.Model):
         ('pending', 'Chờ duyệt'),
         ('approved', 'Đã duyệt'),
         ('expired', 'Hết hạn'),
-    ], string='Trạng thái', default='pending', tracking=True)
+    ], string='Trạng thái', default='pending')
     company_id = fields.Many2one(
         'res.company', string='Công ty',
         related='employee_id.company_id', store=True,

@@ -24,7 +24,8 @@ env:
     sht_hr_base,sht_hr_reward_discipline,sht_hr_training,
     sht_hr_contract,sht_hr_leave,sht_hr_recruitment,sht_hr_onboarding,
     hr_payroll_vietnam,hr_social_insurance_vn,hr_request_vn,
-    hr_decision_vn,hr_asset_vn,sht_hr_appraisal_vn
+    hr_decision_vn,hr_asset_vn,sht_hr_appraisal_vn,
+    hr_kpi_okr,hr_digital_sign_vn
 
 jobs:
   deploy:
@@ -35,7 +36,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Setup SSH
         run: |
@@ -52,9 +53,8 @@ jobs:
             echo "Using manual modules: ${{ github.event.inputs.modules }}"
           else
             # Auto-detect changed module directories
-            CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -oP '^[^/]+' | sort -u | tr '\n' ',' | sed 's/,$//')
-            # Filter to only known custom modules
-            KNOWN="sht_hr_base sht_hr_reward_discipline sht_hr_training sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding hr_payroll_vietnam hr_social_insurance_vn hr_request_vn hr_decision_vn hr_asset_vn sht_hr_appraisal_vn mfg_dashboard"
+            CHANGED=$(git diff --name-only ${{ github.event.before || 'HEAD~1' }} HEAD | grep -oP '^[^/]+' | sort -u | tr '\n' ',' | sed 's/,$//')
+            KNOWN="sht_hr_base sht_hr_reward_discipline sht_hr_training sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding hr_payroll_vietnam hr_social_insurance_vn hr_request_vn hr_decision_vn hr_asset_vn sht_hr_appraisal_vn hr_kpi_okr hr_digital_sign_vn mfg_dashboard"
             MODULES=""
             for dir in $(echo "$CHANGED" | tr ',' ' '); do
               if echo "$KNOWN" | grep -qw "$dir"; then
@@ -79,6 +79,7 @@ jobs:
                      sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding \
                      hr_payroll_vietnam hr_social_insurance_vn hr_request_vn \
                      hr_decision_vn hr_asset_vn sht_hr_appraisal_vn \
+                     hr_kpi_okr hr_digital_sign_vn \
                      mfg_dashboard theme_omux .github .gitignore README.md"
 
             for item in $MODULES; do
@@ -98,7 +99,7 @@ jobs:
             systemctl stop odoo18
             /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
               -c /opt/odoo18/odoo.conf \
-              -d odoo18 \
+              -d ${{ github.event.inputs.database || 'odoo18' }} \
               -u $MODULES \
               --stop-after-init \
               --no-http 2>&1 | tail -5

@@ -6,6 +6,7 @@ class HrOkrObjective(models.Model):
     _description = 'OKR Objective'
     _inherit = ['mail.thread']
     _order = 'create_date desc'
+    _check_company_auto = True
 
     name = fields.Char(string='Mục tiêu', required=True, tracking=True)
     owner_id = fields.Many2one(

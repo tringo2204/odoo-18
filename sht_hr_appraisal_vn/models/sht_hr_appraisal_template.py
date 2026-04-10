@@ -6,6 +6,7 @@ class ShtHrAppraisalTemplate(models.Model):
     _name = 'sht.hr.appraisal.template'
     _description = 'Mẫu đánh giá'
     _order = 'name'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên mẫu', required=True)
     job_id = fields.Many2one('hr.job', string='Chức danh')

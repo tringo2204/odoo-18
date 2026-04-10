@@ -5,6 +5,7 @@ class HrSignTemplate(models.Model):
     _name = 'hr.sign.template'
     _description = 'Mẫu chữ ký'
     _order = 'name'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên mẫu', required=True)
     job_id = fields.Many2one('hr.job', string='Chức danh')
