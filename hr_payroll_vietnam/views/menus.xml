@@ -49,4 +49,10 @@
               parent="menu_payroll_vn_config"
               action="hr_vn_dependent_action"
               sequence="50"/>
+
+    <menuitem id="menu_payroll_vn_pit_settlement"
+              name="Quyết toán thuế TNCN"
+              parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
+              action="action_pit_annual_settlement"
+              sequence="91"/>
 </odoo>

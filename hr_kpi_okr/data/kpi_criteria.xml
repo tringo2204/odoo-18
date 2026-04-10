@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="kpi_cr_01" model="hr.kpi.criteria">
+        <field name="name">Hoàn thành công việc</field>
+        <field name="code">KPI01</field>
+        <field name="category">result</field>
+        <field name="weight">30</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="kpi_cr_02" model="hr.kpi.criteria">
+        <field name="name">Chất lượng công việc</field>
+        <field name="code">KPI02</field>
+        <field name="category">result</field>
+        <field name="weight">20</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="kpi_cr_03" model="hr.kpi.criteria">
+        <field name="name">Tinh thần làm việc</field>
+        <field name="code">KPI03</field>
+        <field name="category">behavior</field>
+        <field name="weight">15</field>
+        <field name="sequence">3</field>
+    </record>
+    <record id="kpi_cr_04" model="hr.kpi.criteria">
+        <field name="name">Sáng tạo &amp; cải tiến</field>
+        <field name="code">KPI04</field>
+        <field name="category">behavior</field>
+        <field name="weight">15</field>
+        <field name="sequence">4</field>
+    </record>
+    <record id="kpi_cr_05" model="hr.kpi.criteria">
+        <field name="name">Tuân thủ quy trình</field>
+        <field name="code">KPI05</field>
+        <field name="category">behavior</field>
+        <field name="weight">10</field>
+        <field name="sequence">5</field>
+    </record>
+    <record id="kpi_cr_06" model="hr.kpi.criteria">
+        <field name="name">Kỹ năng chuyên môn</field>
+        <field name="code">KPI06</field>
+        <field name="category">performance</field>
+        <field name="weight">10</field>
+        <field name="sequence">6</field>
+    </record>
+</odoo>

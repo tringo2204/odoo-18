@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_kpi_okr_root" name="KPI / OKR" parent="hr.menu_hr_root" sequence="40"/>
+
+    <menuitem id="menu_kpi_period" name="Kỳ đánh giá KPI" parent="menu_kpi_okr_root" action="hr_kpi_period_action" sequence="10"/>
+    <menuitem id="menu_kpi_assignment" name="Phân công KPI" parent="menu_kpi_okr_root" action="hr_kpi_assignment_action" sequence="20"/>
+    <menuitem id="menu_okr_objective" name="OKR Objectives" parent="menu_kpi_okr_root" action="hr_okr_objective_action" sequence="30"/>
+
+    <menuitem id="menu_kpi_config" name="Cấu hình KPI" parent="menu_kpi_okr_root" sequence="90"/>
+    <menuitem id="menu_kpi_criteria" name="Tiêu chí KPI" parent="menu_kpi_config" action="hr_kpi_criteria_action" sequence="10"/>
+    <menuitem id="menu_kpi_template" name="Mẫu KPI" parent="menu_kpi_config" action="hr_kpi_template_action" sequence="20"/>
+</odoo>

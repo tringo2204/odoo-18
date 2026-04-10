@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_sign_request_user,hr.sign.request.user,model_hr_sign_request,hr.group_hr_user,1,0,0,0
+access_hr_sign_request_manager,hr.sign.request.manager,model_hr_sign_request,hr.group_hr_manager,1,1,1,1
+access_hr_sign_signer_user,hr.sign.signer.user,model_hr_sign_signer,hr.group_hr_user,1,1,0,0
+access_hr_sign_signer_manager,hr.sign.signer.manager,model_hr_sign_signer,hr.group_hr_manager,1,1,1,1
+access_hr_sign_template_user,hr.sign.template.user,model_hr_sign_template,hr.group_hr_user,1,0,0,0
+access_hr_sign_template_manager,hr.sign.template.manager,model_hr_sign_template,hr.group_hr_manager,1,1,1,1

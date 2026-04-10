@@ -3,3 +3,5 @@ access_sht_hr_training_course_hr_user,sht.hr.training.course.hr.user,model_sht_h
 access_sht_hr_training_course_hr_manager,sht.hr.training.course.hr.manager,model_sht_hr_training_course,hr.group_hr_manager,1,1,1,1
 access_sht_hr_training_hr_user,sht.hr.training.hr.user,model_sht_hr_training,hr.group_hr_user,1,0,0,0
 access_sht_hr_training_hr_manager,sht.hr.training.hr.manager,model_sht_hr_training,hr.group_hr_manager,1,1,1,1
+access_sht_hr_training_plan_hr_user,sht.hr.training.plan.hr.user,model_sht_hr_training_plan,hr.group_hr_user,1,0,0,0
+access_sht_hr_training_plan_hr_manager,sht.hr.training.plan.hr.manager,model_sht_hr_training_plan,hr.group_hr_manager,1,1,1,1

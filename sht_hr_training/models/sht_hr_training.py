@@ -52,6 +52,25 @@ class ShtHrTraining(models.Model):
     certificate_filename = fields.Char()
     note = fields.Text()
     cost = fields.Float(string='Cost (VND)')
+    plan_id = fields.Many2one(
+        'sht.hr.training.plan', string='Kế hoạch đào tạo',
+        ondelete='set null',
+    )
+    commitment_months = fields.Integer(
+        string='Cam kết (tháng)',
+        help='Số tháng NV cam kết làm việc sau đào tạo',
+    )
+    commitment_end_date = fields.Date(
+        string='Hết cam kết', compute='_compute_commitment_end',
+    )
+    evaluation_level = fields.Selection([
+        ('1_reaction', 'L1 — Phản hồi'),
+        ('2_learning', 'L2 — Kiến thức'),
+        ('3_behavior', 'L3 — Hành vi'),
+        ('4_results', 'L4 — Kết quả'),
+    ], string='Mức đánh giá (Kirkpatrick)')
+    evaluation_score = fields.Float(string='Điểm đánh giá (1-5)')
+    evaluation_note = fields.Text(string='Nhận xét đánh giá')
     company_id = fields.Many2one(
         'res.company',
         default=lambda self: self.env.company,
@@ -75,6 +94,15 @@ class ShtHrTraining(models.Model):
                 raise ValidationError(
                     _('End date must be on or after the start date.')
                 )
+
+    @api.depends('date_end', 'commitment_months')
+    def _compute_commitment_end(self):
+        from dateutil.relativedelta import relativedelta
+        for rec in self:
+            if rec.date_end and rec.commitment_months:
+                rec.commitment_end_date = rec.date_end + relativedelta(months=rec.commitment_months)
+            else:
+                rec.commitment_end_date = False
 
     def action_start(self):
         self.write({'state': 'in_progress'})

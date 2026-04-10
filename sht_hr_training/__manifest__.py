@@ -7,9 +7,10 @@
     'summary': 'Employee Training Management',
     'description': 'Manage training courses, enrollment, and completion tracking for employees.',
     'author': 'SHT',
-    'depends': ['hr'],
+    'depends': ['hr', 'mail'],
     'data': [
         'security/ir.model.access.csv',
+        'views/sht_hr_training_plan_views.xml',
         'views/sht_hr_training_course_views.xml',
         'views/sht_hr_training_views.xml',
         'views/hr_employee_views.xml',

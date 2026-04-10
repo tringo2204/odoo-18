@@ -34,11 +34,13 @@ Quản lý Bảo hiểm Xã hội Việt Nam
         'views/hr_vn_si_d02_views.xml',
         'views/hr_vn_si_c12_views.xml',
         'views/hr_employee_views.xml',
-        'views/menus.xml',
         # Wizards
         'wizard/si_import_history_views.xml',
         'wizard/si_c12_import_views.xml',
         'wizard/si_d02_export_views.xml',
+        'wizard/si_bhxh_export_views.xml',
+        # Menus (after wizards so actions exist)
+        'views/menus.xml',
         # Reports
         'report/d02_lt_template.xml',
         'report/si_monthly_list.xml',

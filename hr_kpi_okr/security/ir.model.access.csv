@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_kpi_criteria_user,hr.kpi.criteria.user,model_hr_kpi_criteria,hr.group_hr_user,1,0,0,0
+access_hr_kpi_criteria_manager,hr.kpi.criteria.manager,model_hr_kpi_criteria,hr.group_hr_manager,1,1,1,1
+access_hr_kpi_template_user,hr.kpi.template.user,model_hr_kpi_template,hr.group_hr_user,1,0,0,0
+access_hr_kpi_template_manager,hr.kpi.template.manager,model_hr_kpi_template,hr.group_hr_manager,1,1,1,1
+access_hr_kpi_period_user,hr.kpi.period.user,model_hr_kpi_period,hr.group_hr_user,1,0,0,0
+access_hr_kpi_period_manager,hr.kpi.period.manager,model_hr_kpi_period,hr.group_hr_manager,1,1,1,1
+access_hr_kpi_assignment_user,hr.kpi.assignment.user,model_hr_kpi_assignment,hr.group_hr_user,1,1,0,0
+access_hr_kpi_assignment_manager,hr.kpi.assignment.manager,model_hr_kpi_assignment,hr.group_hr_manager,1,1,1,1
+access_hr_kpi_assignment_line_user,hr.kpi.assignment.line.user,model_hr_kpi_assignment_line,hr.group_hr_user,1,1,0,0
+access_hr_kpi_assignment_line_manager,hr.kpi.assignment.line.manager,model_hr_kpi_assignment_line,hr.group_hr_manager,1,1,1,1
+access_hr_okr_objective_user,hr.okr.objective.user,model_hr_okr_objective,hr.group_hr_user,1,1,1,0
+access_hr_okr_objective_manager,hr.okr.objective.manager,model_hr_okr_objective,hr.group_hr_manager,1,1,1,1
+access_hr_okr_key_result_user,hr.okr.key.result.user,model_hr_okr_key_result,hr.group_hr_user,1,1,1,0
+access_hr_okr_key_result_manager,hr.okr.key.result.manager,model_hr_okr_key_result,hr.group_hr_manager,1,1,1,1

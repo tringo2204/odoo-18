@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_sign_root" name="Ký số" parent="hr.menu_hr_root" sequence="45"/>
+    <menuitem id="menu_sign_request" name="Yêu cầu ký" parent="menu_sign_root" action="hr_sign_request_action" sequence="10"/>
+    <menuitem id="menu_sign_template" name="Mẫu chữ ký" parent="menu_sign_root" action="hr_sign_template_action" sequence="20"/>
+</odoo>

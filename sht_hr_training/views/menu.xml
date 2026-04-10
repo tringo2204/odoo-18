@@ -6,6 +6,12 @@
         sequence="50"
         groups="hr.group_hr_user"/>
 
+    <menuitem id="sht_hr_training_menu_plan"
+        name="Kế hoạch đào tạo"
+        parent="sht_hr_training_menu_root"
+        action="sht_hr_training_plan_action"
+        sequence="5"/>
+
     <menuitem id="sht_hr_training_menu_records"
         name="Training Records"
         parent="sht_hr_training_menu_root"

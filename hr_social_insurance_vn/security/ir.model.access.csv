@@ -14,3 +14,4 @@ access_hr_vn_si_c12_lookup_manager,hr.vn.si.c12.lookup.manager,model_hr_vn_si_c1
 access_hr_vn_si_import_history_manager,hr.vn.si.import.history.manager,model_hr_vn_si_import_history,hr.group_hr_manager,1,1,1,0
 access_hr_vn_si_c12_import_manager,hr.vn.si.c12.import.manager,model_hr_vn_si_c12_import,hr.group_hr_manager,1,1,1,0
 access_hr_vn_si_d02_export_manager,hr.vn.si.d02.export.manager,model_hr_vn_si_d02_export,hr.group_hr_manager,1,1,1,0
+access_hr_vn_si_bhxh_export_manager,hr.vn.si.bhxh.export.manager,model_hr_vn_si_bhxh_export,hr.group_hr_manager,1,1,1,0

@@ -1,0 +1,23 @@
+{
+    'name': 'KPI / OKR',
+    'version': '18.0.1.0.0',
+    'category': 'Human Resources',
+    'summary': 'Quản lý KPI & OKR — tiêu chí, mẫu, kỳ đánh giá, liên kết lương thưởng',
+    'author': 'SHT',
+    'depends': ['hr', 'mail'],
+    'data': [
+        'security/hr_kpi_okr_security.xml',
+        'security/ir.model.access.csv',
+        'data/kpi_criteria.xml',
+        'data/ir_sequence.xml',
+        'views/hr_kpi_criteria_views.xml',
+        'views/hr_kpi_template_views.xml',
+        'views/hr_kpi_period_views.xml',
+        'views/hr_kpi_assignment_views.xml',
+        'views/hr_okr_views.xml',
+        'views/menus.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+}

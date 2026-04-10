@@ -36,4 +36,10 @@
               parent="menu_hr_si_root"
               action="hr_vn_si_c12_lookup_action"
               sequence="50"/>
+
+    <menuitem id="menu_hr_si_bhxh_export"
+              name="Xuất mẫu BHXH"
+              parent="menu_hr_si_root"
+              action="action_si_bhxh_export"
+              sequence="60"/>
 </odoo>

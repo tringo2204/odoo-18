@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_sign_request_comp_rule" model="ir.rule">
+            <field name="name">Sign Request: Multi-company</field>
+            <field name="model_id" ref="model_hr_sign_request"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="hr_sign_template_comp_rule" model="ir.rule">
+            <field name="name">Sign Template: Multi-company</field>
+            <field name="model_id" ref="model_hr_sign_template"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

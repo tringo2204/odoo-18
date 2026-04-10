@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_kpi_criteria_view_list" model="ir.ui.view">
+        <field name="name">hr.kpi.criteria.list</field>
+        <field name="model">hr.kpi.criteria</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category" widget="badge"/>
+                <field name="unit"/>
+                <field name="target_value"/>
+                <field name="weight"/>
+            </list>
+        </field>
+    </record>
+    <record id="hr_kpi_criteria_view_form" model="ir.ui.view">
+        <field name="name">hr.kpi.criteria.form</field>
+        <field name="model">hr.kpi.criteria</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/><field name="code"/>
+                            <field name="category"/><field name="unit"/>
+                        </group>
+                        <group>
+                            <field name="target_value"/><field name="weight"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Mô tả..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="hr_kpi_criteria_action" model="ir.actions.act_window">
+        <field name="name">Tiêu chí KPI</field>
+        <field name="res_model">hr.kpi.criteria</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

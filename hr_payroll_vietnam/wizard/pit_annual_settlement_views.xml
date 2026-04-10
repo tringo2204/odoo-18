@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_vn_pit_annual_settlement_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.pit.annual.settlement.form</field>
+        <field name="model">hr.vn.pit.annual.settlement</field>
+        <field name="arch" type="xml">
+            <form string="Quyết toán thuế TNCN năm">
+                <group>
+                    <group>
+                        <field name="year"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="employee_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="total_employees"/>
+                        <field name="total_gross"/>
+                        <field name="total_pit_paid"/>
+                        <field name="total_pit_annual"/>
+                        <field name="total_difference"/>
+                    </group>
+                </group>
+                <group invisible="not export_file">
+                    <field name="export_file" filename="export_filename"/>
+                    <field name="export_filename" invisible="1"/>
+                </group>
+                <footer>
+                    <button name="action_compute" string="Tính toán" type="object"
+                            class="btn-primary"/>
+                    <button name="action_export" string="Xuất Excel" type="object"
+                            class="btn-secondary"/>
+                    <button string="Đóng" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pit_annual_settlement" model="ir.actions.act_window">
+        <field name="name">Quyết toán thuế TNCN</field>
+        <field name="res_model">hr.vn.pit.annual.settlement</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
