@@ -71,7 +71,14 @@ jobs:
             set -e
             cd /opt/odoo18/custom_addons
 
-            # Fetch latest from GitHub (use URL to avoid remote config issues)
+            # Ensure .git exists (restore if missing)
+            if [ ! -d .git ]; then
+              echo "⚠️ .git missing, restoring..."
+              git init
+              git remote add origin https://github.com/tringo2204/odoo-18.git 2>/dev/null || true
+            fi
+
+            # Fetch latest from GitHub
             git fetch https://github.com/tringo2204/odoo-18.git main
 
             # Sync all module directories from FETCH_HEAD
