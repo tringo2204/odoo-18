@@ -55,9 +55,17 @@ class SiBhxhExport(models.TransientModel):
         }
 
     def _get_active_records(self):
+        """Lấy hồ sơ BH đang tham gia tại thời điểm tháng/năm đang xem."""
+        month = int(self.month)
+        year = self.year
+        if month == 12:
+            end_of_month = fields.Date.from_string(f'{year + 1}-01-01')
+        else:
+            end_of_month = fields.Date.from_string(f'{year}-{month + 1:02d}-01')
         return self.env['hr.vn.si.record'].search([
-            ('current_status', '=', 'active'),
+            ('current_status', 'in', ('active', 'suspended')),
             ('company_id', '=', self.company_id.id),
+            ('registration_date', '<', end_of_month),
         ])
 
     def _export_tk1_ts(self):
