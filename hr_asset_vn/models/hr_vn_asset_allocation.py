@@ -30,6 +30,8 @@ class HrVnAssetAllocation(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
         for vals in vals_list:
             if not vals.get('asset_id') or not vals.get('employee_id'):
                 raise UserError(_('Phải chọn tài sản và nhân viên.'))
