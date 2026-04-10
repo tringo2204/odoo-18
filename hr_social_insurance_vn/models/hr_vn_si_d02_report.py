@@ -94,7 +94,7 @@ class HrVnSiD02Report(models.Model):
         # Tạo dòng mới từ history confirmed
         history_entries = self.monthly_list_id.history_ids.filtered(
             lambda h: h.state in ('confirmed', 'reported')
-            and h.change_type in ('increase', 'decrease', 'adjust')
+            and h.change_type in ('increase', 'decrease', 'adjust', 'sick', 'maternity')
         )
         D02Line = self.env['hr.vn.si.d02.line']
         line_vals_list = []

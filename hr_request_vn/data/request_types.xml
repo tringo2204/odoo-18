@@ -77,4 +77,36 @@
         <field name="approver_type">hr</field>
         <field name="sequence">20</field>
     </record>
+
+    <!-- Default approval rules for remaining request types -->
+    <record id="rule_absence_manager" model="hr.request.approval.rule">
+        <field name="request_type_id" ref="request_type_absence"/>
+        <field name="approver_type">direct_manager</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="rule_shift_swap_manager" model="hr.request.approval.rule">
+        <field name="request_type_id" ref="request_type_shift_swap"/>
+        <field name="approver_type">direct_manager</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="rule_extra_shift_manager" model="hr.request.approval.rule">
+        <field name="request_type_id" ref="request_type_extra_shift"/>
+        <field name="approver_type">direct_manager</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="rule_shift_reg_manager" model="hr.request.approval.rule">
+        <field name="request_type_id" ref="request_type_shift_reg"/>
+        <field name="approver_type">direct_manager</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="rule_business_trip_manager" model="hr.request.approval.rule">
+        <field name="request_type_id" ref="request_type_business_trip"/>
+        <field name="approver_type">direct_manager</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="rule_special_manager" model="hr.request.approval.rule">
+        <field name="request_type_id" ref="request_type_special"/>
+        <field name="approver_type">direct_manager</field>
+        <field name="sequence">10</field>
+    </record>
 </odoo>

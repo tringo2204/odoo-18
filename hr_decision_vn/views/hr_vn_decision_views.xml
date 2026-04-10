@@ -54,6 +54,7 @@
                             <field name="job_id" invisible="decision_type not in ('appointment', 'transfer')"/>
                             <field name="old_wage" invisible="decision_type != 'salary_adjustment'"/>
                             <field name="new_wage" invisible="decision_type != 'salary_adjustment'"/>
+                            <field name="new_insurance_salary" invisible="decision_type != 'salary_adjustment'"/>
                         </group>
                     </group>
                     <notebook>

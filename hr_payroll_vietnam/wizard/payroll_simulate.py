@@ -89,7 +89,12 @@ class PayrollSimulate(models.TransientModel):
         bhyt_er_rate = config.bhyt_employer_rate if config else 3.0
         bhtn_er_rate = config.bhtn_employer_rate if config else 1.0
         bhxh_cap = config.bhxh_salary_cap if config else 46800000
-        bhtn_cap = 99200000  # default Vùng I
+        # BHTN cap = 20 × lương vùng (default Vùng I)
+        bhtn_cap = 99200000
+        if config and config.regional_wage_ids:
+            region_1 = config.regional_wage_ids.filtered(lambda r: r.region == '1')
+            if region_1:
+                bhtn_cap = region_1[0].wage_amount * 20
 
         deduction = self.env['hr.vn.personal.deduction'].search([('year', '=', year)], limit=1)
         self_ded = deduction.self_deduction if deduction else 11000000

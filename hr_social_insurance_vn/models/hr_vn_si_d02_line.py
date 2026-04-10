@@ -19,6 +19,8 @@ class HrVnSiD02Line(models.Model):
         ('increase', 'Tăng'),
         ('decrease', 'Giảm'),
         ('adjust', 'Điều chỉnh'),
+        ('sick', 'Ốm đau'),
+        ('maternity', 'Thai sản'),
     ], string='Loại biến động', required=True)
     old_salary = fields.Float(string='Mức lương cũ')
     new_salary = fields.Float(string='Mức lương mới')

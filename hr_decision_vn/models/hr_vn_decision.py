@@ -50,6 +50,10 @@ class HrVnDecision(models.Model):
     )
     old_wage = fields.Float(string='Lương cũ')
     new_wage = fields.Float(string='Lương mới')
+    new_insurance_salary = fields.Float(
+        string='Lương đóng BH mới',
+        help='Để trống = giữ nguyên lương đóng BH hiện tại',
+    )
     effective_date = fields.Date(
         string='Ngày hiệu lực',
         required=True,
@@ -123,7 +127,10 @@ class HrVnDecision(models.Model):
                     'Nhân viên %s không có hợp đồng đang hiệu lực.',
                     employee.name,
                 ))
-            contract.write({'wage': self.new_wage})
+            vals = {'wage': self.new_wage}
+            if self.new_insurance_salary:
+                vals['insurance_salary'] = self.new_insurance_salary
+            contract.write(vals)
 
         elif self.decision_type == 'termination':
             employee.write({
