@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
     <data>
         <record id="sht_hr_appraisal_criteria_comp_rule" model="ir.rule">
             <field name="name">Tiêu chí ĐG: Multi-company</field>

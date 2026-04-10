@@ -15,7 +15,7 @@
                     <button name="action_draft" type="object" string="Về nháp"
                             invisible="state != 'cancelled'"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,in_progress,completed"/>
+                           statusbar_visible="draft,in_progress,completed,cancelled"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

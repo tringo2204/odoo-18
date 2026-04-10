@@ -1,7 +1,7 @@
 import base64
 import io
 
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError
 
 try:
@@ -55,9 +55,20 @@ class SiBhxhExport(models.TransientModel):
         }
 
     def _get_active_records(self):
+        month = int(self.month)
+        year = self.year
+        date_from = fields.Date.from_string(f'{year}-{month:02d}-01')
+        if month == 12:
+            date_to = fields.Date.from_string(f'{year + 1}-01-01')
+        else:
+            date_to = fields.Date.from_string(f'{year}-{month + 1:02d}-01')
         return self.env['hr.vn.si.record'].search([
             ('current_status', '=', 'active'),
             ('company_id', '=', self.company_id.id),
+            ('create_date', '<', date_to),
+            '|',
+            ('close_date', '=', False),
+            ('close_date', '>=', date_from),
         ])
 
     def _export_tk1_ts(self):

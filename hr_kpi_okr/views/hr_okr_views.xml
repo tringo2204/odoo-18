@@ -10,7 +10,7 @@
                     <button name="action_done" string="Hoàn thành" type="object" class="btn-success" invisible="state != 'active'"/>
                     <button name="action_cancel" string="Hủy" type="object" invisible="state in ('done', 'cancelled')"/>
                     <button name="action_draft" string="Về nháp" type="object" invisible="state == 'draft'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,active,done"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,done,cancelled"/>
                 </header>
                 <sheet>
                     <div class="oe_title"><h1><field name="name" placeholder="Mục tiêu..."/></h1></div>

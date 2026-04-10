@@ -77,6 +77,7 @@ class ShtHrHeadcountPlan(models.Model):
             plan.applicant_count = Applicant.search_count([
                 ('department_id', '=', plan.department_id.id),
                 ('job_id', '=', plan.job_id.id),
+                ('company_id', '=', plan.company_id.id),
             ])
 
     @api.depends('planned_count', 'current_count')

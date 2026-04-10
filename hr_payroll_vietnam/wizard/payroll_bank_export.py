@@ -111,8 +111,11 @@ class HrVnBankExport(models.TransientModel):
         return base64.b64encode(output.getvalue().encode('utf-8')), fn
 
     def _export_generic(self, data, run):
-        lines = ['Họ và tên,Số tài khoản,Ngân hàng,Chi nhánh,Số tiền']
+        import csv
+        output = io.StringIO()
+        writer = csv.writer(output, quoting=csv.QUOTE_ALL)
+        writer.writerow(['Họ và tên', 'Số tài khoản', 'Ngân hàng', 'Chi nhánh', 'Số tiền'])
         for row in data:
-            lines.append(f"{row['name']},{row['bank_account']},{row['bank_name']},,{int(row['amount'])}")
+            writer.writerow([row['name'], row['bank_account'], row['bank_name'], '', int(row['amount'])])
         fn = f'Payment_T{run.date_start.month}_{run.date_start.year}.csv'
-        return base64.b64encode('\n'.join(lines).encode('utf-8')), fn
+        return base64.b64encode(output.getvalue().encode('utf-8')), fn

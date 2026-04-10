@@ -9,7 +9,7 @@
                     <button name="action_send" string="Gửi ký" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_cancel" string="Hủy" type="object" invisible="state in ('fully_signed', 'cancelled')"/>
                     <button name="action_draft" string="Về nháp" type="object" invisible="state != 'cancelled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,fully_signed"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,partially_signed,fully_signed,cancelled"/>
                 </header>
                 <sheet>
                     <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
