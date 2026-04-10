@@ -9,16 +9,22 @@ on:
       database:
         description: 'Database to upgrade modules on'
         required: true
-        default: 'none'
+        default: 'odoo18'
         type: choice
         options:
-          - none
           - odoo18
-          - odoo18_manufacturing_demo
+          - none
       modules:
-        description: 'Modules to upgrade (comma-separated, e.g. sht_hr_base,sht_hr_training)'
+        description: 'Modules to upgrade (comma-separated, leave empty = auto-detect changed)'
         required: false
         default: ''
+
+env:
+  ALL_CUSTOM_MODULES: >-
+    sht_hr_base,sht_hr_reward_discipline,sht_hr_training,
+    sht_hr_contract,sht_hr_leave,sht_hr_recruitment,sht_hr_onboarding,
+    hr_payroll_vietnam,hr_social_insurance_vn,hr_request_vn,
+    hr_decision_vn,hr_asset_vn,sht_hr_appraisal_vn
 
 jobs:
   deploy:
@@ -28,6 +34,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Setup SSH
         run: |
@@ -36,51 +44,64 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
+      - name: Detect changed modules
+        id: changes
+        run: |
+          if [ -n "${{ github.event.inputs.modules }}" ]; then
+            echo "modules=${{ github.event.inputs.modules }}" >> $GITHUB_OUTPUT
+            echo "Using manual modules: ${{ github.event.inputs.modules }}"
+          else
+            # Auto-detect changed module directories
+            CHANGED=$(git diff --name-only HEAD~1 HEAD | grep -oP '^[^/]+' | sort -u | tr '\n' ',' | sed 's/,$//')
+            # Filter to only known custom modules
+            KNOWN="sht_hr_base sht_hr_reward_discipline sht_hr_training sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding hr_payroll_vietnam hr_social_insurance_vn hr_request_vn hr_decision_vn hr_asset_vn sht_hr_appraisal_vn mfg_dashboard"
+            MODULES=""
+            for dir in $(echo "$CHANGED" | tr ',' ' '); do
+              if echo "$KNOWN" | grep -qw "$dir"; then
+                MODULES="${MODULES:+$MODULES,}$dir"
+              fi
+            done
+            echo "modules=$MODULES" >> $GITHUB_OUTPUT
+            echo "Auto-detected changed modules: $MODULES"
+          fi
+
       - name: Pull latest custom modules on server
         run: |
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'DEPLOY_EOF'
             set -e
-            cd /opt/odoo18
+            cd /opt/odoo18/custom_addons
 
-            # Fetch latest from our GitHub repo
-            git fetch https://github.com/tringo2204/odoo-18.git main
-
-            # Only checkout our custom module folders — never touch Odoo core
-            MODULES="sht_hr_base sht_hr_reward_discipline sht_hr_training \
-                     sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding \
-                     hr_payroll_vietnam hr_social_insurance_vn hr_request_vn \
-                     hr_decision_vn hr_asset_vn \
-                     mfg_dashboard theme_omux .github"
-
-            for MODULE in $MODULES; do
-              git checkout FETCH_HEAD -- $MODULE 2>/dev/null && echo "✅ Updated $MODULE" || echo "⚠️  Skipped $MODULE (not found)"
-            done
+            # Fetch and reset to latest main
+            git fetch origin main
+            git reset --hard FETCH_HEAD
 
             echo "✅ Code updated successfully"
-          EOF
+          DEPLOY_EOF
 
-      - name: Restart Odoo service
+      - name: Upgrade changed modules
+        if: ${{ steps.changes.outputs.modules != '' }}
         run: |
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            systemctl restart odoo18
-            sleep 5
-            systemctl is-active odoo18 && echo "✅ Odoo restarted successfully" || echo "❌ Odoo failed to restart"
-          EOF
-
-      - name: Upgrade modules on database (if specified)
-        if: ${{ github.event.inputs.database != 'none' && github.event.inputs.database != '' && github.event.inputs.modules != '' }}
-        run: |
-          DB="${{ github.event.inputs.database }}"
-          MODULES="${{ github.event.inputs.modules }}"
-          echo "Upgrading [$MODULES] on [$DB]..."
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << EOF
+          MODULES="${{ steps.changes.outputs.modules }}"
+          echo "Upgrading modules: $MODULES"
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << UPGRADE_EOF
+            set -e
             systemctl stop odoo18
             /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
               -c /opt/odoo18/odoo.conf \
-              -d $DB \
+              -d odoo18 \
               -u $MODULES \
               --stop-after-init \
-              --no-http
+              --no-http 2>&1 | tail -5
             systemctl start odoo18
-            echo "✅ Modules upgraded on $DB"
+            sleep 3
+            systemctl is-active odoo18 && echo "✅ Modules upgraded and Odoo restarted" || echo "❌ Odoo failed to restart"
+          UPGRADE_EOF
+
+      - name: Restart Odoo (no module changes)
+        if: ${{ steps.changes.outputs.modules == '' }}
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+            systemctl restart odoo18
+            sleep 3
+            systemctl is-active odoo18 && echo "✅ Odoo restarted" || echo "❌ Odoo failed"
           EOF
