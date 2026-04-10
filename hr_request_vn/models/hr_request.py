@@ -310,9 +310,20 @@ class HrRequest(models.Model):
         self.leave_id = leave.id
 
     def _side_effect_ot(self):
-        """Ghi nhận giờ OT vào chấm công."""
-        _logger.info("OT request %s approved for %s: %s hours",
-                      self.name, self.employee_id.name, self.ot_hours)
+        """Tạo hr.attendance record cho giờ OT."""
+        emp = self.employee_id
+        if not self.date_from or not self.date_to:
+            _logger.info("OT request %s: no dates, skip attendance", self.name)
+            return
+        # Create attendance record for OT hours
+        att = self.env['hr.attendance'].sudo().create({
+            'employee_id': emp.id,
+            'check_in': self.date_from,
+            'check_out': self.date_to,
+        })
+        self.attendance_id = att.id
+        _logger.info("OT attendance created for %s: %s → %s",
+                      emp.name, self.date_from, self.date_to)
 
     def _side_effect_checkin(self):
         """Tạo/cập nhật hr.attendance record."""
@@ -410,15 +421,80 @@ class HrRequest(models.Model):
         self.leave_id = leave.id
 
     def _side_effect_special_schedule(self):
-        """Ghi log chế độ đặc biệt (đi muộn/về sớm)."""
-        _logger.info("Special schedule %s for %s: %s",
-                      self.name, self.employee_id.name, self.special_schedule_type)
+        """Tạo hr.leave cho chế độ đặc biệt (đi muộn/về sớm)."""
+        if not self.date_from or not self.date_to:
+            _logger.info("Special schedule %s: no dates, skip", self.name)
+            return
+        # Create attendance with adjusted hours
+        att = self.env['hr.attendance'].sudo().create({
+            'employee_id': self.employee_id.id,
+            'check_in': self.date_from,
+            'check_out': self.date_to,
+        })
+        self.attendance_id = att.id
+        _logger.info("Special schedule attendance for %s: %s (%s)",
+                      self.employee_id.name, self.special_schedule_type,
+                      self.name)
 
     def _side_effect_resignation(self):
-        """Set departure_date trên employee."""
-        if self.resignation_date:
-            self.employee_id.write({
-                'departure_date': self.resignation_date,
-            })
-            _logger.info("Employee %s resignation set for %s",
-                          self.employee_id.name, self.resignation_date)
+        """Full offboarding chain: departure → close contract → SI decrease → offboarding → asset alert."""
+        emp = self.employee_id
+        if not self.resignation_date:
+            return
+
+        # 1. Set departure_date
+        emp.write({'departure_date': self.resignation_date})
+
+        # 2. Close current contract
+        contract = emp.contract_id
+        if contract and contract.state == 'open':
+            contract.write({'state': 'close', 'date_end': self.resignation_date})
+            _logger.info("Contract %s closed for %s", contract.name, emp.name)
+
+        # 3. Create SI decrease history (soft-depend)
+        if 'hr.vn.si.record' in self.env:
+            si_record = self.env['hr.vn.si.record'].search([
+                ('employee_id', '=', emp.id), ('current_status', '=', 'active'),
+            ], limit=1)
+            if si_record:
+                self.env['hr.vn.si.history'].create({
+                    'record_id': si_record.id,
+                    'change_type': 'decrease',
+                    'effective_date': self.resignation_date,
+                    'old_salary': si_record.insurance_salary,
+                    'new_salary': 0,
+                    'reason': 'Nghỉ việc — %s' % (self.resignation_reason or ''),
+                })
+                si_record.write({'current_status': 'closed'})
+
+        # 4. Trigger offboarding (soft-depend)
+        if 'sht.hr.offboarding' in self.env:
+            existing = self.env['sht.hr.offboarding'].search([
+                ('employee_id', '=', emp.id),
+                ('state', 'not in', ['completed', 'cancelled']),
+            ], limit=1)
+            if not existing:
+                offboarding = self.env['sht.hr.offboarding'].create({
+                    'employee_id': emp.id,
+                    'resignation_date': self.resignation_date,
+                    'last_working_day': self.resignation_date,
+                    'reason': self.resignation_reason or '',
+                })
+                offboarding.action_start()
+                _logger.info("Offboarding %s created for %s", offboarding.name, emp.name)
+
+        # 5. Alert about unreturned assets (soft-depend)
+        if 'hr.vn.asset' in self.env:
+            assets = self.env['hr.vn.asset'].search([
+                ('current_employee_id', '=', emp.id), ('state', '=', 'allocated'),
+            ])
+            if assets:
+                emp.activity_schedule(
+                    act_type_xmlid='mail.mail_activity_data_todo',
+                    summary=_('Thu hồi %d tài sản') % len(assets),
+                    note=_('NV %s nghỉ việc. Tài sản cần thu hồi: %s') % (
+                        emp.name, ', '.join(assets.mapped('name'))),
+                    user_id=emp.parent_id.user_id.id or self.env.user.id,
+                )
+
+        _logger.info("Full resignation chain completed for %s", emp.name)

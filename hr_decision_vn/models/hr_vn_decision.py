@@ -133,9 +133,38 @@ class HrVnDecision(models.Model):
             contract.write(vals)
 
         elif self.decision_type == 'termination':
-            employee.write({
-                'departure_date': self.effective_date,
-            })
+            employee.write({'departure_date': self.effective_date})
+            # Close contract
+            contract = employee.contract_id
+            if contract and contract.state == 'open':
+                contract.write({'state': 'close', 'date_end': self.effective_date})
+            # SI decrease (soft-depend)
+            if 'hr.vn.si.record' in self.env:
+                si_rec = self.env['hr.vn.si.record'].search([
+                    ('employee_id', '=', employee.id), ('current_status', '=', 'active'),
+                ], limit=1)
+                if si_rec:
+                    self.env['hr.vn.si.history'].create({
+                        'record_id': si_rec.id, 'change_type': 'decrease',
+                        'effective_date': self.effective_date,
+                        'old_salary': si_rec.insurance_salary, 'new_salary': 0,
+                        'reason': 'Chấm dứt HĐ — QĐ %s' % self.name,
+                    })
+                    si_rec.write({'current_status': 'closed'})
+            # Offboarding (soft-depend)
+            if 'sht.hr.offboarding' in self.env:
+                existing = self.env['sht.hr.offboarding'].search([
+                    ('employee_id', '=', employee.id),
+                    ('state', 'not in', ['completed', 'cancelled']),
+                ], limit=1)
+                if not existing:
+                    off = self.env['sht.hr.offboarding'].create({
+                        'employee_id': employee.id,
+                        'resignation_date': self.effective_date,
+                        'last_working_day': self.effective_date,
+                        'reason': self.note or '',
+                    })
+                    off.action_start()
 
     @api.onchange('decision_type', 'employee_id')
     def _onchange_populate_wage(self):

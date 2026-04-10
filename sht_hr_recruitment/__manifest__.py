@@ -8,6 +8,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ir_sequence.xml',
+        'data/ir_cron.xml',
         'views/sht_hr_headcount_plan_views.xml',
         'views/sht_hr_recruitment_request_views.xml',
         'views/sht_hr_recruitment_campaign_views.xml',

@@ -27,7 +27,8 @@
             <form string="Headcount Plan">
                 <header>
                     <button name="action_approve" type="object" string="Approve" class="btn-primary"
-                        invisible="state != 'draft'"/>
+                        invisible="state != 'draft'"
+                        groups="hr.group_hr_manager"/>
                     <button name="action_close" type="object" string="Close"
                         invisible="state != 'approved'"/>
                     <button name="action_reset_draft" type="object" string="Reset to Draft"
@@ -53,6 +54,7 @@
                         <group string="Headcount">
                             <field name="planned_count"/>
                             <field name="current_count"/>
+                            <field name="applicant_count"/>
                             <field name="remaining"/>
                             <field name="is_over_budget"/>
                         </group>
@@ -61,6 +63,7 @@
                         <field name="note" nolabel="1" colspan="2"/>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

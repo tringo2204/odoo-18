@@ -1,4 +1,8 @@
+import logging
+
 from odoo import fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class HrContract(models.Model):
@@ -34,3 +38,28 @@ class HrContract(models.Model):
         ('employee_pays', 'NV chịu thuế'),
         ('gross_up', 'DN chịu thuế (Gross-up)'),
     ], string='Chính sách thuế', default='employee_pays')
+
+    def write(self, vals):
+        """Auto-create SI history when insurance_salary changes."""
+        if 'insurance_salary' in vals and 'hr.vn.si.record' in self.env:
+            for contract in self:
+                old_salary = contract.insurance_salary
+                new_salary = vals['insurance_salary']
+                if old_salary and new_salary and old_salary != new_salary:
+                    si_rec = self.env['hr.vn.si.record'].search([
+                        ('employee_id', '=', contract.employee_id.id),
+                        ('current_status', '=', 'active'),
+                    ], limit=1)
+                    if si_rec:
+                        self.env['hr.vn.si.history'].create({
+                            'record_id': si_rec.id,
+                            'change_type': 'adjust',
+                            'effective_date': fields.Date.today(),
+                            'old_salary': old_salary,
+                            'new_salary': new_salary,
+                            'reason': 'Điều chỉnh lương đóng BH từ HĐ',
+                        })
+                        si_rec.write({'insurance_salary': new_salary})
+                        _logger.info("SI adjust: %s %s → %s",
+                                     contract.employee_id.name, old_salary, new_salary)
+        return super().write(vals)
