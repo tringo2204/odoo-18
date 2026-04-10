@@ -22,6 +22,19 @@
         <field name="model">hr.vn.dependent</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_approve" string="Duyệt" type="object"
+                            class="btn-primary" invisible="status != 'pending'"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_expire" string="Hết hạn" type="object"
+                            invisible="status != 'approved'"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_reset_pending" string="Chờ duyệt lại" type="object"
+                            invisible="status == 'pending'"
+                            groups="hr.group_hr_manager"/>
+                    <field name="status" widget="statusbar"
+                           statusbar_visible="pending,approved"/>
+                </header>
                 <sheet>
                     <group>
                         <group>

@@ -1,5 +1,9 @@
+import logging
+
 from odoo import api, fields, models
 from odoo.tools.safe_eval import safe_eval
+
+_logger = logging.getLogger(__name__)
 
 
 class HrVnPayrollConfig(models.TransientModel):
@@ -42,9 +46,14 @@ class HrVnPayrollConfig(models.TransientModel):
 
     def _set_param_value(self, code, value):
         param = self.env['hr.rule.parameter'].search([('code', '=', code)], limit=1)
-        if param and param.parameter_version_ids:
-            latest = param.parameter_version_ids.sorted('date_from', reverse=True)[:1]
-            latest.parameter_value = str(value)
+        if not param:
+            _logger.warning("Payroll config: parameter '%s' not found, skipping.", code)
+            return
+        if not param.parameter_version_ids:
+            _logger.warning("Payroll config: parameter '%s' has no versions, skipping.", code)
+            return
+        latest = param.parameter_version_ids.sorted('date_from', reverse=True)[:1]
+        latest.parameter_value = str(value)
 
     @api.model
     def default_get(self, fields_list):

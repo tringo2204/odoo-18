@@ -78,9 +78,23 @@ class ShtHrTraining(models.Model):
 
     def action_start(self):
         self.write({'state': 'in_progress'})
+        for rec in self:
+            rec._notify_participant(_('Khóa đào tạo "%s" đã bắt đầu.') % rec.course_id.name)
 
     def action_complete(self):
         self.write({'state': 'completed'})
+        for rec in self:
+            rec._notify_participant(_('Khóa đào tạo "%s" đã hoàn thành.') % rec.course_id.name)
 
     def action_cancel(self):
         self.write({'state': 'cancelled'})
+
+    def _notify_participant(self, message):
+        """Thông báo cho nhân viên tham gia đào tạo."""
+        self.ensure_one()
+        if self.employee_id and self.employee_id.user_id:
+            self.activity_schedule(
+                act_type_xmlid='mail.mail_activity_data_todo',
+                summary=message[:100],
+                user_id=self.employee_id.user_id.id,
+            )

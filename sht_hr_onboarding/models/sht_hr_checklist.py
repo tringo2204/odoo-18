@@ -79,9 +79,22 @@ class ShtHrChecklist(models.Model):
             checklist.write({'line_ids': line_vals, 'checklist_type': checklist.template_id.checklist_type})
 
     def action_mark_done(self):
-        self.filtered(lambda c: c.state == 'in_progress').write({
-            'state': 'done', 'date_completed': fields.Date.today(),
-        })
+        todo = self.filtered(lambda c: c.state == 'in_progress')
+        todo.write({'state': 'done', 'date_completed': fields.Date.today()})
+        for rec in todo:
+            labels = dict(self._fields['checklist_type'].selection)
+            label = labels.get(rec.checklist_type, '')
+            rec.message_post(
+                body=_('%s hoàn thành cho %s.') % (label, rec.employee_id.name),
+                subtype_xmlid='mail.mt_comment',
+            )
+            # Notify HR manager
+            if rec.employee_id.parent_id and rec.employee_id.parent_id.user_id:
+                rec.activity_schedule(
+                    act_type_xmlid='mail.mail_activity_data_todo',
+                    summary=_('%s hoàn thành') % label,
+                    user_id=rec.employee_id.parent_id.user_id.id,
+                )
 
     def action_cancel(self):
         self.write({'state': 'cancelled'})

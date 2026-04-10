@@ -109,12 +109,23 @@ class HrVnDecision(models.Model):
 
         if self.decision_type == 'transfer':
             vals = {}
+            old_dept = employee.department_id.name
+            old_job = employee.job_id.name
             if self.department_id:
                 vals['department_id'] = self.department_id.id
             if self.job_id:
                 vals['job_id'] = self.job_id.id
             if vals:
                 employee.write(vals)
+                # Log transfer history in chatter
+                employee.message_post(
+                    body=_('Điều chuyển: %(old_dept)s / %(old_job)s → %(new_dept)s / %(new_job)s (QĐ %(decision)s)',
+                           old_dept=old_dept or '', old_job=old_job or '',
+                           new_dept=self.department_id.name or old_dept or '',
+                           new_job=self.job_id.name or old_job or '',
+                           decision=self.name),
+                    subtype_xmlid='mail.mt_note',
+                )
 
         elif self.decision_type == 'appointment':
             if self.job_id:

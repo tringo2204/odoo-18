@@ -25,8 +25,17 @@ class HrVnDependent(models.Model):
         ('pending', 'Chờ duyệt'),
         ('approved', 'Đã duyệt'),
         ('expired', 'Hết hạn'),
-    ], string='Trạng thái', default='pending')
+    ], string='Trạng thái', default='pending', tracking=True)
     company_id = fields.Many2one(
         'res.company', string='Công ty',
         related='employee_id.company_id', store=True,
     )
+
+    def action_approve(self):
+        self.write({'status': 'approved', 'tax_office_confirmed': True})
+
+    def action_expire(self):
+        self.write({'status': 'expired'})
+
+    def action_reset_pending(self):
+        self.write({'status': 'pending', 'tax_office_confirmed': False})
