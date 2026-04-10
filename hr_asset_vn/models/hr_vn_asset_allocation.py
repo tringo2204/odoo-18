@@ -28,6 +28,7 @@ class HrVnAssetAllocation(models.Model):
     approved_by_id = fields.Many2one('res.users', string='Người duyệt')
     note = fields.Text(string='Ghi chú')
 
+    @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
         for rec in records:

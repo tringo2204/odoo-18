@@ -10,9 +10,9 @@ class ShtHrHeadcountPlan(models.Model):
     department_id = fields.Many2one('hr.department', required=True, ondelete='restrict')
     job_id = fields.Many2one('hr.job', required=True, ondelete='restrict')
     planned_count = fields.Integer(string='Planned Headcount', required=True)
-    current_count = fields.Integer(compute='_compute_headcount_metrics', store=False)
-    remaining = fields.Integer(compute='_compute_headcount_metrics', store=False)
-    is_over_budget = fields.Boolean(compute='_compute_headcount_metrics', store=True)
+    current_count = fields.Integer(compute='_compute_headcount_metrics')
+    remaining = fields.Integer(compute='_compute_headcount_metrics')
+    is_over_budget = fields.Boolean(compute='_compute_headcount_metrics')
     date_from = fields.Date(required=True)
     date_to = fields.Date(required=True)
     state = fields.Selection(

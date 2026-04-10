@@ -5,6 +5,7 @@ class HrRequestType(models.Model):
     _name = 'hr.request.type'
     _description = 'Loại đơn từ'
     _order = 'sequence, id'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên loại đơn', required=True)
     code = fields.Selection(

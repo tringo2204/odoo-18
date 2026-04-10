@@ -1,11 +1,15 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hr_request_type_user,hr.request.type.user,model_hr_request_type,hr.group_hr_user,1,0,0,0
 access_hr_request_type_manager,hr.request.type.manager,model_hr_request_type,hr.group_hr_manager,1,1,1,1
+access_hr_request_type_portal,hr.request.type.portal,model_hr_request_type,base.group_portal,1,0,0,0
 access_hr_request_reason_user,hr.request.reason.user,model_hr_request_reason,hr.group_hr_user,1,0,0,0
 access_hr_request_reason_manager,hr.request.reason.manager,model_hr_request_reason,hr.group_hr_manager,1,1,1,1
+access_hr_request_reason_portal,hr.request.reason.portal,model_hr_request_reason,base.group_portal,1,0,0,0
 access_hr_request_approval_rule_user,hr.request.approval.rule.user,model_hr_request_approval_rule,hr.group_hr_user,1,0,0,0
 access_hr_request_approval_rule_manager,hr.request.approval.rule.manager,model_hr_request_approval_rule,hr.group_hr_manager,1,1,1,1
 access_hr_request_user,hr.request.user,model_hr_request,hr.group_hr_user,1,1,1,0
 access_hr_request_manager,hr.request.manager,model_hr_request,hr.group_hr_manager,1,1,1,1
+access_hr_request_portal,hr.request.portal,model_hr_request,base.group_portal,1,0,0,0
 access_hr_request_approval_user,hr.request.approval.user,model_hr_request_approval,hr.group_hr_user,1,0,0,0
 access_hr_request_approval_manager,hr.request.approval.manager,model_hr_request_approval,hr.group_hr_manager,1,1,1,1
+access_hr_request_approval_portal,hr.request.approval.portal,model_hr_request_approval,base.group_portal,1,0,0,0

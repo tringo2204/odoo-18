@@ -7,6 +7,7 @@ class HrVnSiMonthlyList(models.Model):
     _description = 'Danh sách tăng/giảm BHXH tháng'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'year desc, month desc'
+    _check_company_auto = True
 
     name = fields.Char(
         string='Tên', compute='_compute_name', store=True,
@@ -90,6 +91,7 @@ class HrVnSiMonthlyList(models.Model):
             ('company_id', '=', self.company_id.id),
         ]
 
+    @api.depends('month', 'year', 'company_id')
     def _compute_history_ids(self):
         History = self.env['hr.vn.si.history']
         for rec in self:

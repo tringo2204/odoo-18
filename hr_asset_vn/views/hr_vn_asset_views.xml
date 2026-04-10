@@ -38,7 +38,7 @@
                     <button name="action_dispose" string="Thanh lý" type="object"
                             class="btn-danger" invisible="state == 'disposed'"
                             confirm="Thanh lý tài sản này?"/>
-                    <field name="state" widget="statusbar" statusbar_visible="available,allocated"/>
+                    <field name="state" widget="statusbar" statusbar_visible="available,allocated,maintenance,disposed"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

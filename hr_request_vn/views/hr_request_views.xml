@@ -43,7 +43,7 @@
                     <button name="action_draft" string="Đặt lại nháp" type="object"
                             invisible="state not in ('refused', 'cancelled')"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,approved"/>
+                           statusbar_visible="draft,submitted,approved,refused,cancelled"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

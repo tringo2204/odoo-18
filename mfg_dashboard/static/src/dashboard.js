@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { Component, useState, onWillStart, onMounted } from "@odoo/owl";
+import { Component, useState, onWillStart, onMounted, onWillUnmount } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 
 export class MfgDashboard extends Component {
@@ -20,6 +20,12 @@ export class MfgDashboard extends Component {
 
         onMounted(() => {
             this._refreshInterval = setInterval(() => this.loadData(), 5 * 60 * 1000);
+        });
+
+        onWillUnmount(() => {
+            if (this._refreshInterval) {
+                clearInterval(this._refreshInterval);
+            }
         });
     }
 

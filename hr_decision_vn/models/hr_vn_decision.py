@@ -7,6 +7,7 @@ class HrVnDecision(models.Model):
     _description = 'Quyết định nhân sự'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'effective_date desc, id desc'
+    _check_company_auto = True
 
     name = fields.Char(
         string='Số quyết định',
@@ -34,6 +35,8 @@ class HrVnDecision(models.Model):
         string='Nhân viên',
         required=True,
         tracking=True,
+        ondelete='restrict',
+        index=True,
     )
     department_id = fields.Many2one(
         'hr.department',

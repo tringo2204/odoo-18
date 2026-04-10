@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 
 
 class HrEmployee(models.Model):
@@ -13,6 +13,7 @@ class HrEmployee(models.Model):
     )
     training_count = fields.Integer(compute='_compute_training_count')
 
+    @api.depends('training_ids')
     def _compute_training_count(self):
         for employee in self:
             employee.training_count = len(employee.training_ids)

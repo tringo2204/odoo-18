@@ -7,6 +7,7 @@ class HrVnSiD02Report(models.Model):
     _description = 'Báo cáo D02-LT (Biến động lao động)'
     _inherit = ['mail.thread']
     _order = 'year desc, month desc'
+    _check_company_auto = True
 
     name = fields.Char(
         string='Số báo cáo', readonly=True, copy=False, default='Mới',
@@ -96,8 +97,9 @@ class HrVnSiD02Report(models.Model):
             and h.change_type in ('increase', 'decrease', 'adjust')
         )
         D02Line = self.env['hr.vn.si.d02.line']
+        line_vals_list = []
         for entry in history_entries:
-            line = D02Line.create({
+            line_vals_list.append({
                 'report_id': self.id,
                 'employee_id': entry.employee_id.id,
                 'bhxh_number': entry.bhxh_number or '',
@@ -107,6 +109,8 @@ class HrVnSiD02Report(models.Model):
                 'new_salary': entry.new_salary,
                 'effective_date': entry.effective_date,
             })
+        lines = D02Line.create(line_vals_list)
+        for entry, line in zip(history_entries, lines):
             entry._mark_reported(line)
         # Cập nhật trạng thái monthly list
         if self.monthly_list_id.state == 'confirmed':

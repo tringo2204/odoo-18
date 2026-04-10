@@ -9,3 +9,27 @@ __pycache__/
 .DS_Store
 *.swp
 *.swo
+
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# Python virtualenv
+.venv/
+venv/
+env/
+
+# Node (theme dev)
+node_modules/
+
+# Odoo runtime
+filestore/
+sessions/
+*.rdb

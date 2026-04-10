@@ -82,13 +82,25 @@ class HrContract(models.Model):
         summary = _('Contract expiring within 30 days')
         Activity = self.env['mail.activity']
         group = self.env.ref('hr.group_hr_manager')
+
+        existing_activities = Activity.search([
+            ('res_model', '=', 'hr.contract'),
+            ('res_id', 'in', expiring.ids),
+            ('summary', '=', summary),
+        ])
+        already_notified = {(a.res_id, a.user_id.id) for a in existing_activities}
+
+        company_managers_cache = {}
         for contract in expiring:
-            managers = self.env['res.users'].search([
-                ('groups_id', 'in', group.id),
-                '|',
-                ('company_ids', 'in', contract.company_id.id),
-                ('company_ids', '=', False),
-            ])
+            cid = contract.company_id.id
+            if cid not in company_managers_cache:
+                company_managers_cache[cid] = self.env['res.users'].search([
+                    ('groups_id', 'in', group.id),
+                    '|',
+                    ('company_ids', 'in', cid),
+                    ('company_ids', '=', False),
+                ])
+            managers = company_managers_cache[cid]
             if not managers:
                 continue
             user = (
@@ -96,12 +108,7 @@ class HrContract(models.Model):
                 if contract.hr_responsible_id in managers
                 else managers[0]
             )
-            if Activity.search_count([
-                ('res_model', '=', 'hr.contract'),
-                ('res_id', '=', contract.id),
-                ('user_id', '=', user.id),
-                ('summary', '=', summary),
-            ]):
+            if (contract.id, user.id) in already_notified:
                 continue
             note = _('Contract %s for %s ends on %s.') % (
                 contract.name,

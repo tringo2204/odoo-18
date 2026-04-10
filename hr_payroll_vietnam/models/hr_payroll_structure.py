@@ -1,9 +1,13 @@
+import logging
+
 from odoo import api, fields, models
 from odoo.addons.hr_payroll_vietnam.models.vn_tax_engine import (
     calculate_pit_progressive,
     calculate_pit_non_resident,
     calculate_insurance,
 )
+
+_logger = logging.getLogger(__name__)
 
 
 class HrPayrollStructure(models.Model):
@@ -40,18 +44,20 @@ class HrPayrollStructure(models.Model):
 
             # Load params
             try:
-                bhxh_ee_rate = self.env['hr.rule.parameter']._get_parameter_from_code('vn_bhxh_ee_rate', raise_if_not_found=False) or 8.0
-                bhyt_ee_rate = self.env['hr.rule.parameter']._get_parameter_from_code('vn_bhyt_ee_rate', raise_if_not_found=False) or 1.5
-                bhtn_ee_rate = self.env['hr.rule.parameter']._get_parameter_from_code('vn_bhtn_ee_rate', raise_if_not_found=False) or 1.0
-                bhxh_er_rate = self.env['hr.rule.parameter']._get_parameter_from_code('vn_bhxh_er_rate', raise_if_not_found=False) or 17.5
-                bhyt_er_rate = self.env['hr.rule.parameter']._get_parameter_from_code('vn_bhyt_er_rate', raise_if_not_found=False) or 3.0
-                bhtn_er_rate = self.env['hr.rule.parameter']._get_parameter_from_code('vn_bhtn_er_rate', raise_if_not_found=False) or 1.0
-                base_sal = self.env['hr.rule.parameter']._get_parameter_from_code('vn_base_salary', raise_if_not_found=False) or 2340000
-                cap_mult = self.env['hr.rule.parameter']._get_parameter_from_code('vn_bhxh_cap_multiplier', raise_if_not_found=False) or 20
-                self_ded = self.env['hr.rule.parameter']._get_parameter_from_code('vn_self_deduction', raise_if_not_found=False) or 11000000
-                dep_ded = self.env['hr.rule.parameter']._get_parameter_from_code('vn_dependent_deduction', raise_if_not_found=False) or 4400000
-                pit_brackets = self.env['hr.rule.parameter']._get_parameter_from_code('vn_pit_brackets', raise_if_not_found=False)
-            except Exception:
+                param = self.env['hr.rule.parameter']._get_parameter_from_code
+                bhxh_ee_rate = param('vn_bhxh_ee_rate', raise_if_not_found=False) or 8.0
+                bhyt_ee_rate = param('vn_bhyt_ee_rate', raise_if_not_found=False) or 1.5
+                bhtn_ee_rate = param('vn_bhtn_ee_rate', raise_if_not_found=False) or 1.0
+                bhxh_er_rate = param('vn_bhxh_er_rate', raise_if_not_found=False) or 17.5
+                bhyt_er_rate = param('vn_bhyt_er_rate', raise_if_not_found=False) or 3.0
+                bhtn_er_rate = param('vn_bhtn_er_rate', raise_if_not_found=False) or 1.0
+                base_sal = param('vn_base_salary', raise_if_not_found=False) or 2340000
+                cap_mult = param('vn_bhxh_cap_multiplier', raise_if_not_found=False) or 20
+                self_ded = param('vn_self_deduction', raise_if_not_found=False) or 11000000
+                dep_ded = param('vn_dependent_deduction', raise_if_not_found=False) or 4400000
+                pit_brackets = param('vn_pit_brackets', raise_if_not_found=False)
+            except (ValueError, KeyError) as e:
+                _logger.warning("VN payroll param error: %s", e)
                 rec.sim_result_html = '<p class="text-danger">Lỗi: Chưa cấu hình tham số lương VN.</p>'
                 continue
 
