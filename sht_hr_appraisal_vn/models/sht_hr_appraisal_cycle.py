@@ -7,6 +7,7 @@ class ShtHrAppraisalCycle(models.Model):
     _description = 'Kỳ đánh giá'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date_from desc'
+    _check_company_auto = True
 
     name = fields.Char(
         string='Tên kỳ', required=True, tracking=True,

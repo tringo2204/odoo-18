@@ -7,6 +7,7 @@ class HrKpiAssignment(models.Model):
     _description = 'Phân công KPI cá nhân'
     _inherit = ['mail.thread']
     _order = 'period_id desc, employee_id'
+    _check_company_auto = True
 
     period_id = fields.Many2one(
         'hr.kpi.period', string='Kỳ đánh giá', required=True, ondelete='cascade',

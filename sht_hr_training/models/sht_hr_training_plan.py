@@ -8,6 +8,7 @@ class ShtHrTrainingPlan(models.Model):
     _description = 'Kế hoạch đào tạo'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'year desc, name'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên kế hoạch', required=True, tracking=True)
     year = fields.Integer(

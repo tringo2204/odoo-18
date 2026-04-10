@@ -8,6 +8,7 @@ class ShtHrOffboarding(models.Model):
     _description = 'Quy trình thôi việc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc, id desc'
+    _check_company_auto = True
 
     name = fields.Char(string='Mã quy trình', readonly=True, copy=False, default='Mới')
     employee_id = fields.Many2one(

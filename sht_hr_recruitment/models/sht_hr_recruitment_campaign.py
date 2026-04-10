@@ -8,6 +8,7 @@ class ShtHrRecruitmentCampaign(models.Model):
     _description = 'Chiến dịch tuyển dụng'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date_start desc'
+    _check_company_auto = True
 
     name = fields.Char(
         string='Tên chiến dịch', required=True, tracking=True,

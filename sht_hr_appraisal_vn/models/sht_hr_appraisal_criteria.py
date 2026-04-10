@@ -5,6 +5,7 @@ class ShtHrAppraisalCriteria(models.Model):
     _name = 'sht.hr.appraisal.criteria'
     _description = 'Tiêu chí đánh giá'
     _order = 'category, sequence, name'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên tiêu chí', required=True)
     code = fields.Char(string='Mã')

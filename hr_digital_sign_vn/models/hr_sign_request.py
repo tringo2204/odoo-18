@@ -7,6 +7,7 @@ class HrSignRequest(models.Model):
     _description = 'Yêu cầu ký số'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc'
+    _check_company_auto = True
 
     name = fields.Char(string='Mã yêu cầu', readonly=True, copy=False, default='Mới')
     document_type = fields.Selection([
