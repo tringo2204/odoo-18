@@ -37,6 +37,22 @@ class HrPayslipRun(models.Model):
         return line[0].total if line else 0
 
     def action_compute(self):
+        # P2.3: Lifecycle gate — warn about incomplete onboarding
+        if 'sht.hr.checklist' in self.env:
+            for run in self:
+                for slip in run.slip_ids:
+                    emp = slip.employee_id
+                    onboarding = self.env['sht.hr.checklist'].search([
+                        ('employee_id', '=', emp.id),
+                        ('checklist_type', '=', 'onboarding'),
+                        ('state', '=', 'in_progress'),
+                    ], limit=1)
+                    if onboarding and onboarding.progress < 100:
+                        slip.message_post(
+                            body=_('Cảnh báo: NV %s chưa hoàn thành Onboarding (%.0f%%).') % (
+                                emp.name, onboarding.progress),
+                            message_type='notification',
+                        )
         for run in self:
             run.slip_ids.compute_sheet()
         self.write({'approval_state': 'computed'})

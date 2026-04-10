@@ -1,10 +1,22 @@
+import pytz
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, models, fields, api
+from odoo.exceptions import ValidationError
+
+VALID_TIMEZONES = set(pytz.all_timezones)
 
 
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
+
+    @api.constrains('tz')
+    def _check_timezone(self):
+        for emp in self:
+            if emp.tz and emp.tz not in VALID_TIMEZONES:
+                raise ValidationError(
+                    _('Timezone "%s" không hợp lệ. Sử dụng "Asia/Ho_Chi_Minh" cho Việt Nam.') % emp.tz
+                )
 
     identification_number = fields.Char(
         string='Identification Number',
