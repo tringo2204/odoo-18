@@ -6,11 +6,13 @@ class HrVnAsset(models.Model):
     _description = 'Tài sản'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'code'
+    _check_company_auto = True
 
     name = fields.Char(string='Tên tài sản', required=True, tracking=True)
     code = fields.Char(string='Mã tài sản', readonly=True, copy=False, default='Mới')
     category_id = fields.Many2one(
         'hr.vn.asset.category', string='Danh mục', required=True,
+        ondelete='restrict',
     )
     serial_number = fields.Char(string='Số serial')
     purchase_date = fields.Date(string='Ngày mua')

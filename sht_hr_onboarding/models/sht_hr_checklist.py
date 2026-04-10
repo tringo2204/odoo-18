@@ -7,6 +7,7 @@ class ShtHrChecklist(models.Model):
     _name = 'sht.hr.checklist'
     _description = 'Employee Checklist'
     _order = 'date_start desc, id desc'
+    _check_company_auto = True
 
     name = fields.Char(compute='_compute_name', store=True, readonly=True)
     employee_id = fields.Many2one(
@@ -68,8 +69,9 @@ class ShtHrChecklist(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get('employee_id') and not vals.get('company_id'):
-                employee = self.env['hr.employee'].browse(vals['employee_id'])
-                vals['company_id'] = employee.company_id.id
+                employee = self.env['hr.employee'].browse(vals['employee_id']).exists()
+                if employee:
+                    vals['company_id'] = employee.company_id.id
         return super().create(vals_list)
 
     def action_generate_lines(self):

@@ -1,5 +1,5 @@
 import logging
-from datetime import timedelta
+from datetime import datetime, time, timedelta
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -15,14 +15,17 @@ class HrRequest(models.Model):
     _description = 'Đơn từ'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'create_date desc, id desc'
+    _check_company_auto = True
 
     name = fields.Char(string='Số đơn', readonly=True, copy=False, default='Mới')
     employee_id = fields.Many2one(
         'hr.employee', string='Nhân viên', required=True, tracking=True,
         default=lambda self: self.env.user.employee_id,
+        ondelete='restrict', index=True,
     )
     request_type_id = fields.Many2one(
         'hr.request.type', string='Loại đơn', required=True, tracking=True,
+        ondelete='restrict',
     )
     request_type_code = fields.Selection(related='request_type_id.code', store=True)
     reason_id = fields.Many2one(
@@ -50,6 +53,7 @@ class HrRequest(models.Model):
     approval_ids = fields.One2many('hr.request.approval', 'request_id', string='Lịch sử phê duyệt')
     company_id = fields.Many2one(
         'res.company', string='Công ty', default=lambda self: self.env.company,
+        index=True,
     )
 
     # ==========================================================================
@@ -276,11 +280,10 @@ class HrRequest(models.Model):
             vals['request_unit_half'] = True
             vals['request_date_from_period'] = self.request_date_from_period or 'am'
 
-        leave = self.env['hr.leave'].with_context(
+        leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,
             leave_fast_create=True,
         ).create(vals)
-        # Auto-approve
         leave.action_approve()
         self.leave_id = leave.id
 
@@ -293,7 +296,7 @@ class HrRequest(models.Model):
         ], limit=1)
         if not absence_type:
             return
-        leave = self.env['hr.leave'].with_context(
+        leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,
             leave_fast_create=True,
         ).create({
@@ -352,11 +355,14 @@ class HrRequest(models.Model):
         """Tạo planning.slot mới cho NV (tăng ca)."""
         if not self.extra_shift_date:
             return
-        from datetime import datetime, time
+        resource = self.employee_id.resource_id
+        if not resource:
+            _logger.warning("Employee %s has no resource for shift creation", self.employee_id.name)
+            return
         start_dt = datetime.combine(self.extra_shift_date, time(int(self.extra_shift_start), int((self.extra_shift_start % 1) * 60)))
         end_dt = datetime.combine(self.extra_shift_date, time(int(self.extra_shift_end), int((self.extra_shift_end % 1) * 60)))
-        slot = self.env['planning.slot'].create({
-            'resource_id': self.employee_id.resource_id.id,
+        slot = self.env['planning.slot'].sudo().create({
+            'resource_id': resource.id,
             'start_datetime': start_dt,
             'end_datetime': end_dt,
             'state': 'published',
@@ -367,11 +373,14 @@ class HrRequest(models.Model):
         """Tạo planning.slot mới (đăng ký ca)."""
         if not self.shift_reg_date:
             return
-        from datetime import datetime, time
+        resource = self.employee_id.resource_id
+        if not resource:
+            _logger.warning("Employee %s has no resource for shift creation", self.employee_id.name)
+            return
         start_dt = datetime.combine(self.shift_reg_date, time(int(self.shift_reg_start), int((self.shift_reg_start % 1) * 60)))
         end_dt = datetime.combine(self.shift_reg_date, time(int(self.shift_reg_end), int((self.shift_reg_end % 1) * 60)))
-        slot = self.env['planning.slot'].create({
-            'resource_id': self.employee_id.resource_id.id,
+        slot = self.env['planning.slot'].sudo().create({
+            'resource_id': resource.id,
             'start_datetime': start_dt,
             'end_datetime': end_dt,
             'state': 'draft',
@@ -387,7 +396,7 @@ class HrRequest(models.Model):
         ], limit=1)
         if not trip_type:
             return
-        leave = self.env['hr.leave'].with_context(
+        leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,
             leave_fast_create=True,
         ).create({

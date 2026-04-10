@@ -7,7 +7,7 @@ class HrVnAssetCategory(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Tên danh mục', required=True)
-    parent_id = fields.Many2one('hr.vn.asset.category', string='Danh mục cha')
+    parent_id = fields.Many2one('hr.vn.asset.category', string='Danh mục cha', ondelete='restrict')
     depreciation_years = fields.Integer(string='Số năm khấu hao', default=3)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one(
