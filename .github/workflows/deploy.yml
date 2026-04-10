@@ -71,9 +71,19 @@ jobs:
             set -e
             cd /opt/odoo18/custom_addons
 
-            # Fetch and reset to latest main
-            git fetch origin main
-            git reset --hard FETCH_HEAD
+            # Fetch latest from GitHub (use URL to avoid remote config issues)
+            git fetch https://github.com/tringo2204/odoo-18.git main
+
+            # Sync all module directories from FETCH_HEAD
+            MODULES="sht_hr_base sht_hr_reward_discipline sht_hr_training \
+                     sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding \
+                     hr_payroll_vietnam hr_social_insurance_vn hr_request_vn \
+                     hr_decision_vn hr_asset_vn sht_hr_appraisal_vn \
+                     mfg_dashboard theme_omux .github .gitignore README.md"
+
+            for item in $MODULES; do
+              git checkout FETCH_HEAD -- $item 2>/dev/null && echo "✅ $item" || echo "⚠️ skip $item"
+            done
 
             echo "✅ Code updated successfully"
           DEPLOY_EOF
