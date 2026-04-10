@@ -12,7 +12,7 @@ class ShtHrHeadcountPlan(models.Model):
     planned_count = fields.Integer(string='Planned Headcount', required=True)
     current_count = fields.Integer(compute='_compute_headcount_metrics')
     remaining = fields.Integer(compute='_compute_headcount_metrics')
-    is_over_budget = fields.Boolean(compute='_compute_headcount_metrics')
+    is_over_budget = fields.Boolean(compute='_compute_headcount_metrics', store=True)
     date_from = fields.Date(required=True)
     date_to = fields.Date(required=True)
     state = fields.Selection(
