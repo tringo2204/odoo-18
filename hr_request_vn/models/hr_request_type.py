@@ -20,6 +20,7 @@ class HrRequestType(models.Model):
             ('BUSINESS_TRIP', 'Đơn công tác'),
             ('SPECIAL_SCHEDULE', 'Đơn làm theo chế độ'),
             ('RESIGNATION', 'Đơn thôi việc'),
+            ('OTHER', 'Khác'),
         ],
         string='Mã loại đơn',
         required=True,
