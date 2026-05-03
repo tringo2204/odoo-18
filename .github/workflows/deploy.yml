@@ -9,9 +9,10 @@ on:
       database:
         description: 'Database to upgrade modules on'
         required: true
-        default: 'odoo18'
+        default: 'odoo HR'
         type: choice
         options:
+          - 'odoo HR'
           - odoo18
           - none
       modules:
@@ -101,19 +102,19 @@ jobs:
         run: |
           MODULES="${{ steps.changes.outputs.modules }}"
           echo "Upgrading modules: $MODULES"
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << UPGRADE_EOF
-            set -e
+          DB_NAME="${{ github.event.inputs.database || 'odoo HR' }}"
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+            "set -e
             systemctl stop odoo18
             /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
               -c /opt/odoo18/odoo.conf \
-              -d ${{ github.event.inputs.database || 'odoo18' }} \
+              -d '$DB_NAME' \
               -u $MODULES \
               --stop-after-init \
               --no-http 2>&1 | tail -5
             systemctl start odoo18
             sleep 3
-            systemctl is-active odoo18 && echo "✅ Modules upgraded and Odoo restarted" || echo "❌ Odoo failed to restart"
-          UPGRADE_EOF
+            systemctl is-active odoo18 && echo '✅ Modules upgraded and Odoo restarted' || echo '❌ Odoo failed to restart'"
 
       - name: Restart Odoo (no module changes)
         if: ${{ steps.changes.outputs.modules == '' }}
