@@ -50,6 +50,7 @@
         </field>
     </record>
     <!-- #169: Dịch tab 'Other Info' → 'Thông tin khác' trong phiếu lương -->
+    <!-- #172: Hiển thị khấu trừ hàng tháng trong tab Tính toán lương -->
     <record id="hr_payslip_view_form_tab_vn" model="ir.ui.view">
         <field name="name">hr.payslip.form.tab.vn</field>
         <field name="model">hr.payslip</field>
@@ -63,6 +64,15 @@
             </page>
             <page name="salary_computation" position="attributes">
                 <attribute name="string">Tính toán lương</attribute>
+            </page>
+            <page name="salary_computation" position="inside">
+                <group string="Khấu trừ lương hàng tháng"
+                       invisible="not monthly_deduction">
+                    <group>
+                        <field name="monthly_deduction" readonly="1"/>
+                        <field name="deduction_note" readonly="1"/>
+                    </group>
+                </group>
             </page>
         </field>
     </record>
