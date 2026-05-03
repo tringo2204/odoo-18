@@ -18,7 +18,7 @@ class HrRequest(models.Model):
     _order = 'create_date desc, id desc'
     _check_company_auto = True
 
-    name = fields.Char(string='Số đơn', readonly=True, copy=False, default='Mới')
+    name = fields.Char(string='Số đơn', copy=False, default='Mới')
     employee_id = fields.Many2one(
         'hr.employee', string='Nhân viên', required=True, tracking=True,
         default=lambda self: self.env.user.employee_id,
@@ -71,6 +71,11 @@ class HrRequest(models.Model):
         [('am', 'Sáng'), ('pm', 'Chiều')],
         string='Buổi',
     )
+
+    # --- ABSENCE (hour-based) ---
+    absence_date = fields.Date(string='Ngày vắng mặt')
+    request_hour_from = fields.Float(string='Giờ bắt đầu', digits=(2, 2))
+    request_hour_to = fields.Float(string='Giờ kết thúc', digits=(2, 2))
 
     # --- OT ---
     ot_hours = fields.Float(string='Số giờ OT')
@@ -337,21 +342,19 @@ class HrRequest(models.Model):
         ], limit=1)
         if not absence_type:
             return
-        date_from = self.date_from
-        date_to = self.date_to
+        absence_date = self.absence_date or (self.date_from.date() if self.date_from else False)
         leave_vals = {
             'employee_id': self.employee_id.id,
             'holiday_status_id': absence_type.id,
-            'request_date_from': date_from.date() if date_from else False,
-            'request_date_to': date_to.date() if date_to else False,
+            'request_date_from': absence_date,
+            'request_date_to': absence_date,
             'notes': self.description or '',
         }
-        # Use hour-based tracking when times are provided
-        if date_from and date_to and absence_type.request_unit == 'hour':
+        if absence_date and self.request_hour_from and self.request_hour_to:
             leave_vals.update({
                 'request_unit_hours': True,
-                'request_hour_from': date_from.hour + date_from.minute / 60.0,
-                'request_hour_to': date_to.hour + date_to.minute / 60.0,
+                'request_hour_from': self.request_hour_from,
+                'request_hour_to': self.request_hour_to,
             })
         leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,

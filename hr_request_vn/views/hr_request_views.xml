@@ -57,7 +57,7 @@
                             <field name="reason_id"/>
                             <field name="created_by_id"/>
                         </group>
-                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT')">
+                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'ABSENCE')">
                             <field name="date_from"/>
                             <field name="date_to"/>
                             <field name="duration_hours"
@@ -72,6 +72,17 @@
                     <group string="Thông tin nghỉ phép" invisible="request_type_code != 'LEAVE'">
                         <group>
                             <field name="leave_type_id" required="request_type_code == 'LEAVE'"/>
+                        </group>
+                    </group>
+
+                    <!-- ABSENCE (hour-based) -->
+                    <group string="Thông tin vắng mặt" invisible="request_type_code != 'ABSENCE'">
+                        <group>
+                            <field name="absence_date" required="request_type_code == 'ABSENCE'"/>
+                            <field name="request_hour_from" widget="float_time"
+                                   required="request_type_code == 'ABSENCE'"/>
+                            <field name="request_hour_to" widget="float_time"
+                                   required="request_type_code == 'ABSENCE'"/>
                         </group>
                     </group>
 

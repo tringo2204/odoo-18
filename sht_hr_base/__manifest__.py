@@ -5,7 +5,7 @@
     'summary': 'Vietnam HR Employee Extensions - Base Module',
     'description': 'Extends employee with Vietnam-specific fields, document management, and custom form layout.',
     'author': 'SHT',
-    'depends': ['hr', 'hr_maintenance', 'resource', 'hr_attendance'],
+    'depends': ['hr', 'hr_maintenance', 'resource', 'hr_attendance', 'hr_skills'],
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron.xml',
