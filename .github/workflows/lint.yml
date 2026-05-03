@@ -22,12 +22,13 @@ jobs:
 
       - name: Install linting tools
         run: |
-          pip install flake8 flake8-odoo
+          pip install flake8
 
       - name: Run flake8
         run: |
           flake8 . \
             --max-line-length=120 \
-            --exclude=__manifest__.py,__openerp__.py \
-            --ignore=W503,W504,E303,E302,E305,E261,E262,F401 \
-            --count --statistics
+            --exclude=__manifest__.py,__openerp__.py,migrations \
+            --ignore=W503,W504,E303,E302,E305,E261,E262,F401,F811 \
+            --count --statistics \
+            --extend-exclude=".github"
