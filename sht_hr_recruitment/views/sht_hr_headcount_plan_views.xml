@@ -5,13 +5,15 @@
         <field name="model">sht.hr.headcount.plan</field>
         <field name="arch" type="xml">
             <list string="Kế hoạch định biên" decoration-danger="is_over_budget">
-                <field name="name"/>
-                <field name="department_id"/>
-                <field name="job_id"/>
-                <field name="planned_count"/>
-                <field name="current_count"/>
-                <field name="remaining"/>
-                <field name="is_over_budget"/>
+                <field name="name" string="Tên kế hoạch"/>
+                <field name="department_id" string="Phòng ban"/>
+                <field name="job_id" string="Vị trí"/>
+                <field name="planned_count" string="Định biên"/>
+                <field name="current_count" string="Hiện tại"/>
+                <field name="remaining" string="Còn thiếu"/>
+                <field name="date_from" string="Từ ngày"/>
+                <field name="date_to" string="Đến ngày"/>
+                <field name="is_over_budget" string="Vượt định biên"/>
                 <field name="state" widget="badge"
                     decoration-success="state == 'approved'"
                     decoration-muted="state == 'closed'"
@@ -52,11 +54,11 @@
                     </group>
                     <group>
                         <group string="Số lượng nhân sự">
-                            <field name="planned_count" string="Số lượng kế hoạch"/>
-                            <field name="current_count" string="Nhân viên hiện tại"/>
-                            <field name="applicant_count" string="Ứng viên đang tuyển"/>
-                            <field name="remaining" string="Còn thiếu"/>
-                            <field name="is_over_budget" string="Vượt định biên"/>
+                            <field name="planned_count"/>
+                            <field name="current_count"/>
+                            <field name="applicant_count"/>
+                            <field name="remaining"/>
+                            <field name="is_over_budget"/>
                         </group>
                     </group>
                     <group string="Ghi chú">

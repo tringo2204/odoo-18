@@ -5,35 +5,35 @@ from odoo.exceptions import UserError, ValidationError
 
 class ShtHrHeadcountPlan(models.Model):
     _name = 'sht.hr.headcount.plan'
-    _description = 'Headcount Plan'
+    _description = 'Kế hoạch định biên'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'date_from desc'
 
-    name = fields.Char(required=True, tracking=True)
+    name = fields.Char(string='Tên kế hoạch', required=True, tracking=True)
     department_id = fields.Many2one(
-        'hr.department', required=True, ondelete='restrict', tracking=True,
+        'hr.department', string='Phòng ban', required=True, ondelete='restrict', tracking=True,
     )
     job_id = fields.Many2one(
-        'hr.job', required=True, ondelete='restrict', tracking=True,
+        'hr.job', string='Vị trí công việc', required=True, ondelete='restrict', tracking=True,
     )
     planned_count = fields.Integer(
-        string='Planned Headcount', required=True, tracking=True,
+        string='Số lượng định biên', required=True, tracking=True,
     )
-    current_count = fields.Integer(compute='_compute_current_count')
-    applicant_count = fields.Integer(compute='_compute_applicant_count')
-    remaining = fields.Integer(compute='_compute_remaining')
+    current_count = fields.Integer(string='Nhân viên hiện tại', compute='_compute_current_count')
+    applicant_count = fields.Integer(string='Ứng viên đang tuyển', compute='_compute_applicant_count')
+    remaining = fields.Integer(string='Còn thiếu', compute='_compute_remaining')
     is_over_budget = fields.Boolean(
-        compute='_compute_remaining', store=True,
+        string='Vượt định biên', compute='_compute_remaining', store=True,
     )
-    date_from = fields.Date(required=True)
-    date_to = fields.Date(required=True)
+    date_from = fields.Date(string='Từ ngày', required=True)
+    date_to = fields.Date(string='Đến ngày', required=True)
     state = fields.Selection(
-        [('draft', 'Draft'), ('approved', 'Approved'), ('closed', 'Closed')],
-        default='draft', required=True, copy=False, tracking=True,
+        [('draft', 'Nháp'), ('approved', 'Đã duyệt'), ('closed', 'Đã đóng')],
+        string='Trạng thái', default='draft', required=True, copy=False, tracking=True,
     )
-    note = fields.Text()
+    note = fields.Text(string='Ghi chú')
     company_id = fields.Many2one(
-        'res.company', required=True,
+        'res.company', string='Công ty', required=True,
         default=lambda self: self.env.company,
     )
 
