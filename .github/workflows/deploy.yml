@@ -72,29 +72,21 @@ jobs:
             set -e
             cd /opt/odoo18/custom_addons
 
-            # Ensure .git exists (restore if missing)
+            # Ensure .git exists and remote is set
             if [ ! -d .git ]; then
               echo "⚠️ .git missing, restoring..."
               git init
-              git remote add origin https://github.com/tringo2204/odoo-18.git 2>/dev/null || true
             fi
+            git remote set-url origin https://github.com/tringo2204/odoo-18.git 2>/dev/null \
+              || git remote add origin https://github.com/tringo2204/odoo-18.git
 
-            # Fetch latest from GitHub
-            git fetch https://github.com/tringo2204/odoo-18.git main
+            # Fetch latest main branch — use explicit ref so origin/main is updated
+            git fetch origin main
 
-            # Sync all module directories from FETCH_HEAD
-            MODULES="sht_hr_base sht_hr_reward_discipline sht_hr_training \
-                     sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding \
-                     hr_payroll_vietnam hr_social_insurance_vn hr_request_vn \
-                     hr_decision_vn hr_asset_vn sht_hr_appraisal_vn \
-                     hr_kpi_okr hr_digital_sign_vn \
-                     mfg_dashboard theme_omux .github .gitignore README.md"
+            # Checkout all files from origin/main (avoids FETCH_HEAD ambiguity)
+            git checkout origin/main -- .
 
-            for item in $MODULES; do
-              git checkout FETCH_HEAD -- $item 2>/dev/null && echo "✅ $item" || echo "⚠️ skip $item"
-            done
-
-            echo "✅ Code updated successfully"
+            echo "✅ Code updated successfully ($(git rev-parse --short origin/main))"
           DEPLOY_EOF
 
       - name: Upgrade changed modules
