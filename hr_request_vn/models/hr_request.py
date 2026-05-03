@@ -169,6 +169,15 @@ class HrRequest(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('hr.request') or 'Mới'
         return super().create(vals_list)
 
+    def write(self, vals):
+        if 'name' in vals:
+            locked = self.filtered(lambda r: r.state != 'draft')
+            if locked:
+                raise UserError(_(
+                    'Không thể thay đổi số đơn khi đơn đã được nộp/xử lý.'
+                ))
+        return super().write(vals)
+
     # ==========================================================================
     # WORKFLOW ACTIONS
     # ==========================================================================
