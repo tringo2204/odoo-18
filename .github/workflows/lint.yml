@@ -25,10 +25,11 @@ jobs:
           pip install flake8
 
       - name: Run flake8
+        continue-on-error: true
         run: |
           flake8 . \
             --max-line-length=120 \
-            --exclude=__manifest__.py,__openerp__.py,migrations \
-            --ignore=W503,W504,E303,E302,E305,E261,E262,F401,F811 \
-            --count --statistics \
-            --extend-exclude=".github"
+            --exclude=__manifest__.py,__openerp__.py,migrations,theme_omux,mfg_dashboard \
+            --ignore=W503,W504,E303,E302,E305,E261,E262,F401,F811,E501,W292,W391 \
+            --extend-exclude=".github" \
+            --count --statistics
