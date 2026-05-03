@@ -12,6 +12,10 @@
                 <field name="evaluation_score"/>
                 <field name="is_over_budget" invisible="1"/>
             </field>
+            <!-- #184: Ẩn trường 'thời gian bắt đầu làm việc' (availability) -->
+            <field name="availability" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
         </field>
     </record>
 

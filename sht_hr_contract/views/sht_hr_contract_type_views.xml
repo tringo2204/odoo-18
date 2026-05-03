@@ -4,7 +4,7 @@
         <field name="name">sht.hr.contract.type.list</field>
         <field name="model">sht.hr.contract.type</field>
         <field name="arch" type="xml">
-            <list string="Vietnam contract types">
+            <list string="Loại hợp đồng Việt Nam">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="max_duration_months"/>
@@ -15,7 +15,7 @@
         <field name="name">sht.hr.contract.type.form</field>
         <field name="model">sht.hr.contract.type</field>
         <field name="arch" type="xml">
-            <form string="Vietnam contract type">
+            <form string="Loại hợp đồng Việt Nam">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -30,7 +30,7 @@
         </field>
     </record>
     <record id="sht_hr_contract_type_action" model="ir.actions.act_window">
-        <field name="name">Contract Types</field>
+        <field name="name">Loại hợp đồng Việt Nam</field>
         <field name="res_model">sht.hr.contract.type</field>
         <field name="view_mode">list,form</field>
     </record>

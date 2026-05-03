@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="Vietnam Contract" name="sht_vietnam_contract" groups="hr.group_hr_user">
-                    <group string="Vietnam Contract">
+                <page string="Thời hạn hợp đồng" name="sht_vietnam_contract" groups="hr.group_hr_user">
+                    <group string="Thông tin hợp đồng">
                         <group>
                             <field name="sht_contract_type_id"/>
                             <field name="is_probation" readonly="1"/>
@@ -48,10 +48,10 @@
         <field name="inherit_id" ref="hr_contract.hr_contract_view_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='running']" position="after">
-                <filter string="Expiring Soon" name="sht_expiring_soon" domain="[('is_expiring_soon', '=', True)]" groups="hr.group_hr_user"/>
+                <filter string="Sắp hết hạn" name="sht_expiring_soon" domain="[('is_expiring_soon', '=', True)]" groups="hr.group_hr_user"/>
             </xpath>
             <xpath expr="//group[@expand='0']" position="inside">
-                <filter string="Vietnam Contract Type" name="sht_group_contract_type" domain="[]" context="{'group_by': 'sht_contract_type_id'}" groups="hr.group_hr_user"/>
+                <filter string="Loại hợp đồng VN" name="sht_group_contract_type" domain="[]" context="{'group_by': 'sht_contract_type_id'}" groups="hr.group_hr_user"/>
             </xpath>
         </field>
     </record>

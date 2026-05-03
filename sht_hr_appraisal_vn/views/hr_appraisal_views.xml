@@ -9,7 +9,8 @@
                 <field name="appraisal_cycle_id"/>
                 <field name="sht_template_id"/>
                 <field name="evaluator_type"/>
-                <field name="overall_score"/>
+                <!-- #204: Ẩn trường overall_score vì hiển thị 0,00 gây khó hiểu -->
+                <field name="overall_score" invisible="overall_score == 0"/>
                 <field name="rating" widget="badge"
                        decoration-success="rating in ('excellent', 'good')"
                        decoration-warning="rating == 'meet'"

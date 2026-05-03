@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- #173: Đổi tiêu đề form 'Payslips Batches' → 'Đợt trả lương' -->
+    <record id="hr_payslip_run_view_form_title_vn" model="ir.ui.view">
+        <field name="name">hr.payslip.run.form.title.vn</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+            <form position="attributes">
+                <attribute name="string">Đợt trả lương</attribute>
+            </form>
+        </field>
+    </record>
+
     <record id="hr_payslip_run_view_form_inherit_vn" model="ir.ui.view">
         <field name="name">hr.payslip.run.form.inherit.vn</field>
         <field name="model">hr.payslip.run</field>
@@ -37,6 +49,23 @@
                     </group>
                 </group>
             </xpath>
+        </field>
+    </record>
+    <!-- #169: Dịch tab 'Other Info' → 'Thông tin khác' trong phiếu lương -->
+    <record id="hr_payslip_view_form_tab_vn" model="ir.ui.view">
+        <field name="name">hr.payslip.form.tab.vn</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <page name="account_info" position="attributes">
+                <attribute name="string">Thông tin khác</attribute>
+            </page>
+            <page name="worked_days_input" position="attributes">
+                <attribute name="string">Ngày công &amp; Đầu vào</attribute>
+            </page>
+            <page name="salary_computation" position="attributes">
+                <attribute name="string">Tính toán lương</attribute>
+            </page>
         </field>
     </record>
 </odoo>
