@@ -216,6 +216,20 @@ else:
         </field>
     </record>
 
+    <!-- 12b. MONTHLY SALARY DEDUCTION (Khấu trừ lương hàng tháng) -->
+    <record id="vn_rule_monthly_deduction" model="hr.salary.rule">
+        <field name="name">Khấu trừ lương</field>
+        <field name="code">VN_DED_MONTHLY</field>
+        <field name="sequence">370</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = contract.monthly_deduction &gt; 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = -contract.monthly_deduction</field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
     <!-- 13. NET -->
     <record id="vn_rule_net" model="hr.salary.rule">
         <field name="name">NET (Thực nhận)</field>

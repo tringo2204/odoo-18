@@ -107,17 +107,20 @@
         <field name="name">hr.vn.allowance.config.list</field>
         <field name="model">hr.vn.allowance.config</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <list editable="bottom" decoration-success="is_taxable" decoration-info="not is_taxable">
                 <field name="year"/>
                 <field name="allowance_type"/>
+                <field name="is_taxable" widget="boolean_toggle" readonly="1"/>
+                <field name="default_amount"/>
                 <field name="max_amount"/>
                 <field name="legal_reference"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </list>
         </field>
     </record>
 
     <record id="hr_vn_allowance_config_action" model="ir.actions.act_window">
-        <field name="name">Giới hạn phụ cấp KCT</field>
+        <field name="name">Cấu hình phụ cấp</field>
         <field name="res_model">hr.vn.allowance.config</field>
         <field name="view_mode">list</field>
     </record>

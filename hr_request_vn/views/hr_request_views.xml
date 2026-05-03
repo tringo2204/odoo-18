@@ -158,11 +158,15 @@
                             </field>
                         </page>
                         <page string="Liên kết" groups="hr.group_hr_manager"
-                              invisible="not leave_id and not attendance_id and not planning_slot_id">
+                              invisible="not leave_id and not attendance_id and not planning_slot_id and not shift_from_id and not shift_to_id">
                             <group>
                                 <field name="leave_id" invisible="not leave_id"/>
                                 <field name="attendance_id" invisible="not attendance_id"/>
                                 <field name="planning_slot_id" invisible="not planning_slot_id"/>
+                                <field name="shift_from_id" readonly="1"
+                                       invisible="request_type_code != 'SHIFT_SWAP' or not shift_from_id"/>
+                                <field name="shift_to_id" readonly="1"
+                                       invisible="request_type_code != 'SHIFT_SWAP' or not shift_to_id"/>
                             </group>
                         </page>
                     </notebook>

@@ -39,6 +39,13 @@ class HrContract(models.Model):
         ('gross_up', 'DN chịu thuế (Gross-up)'),
     ], string='Chính sách thuế', default='employee_pays')
 
+    # --- Monthly salary deductions ---
+    monthly_deduction = fields.Float(
+        string='Khấu trừ lương hàng tháng',
+        help='Khoản khấu trừ cố định hàng tháng (trả nợ, ứng lương,...)',
+    )
+    deduction_note = fields.Char(string='Lý do khấu trừ')
+
     def write(self, vals):
         """Auto-create SI history when insurance_salary changes."""
         if 'insurance_salary' in vals and 'hr.vn.si.record' in self.env:

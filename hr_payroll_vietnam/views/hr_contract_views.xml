@@ -15,6 +15,12 @@
                             <field name="tax_policy"/>
                         </group>
                     </group>
+                    <group string="Khấu trừ lương hàng tháng">
+                        <group>
+                            <field name="monthly_deduction"/>
+                            <field name="deduction_note"/>
+                        </group>
+                    </group>
                     <group>
                         <group string="Phụ cấp chịu thuế">
                             <field name="allowance_position"/>

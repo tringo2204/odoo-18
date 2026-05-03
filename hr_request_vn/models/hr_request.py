@@ -1,4 +1,5 @@
 import logging
+import pytz
 from datetime import datetime, time, timedelta
 
 from odoo import api, fields, models, _
@@ -412,16 +413,33 @@ class HrRequest(models.Model):
         slot_to.write({'resource_id': res_from.id})
         _logger.info("Shift swap: %s <-> %s", slot_from.display_name, slot_to.display_name)
 
+    def _local_to_utc(self, naive_dt):
+        """Convert naive datetime from employee's timezone to UTC."""
+        tz_name = (
+            self.employee_id.tz
+            or self.env.user.tz
+            or 'UTC'
+        )
+        local_tz = pytz.timezone(tz_name)
+        local_dt = local_tz.localize(naive_dt)
+        return local_dt.astimezone(pytz.utc).replace(tzinfo=None)
+
     def _side_effect_extra_shift(self):
-        """Tạo planning.slot mới cho NV (tăng ca)."""
+        """Tạo planning.slot mới cho NV (tăng ca) — lưu UTC."""
         if not self.extra_shift_date:
             return
         resource = self.employee_id.resource_id
         if not resource:
             _logger.warning("Employee %s has no resource for shift creation", self.employee_id.name)
             return
-        start_dt = datetime.combine(self.extra_shift_date, time(int(self.extra_shift_start), int((self.extra_shift_start % 1) * 60)))
-        end_dt = datetime.combine(self.extra_shift_date, time(int(self.extra_shift_end), int((self.extra_shift_end % 1) * 60)))
+        h_start = int(self.extra_shift_start)
+        m_start = int((self.extra_shift_start % 1) * 60)
+        h_end = int(self.extra_shift_end)
+        m_end = int((self.extra_shift_end % 1) * 60)
+        local_start = datetime.combine(self.extra_shift_date, time(h_start, m_start))
+        local_end = datetime.combine(self.extra_shift_date, time(h_end, m_end))
+        start_dt = self._local_to_utc(local_start)
+        end_dt = self._local_to_utc(local_end)
         slot = self.env['planning.slot'].sudo().create({
             'resource_id': resource.id,
             'start_datetime': start_dt,
@@ -431,15 +449,21 @@ class HrRequest(models.Model):
         self.planning_slot_id = slot.id
 
     def _side_effect_shift_reg(self):
-        """Tạo planning.slot mới (đăng ký ca)."""
+        """Tạo planning.slot mới (đăng ký ca) — lưu UTC."""
         if not self.shift_reg_date:
             return
         resource = self.employee_id.resource_id
         if not resource:
             _logger.warning("Employee %s has no resource for shift creation", self.employee_id.name)
             return
-        start_dt = datetime.combine(self.shift_reg_date, time(int(self.shift_reg_start), int((self.shift_reg_start % 1) * 60)))
-        end_dt = datetime.combine(self.shift_reg_date, time(int(self.shift_reg_end), int((self.shift_reg_end % 1) * 60)))
+        h_start = int(self.shift_reg_start)
+        m_start = int((self.shift_reg_start % 1) * 60)
+        h_end = int(self.shift_reg_end)
+        m_end = int((self.shift_reg_end % 1) * 60)
+        local_start = datetime.combine(self.shift_reg_date, time(h_start, m_start))
+        local_end = datetime.combine(self.shift_reg_date, time(h_end, m_end))
+        start_dt = self._local_to_utc(local_start)
+        end_dt = self._local_to_utc(local_end)
         slot = self.env['planning.slot'].sudo().create({
             'resource_id': resource.id,
             'start_datetime': start_dt,

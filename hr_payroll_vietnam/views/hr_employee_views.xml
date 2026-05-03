@@ -12,12 +12,17 @@
                             <field name="tax_resident"/>
                             <field name="dependent_count"/>
                         </group>
+                        <group string="Các khoản phải đóng bảo hiểm">
+                            <field name="contract_insurance_salary" readonly="1"/>
+                            <field name="social_insurance_id" readonly="1"/>
+                        </group>
                     </group>
                     <separator string="Người phụ thuộc"/>
                     <field name="dependent_ids">
                         <list editable="bottom">
                             <field name="name"/>
                             <field name="id_number"/>
+                            <field name="tax_code"/>
                             <field name="relationship"/>
                             <field name="date_of_birth"/>
                             <field name="date_from"/>
