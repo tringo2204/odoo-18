@@ -25,18 +25,6 @@
                         <field name="children_under_72m"/>
                     </group>
                 </page>
-                <page name="sht_bank_info" string="Tài khoản ngân hàng" groups="hr.group_hr_user">
-                    <group>
-                        <field name="bank_name"/>
-                        <field name="bank_account_number"/>
-                    </group>
-                </page>
-                <page name="sht_emergency_contact" string="Liên hệ khẩn cấp" groups="hr.group_hr_user">
-                    <group>
-                        <field name="emergency_contact_name"/>
-                        <field name="emergency_contact_phone" widget="phone"/>
-                    </group>
-                </page>
             </xpath>
             <!-- #3: Đổi tab 'Resume' → 'CV' -->
             <xpath expr="//page[@name='skills_resume']" position="attributes">

@@ -4,7 +4,7 @@
         <field name="name">hr.request.type.list</field>
         <field name="model">hr.request.type</field>
         <field name="arch" type="xml">
-            <list>
+            <list create="0">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="code"/>

@@ -17,6 +17,9 @@
                             confirm="Xác nhận đã nộp báo cáo này lên cơ quan BHXH?"/>
                     <button name="action_draft" string="Về nháp" type="object"
                             invisible="state != 'confirmed'"/>
+                    <button name="action_export_excel" string="⬇ Tải file D02" type="object"
+                            class="btn-secondary"
+                            invisible="not line_ids"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,confirmed,submitted"/>
                 </header>

@@ -115,8 +115,8 @@ class HrRequest(models.Model):
     )
 
     # --- RESIGNATION ---
-    resignation_date = fields.Date(string='Ngày muốn nghỉ việc')
-    resignation_reason = fields.Text(string='Lý do nghỉ việc')
+    resignation_last_working_date = fields.Date(string='Ngày làm việc cuối')
+    resignation_announcement_date = fields.Date(string='Ngày công bố quyết định')
 
     # ==========================================================================
     # LINK FIELDS (auto-populated after approval)
@@ -439,16 +439,17 @@ class HrRequest(models.Model):
     def _side_effect_resignation(self):
         """Full offboarding chain: departure → close contract → SI decrease → offboarding → asset alert."""
         emp = self.employee_id
-        if not self.resignation_date:
+        effective_date = self.resignation_last_working_date or self.date_from and self.date_from.date()
+        if not effective_date:
             return
 
         # 1. Set departure_date
-        emp.write({'departure_date': self.resignation_date})
+        emp.write({'departure_date': effective_date})
 
         # 2. Close current contract
         contract = emp.contract_id
         if contract and contract.state == 'open':
-            contract.write({'state': 'close', 'date_end': self.resignation_date})
+            contract.write({'state': 'close', 'date_end': effective_date})
             _logger.info("Contract %s closed for %s", contract.name, emp.name)
 
         # 3. Create SI decrease history (soft-depend)
@@ -460,10 +461,10 @@ class HrRequest(models.Model):
                 self.env['hr.vn.si.history'].create({
                     'record_id': si_record.id,
                     'change_type': 'decrease',
-                    'effective_date': self.resignation_date,
+                    'effective_date': effective_date,
                     'old_salary': si_record.insurance_salary,
                     'new_salary': 0,
-                    'reason': 'Nghỉ việc — %s' % (self.resignation_reason or ''),
+                    'reason': 'Nghỉ việc — %s' % (self.description or ''),
                 })
                 si_record.write({'current_status': 'closed'})
 
@@ -476,9 +477,9 @@ class HrRequest(models.Model):
             if not existing:
                 offboarding = self.env['sht.hr.offboarding'].create({
                     'employee_id': emp.id,
-                    'resignation_date': self.resignation_date,
-                    'last_working_day': self.resignation_date,
-                    'reason': self.resignation_reason or '',
+                    'resignation_date': effective_date,
+                    'last_working_day': self.resignation_last_working_date or effective_date,
+                    'reason': self.description or '',
                 })
                 offboarding.action_start()
                 _logger.info("Offboarding %s created for %s", offboarding.name, emp.name)

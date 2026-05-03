@@ -4,7 +4,7 @@
         <field name="name">sht.hr.headcount.plan.list</field>
         <field name="model">sht.hr.headcount.plan</field>
         <field name="arch" type="xml">
-            <list string="Headcount Plans" decoration-danger="is_over_budget">
+            <list string="Kế hoạch định biên" decoration-danger="is_over_budget">
                 <field name="name"/>
                 <field name="department_id"/>
                 <field name="job_id"/>
@@ -24,14 +24,14 @@
         <field name="name">sht.hr.headcount.plan.form</field>
         <field name="model">sht.hr.headcount.plan</field>
         <field name="arch" type="xml">
-            <form string="Headcount Plan">
+            <form string="Kế hoạch định biên">
                 <header>
-                    <button name="action_approve" type="object" string="Approve" class="btn-primary"
+                    <button name="action_approve" type="object" string="Phê duyệt" class="btn-primary"
                         invisible="state != 'draft'"
                         groups="hr.group_hr_manager"/>
-                    <button name="action_close" type="object" string="Close"
+                    <button name="action_close" type="object" string="Đóng kế hoạch"
                         invisible="state != 'approved'"/>
-                    <button name="action_reset_draft" type="object" string="Reset to Draft"
+                    <button name="action_reset_draft" type="object" string="Đặt lại nháp"
                         groups="hr.group_hr_manager"
                         invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"
@@ -39,27 +39,27 @@
                 </header>
                 <sheet>
                     <group>
-                        <group string="Plan">
+                        <group string="Thông tin kế hoạch">
                             <field name="name"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="department_id"/>
                             <field name="job_id"/>
                         </group>
-                        <group string="Period">
+                        <group string="Thời gian">
                             <field name="date_from"/>
                             <field name="date_to"/>
                         </group>
                     </group>
                     <group>
-                        <group string="Headcount">
-                            <field name="planned_count"/>
-                            <field name="current_count"/>
-                            <field name="applicant_count"/>
-                            <field name="remaining"/>
-                            <field name="is_over_budget"/>
+                        <group string="Số lượng nhân sự">
+                            <field name="planned_count" string="Số lượng kế hoạch"/>
+                            <field name="current_count" string="Nhân viên hiện tại"/>
+                            <field name="applicant_count" string="Ứng viên đang tuyển"/>
+                            <field name="remaining" string="Còn thiếu"/>
+                            <field name="is_over_budget" string="Vượt định biên"/>
                         </group>
                     </group>
-                    <group string="Notes">
+                    <group string="Ghi chú">
                         <field name="note" nolabel="1" colspan="2"/>
                     </group>
                 </sheet>
@@ -72,24 +72,24 @@
         <field name="name">sht.hr.headcount.plan.search</field>
         <field name="model">sht.hr.headcount.plan</field>
         <field name="arch" type="xml">
-            <search string="Headcount Plans">
+            <search string="Kế hoạch định biên">
                 <field name="name"/>
                 <field name="department_id"/>
                 <field name="job_id"/>
                 <separator/>
-                <filter string="Over Budget" name="sht_over_budget" domain="[('is_over_budget', '=', True)]"/>
-                <filter string="Approved" name="sht_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Vượt định biên" name="sht_over_budget" domain="[('is_over_budget', '=', True)]"/>
+                <filter string="Đã duyệt" name="sht_approved" domain="[('state', '=', 'approved')]"/>
                 <separator/>
-                <group expand="0" string="Group By">
-                    <filter string="Department" name="sht_group_department" context="{'group_by': 'department_id'}"/>
-                    <filter string="Job" name="sht_group_job" context="{'group_by': 'job_id'}"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Phòng ban" name="sht_group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Vị trí" name="sht_group_job" context="{'group_by': 'job_id'}"/>
                 </group>
             </search>
         </field>
     </record>
 
     <record id="sht_hr_recruitment_headcount_plan_action" model="ir.actions.act_window">
-        <field name="name">Headcount Plans</field>
+        <field name="name">Kế hoạch định biên</field>
         <field name="res_model">sht.hr.headcount.plan</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="sht_hr_recruitment_headcount_plan_view_search"/>

@@ -47,7 +47,7 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1><field name="name" readonly="1"/></h1>
+                        <h1><field name="name" readonly="state != 'draft'"/></h1>
                     </div>
                     <group>
                         <group>
@@ -57,11 +57,13 @@
                             <field name="reason_id"/>
                             <field name="created_by_id"/>
                         </group>
-                        <group>
+                        <group invisible="request_type_code == 'RESIGNATION'">
                             <field name="date_from"/>
                             <field name="date_to"/>
-                            <field name="duration_hours"/>
-                            <field name="duration_days"/>
+                            <field name="duration_hours"
+                                   invisible="request_type_code in ('LEAVE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION')"/>
+                            <field name="duration_days"
+                                   invisible="request_type_code in ('ABSENCE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION')"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </group>
@@ -70,15 +72,6 @@
                     <group string="Thông tin nghỉ phép" invisible="request_type_code != 'LEAVE'">
                         <group>
                             <field name="leave_type_id" required="request_type_code == 'LEAVE'"/>
-                            <field name="request_unit_half"/>
-                            <field name="request_date_from_period" invisible="not request_unit_half"/>
-                        </group>
-                    </group>
-
-                    <!-- OT -->
-                    <group string="Thông tin OT" invisible="request_type_code != 'OT'">
-                        <group>
-                            <field name="ot_hours"/>
                         </group>
                     </group>
 
@@ -134,12 +127,11 @@
                     </group>
 
                     <!-- RESIGNATION -->
-                    <group string="Thôi việc" invisible="request_type_code != 'RESIGNATION'">
+                    <group string="Thông tin thôi việc" invisible="request_type_code != 'RESIGNATION'">
                         <group>
-                            <field name="resignation_date"/>
-                        </group>
-                        <group>
-                            <field name="resignation_reason"/>
+                            <field name="resignation_last_working_date"
+                                   required="request_type_code == 'RESIGNATION'"/>
+                            <field name="resignation_announcement_date"/>
                         </group>
                     </group>
 

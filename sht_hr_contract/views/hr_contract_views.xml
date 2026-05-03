@@ -12,7 +12,6 @@
                             <field name="sht_contract_type_id"/>
                             <field name="is_probation" readonly="1"/>
                             <field name="probation_end_date"/>
-                            <field name="original_start_date"/>
                             <field name="renewal_count"/>
                         </group>
                         <group>
