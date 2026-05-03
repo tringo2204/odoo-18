@@ -86,9 +86,21 @@ class HrRequest(models.Model):
         'planning.slot', string='Ca hiện tại',
         help='Ca làm việc hiện tại muốn đổi',
     )
+    shift_from_start = fields.Datetime(
+        related='shift_from_id.start_datetime', string='Giờ bắt đầu (Ca hiện tại)',
+    )
+    shift_from_end = fields.Datetime(
+        related='shift_from_id.end_datetime', string='Giờ kết thúc (Ca hiện tại)',
+    )
     shift_to_id = fields.Many2one(
         'planning.slot', string='Ca muốn đổi sang',
         help='Ca muốn nhận (của NV khác)',
+    )
+    shift_to_start = fields.Datetime(
+        related='shift_to_id.start_datetime', string='Giờ bắt đầu (Ca đổi sang)',
+    )
+    shift_to_end = fields.Datetime(
+        related='shift_to_id.end_datetime', string='Giờ kết thúc (Ca đổi sang)',
     )
     swap_employee_id = fields.Many2one(
         'hr.employee', string='Đổi ca với NV',
@@ -160,6 +172,34 @@ class HrRequest(models.Model):
             rec._check_frequency()
             rec._create_approval_records()
         self.write({'state': 'submitted'})
+
+    def action_open_approve_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Phê duyệt đơn'),
+            'res_model': 'hr.request.action.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_request_id': self.id,
+                'default_action_type': 'approve',
+            },
+        }
+
+    def action_open_refuse_wizard(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Từ chối đơn'),
+            'res_model': 'hr.request.action.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_request_id': self.id,
+                'default_action_type': 'refuse',
+            },
+        }
 
     def action_approve(self):
         for rec in self:
@@ -288,7 +328,7 @@ class HrRequest(models.Model):
         self.leave_id = leave.id
 
     def _side_effect_absence(self):
-        """Tạo hr.leave loại vắng mặt."""
+        """Tạo hr.leave loại vắng mặt (ghi nhận theo giờ)."""
         absence_type = self.env.ref(
             'hr_request_vn.leave_type_absence', raise_if_not_found=False
         ) or self.env['hr.leave.type'].search([
@@ -296,16 +336,26 @@ class HrRequest(models.Model):
         ], limit=1)
         if not absence_type:
             return
+        date_from = self.date_from
+        date_to = self.date_to
+        leave_vals = {
+            'employee_id': self.employee_id.id,
+            'holiday_status_id': absence_type.id,
+            'request_date_from': date_from.date() if date_from else False,
+            'request_date_to': date_to.date() if date_to else False,
+            'notes': self.description or '',
+        }
+        # Use hour-based tracking when times are provided
+        if date_from and date_to and absence_type.request_unit == 'hour':
+            leave_vals.update({
+                'request_unit_hours': True,
+                'request_hour_from': date_from.hour + date_from.minute / 60.0,
+                'request_hour_to': date_to.hour + date_to.minute / 60.0,
+            })
         leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,
             leave_fast_create=True,
-        ).create({
-            'employee_id': self.employee_id.id,
-            'holiday_status_id': absence_type.id,
-            'request_date_from': self.date_from.date() if self.date_from else False,
-            'request_date_to': self.date_to.date() if self.date_to else False,
-            'notes': self.description or '',
-        })
+        ).create(leave_vals)
         leave.action_approve()
         self.leave_id = leave.id
 

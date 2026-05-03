@@ -84,6 +84,16 @@ class HrVnSiRecord(models.Model):
         self.write({'current_status': 'suspended'})
 
     def action_close(self):
+        for rec in self:
+            if rec.current_status != 'closed':
+                self.env['hr.vn.si.history'].create({
+                    'record_id': rec.id,
+                    'change_type': 'decrease',
+                    'effective_date': fields.Date.today(),
+                    'old_salary': rec.insurance_salary,
+                    'new_salary': 0,
+                    'reason': _('Chốt sổ BHXH'),
+                })
         self.write({'current_status': 'closed'})
 
     def action_open_history(self):

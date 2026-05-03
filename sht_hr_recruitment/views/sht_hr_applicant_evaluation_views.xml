@@ -14,10 +14,7 @@
                         </group>
                         <group>
                             <field name="overall_score"/>
-                            <field name="recommendation" widget="badge"
-                                   decoration-success="recommendation == 'hire'"
-                                   decoration-danger="recommendation == 'reject'"
-                                   decoration-warning="recommendation == 'hold'"/>
+                            <field name="recommendation"/>
                         </group>
                     </group>
                     <notebook>

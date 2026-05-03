@@ -6,7 +6,7 @@ class HrPayslipRun(models.Model):
     _inherit = 'hr.payslip.run'
 
     approval_state = fields.Selection([
-        ('draft', 'Nháp'), ('computed', 'Đã tính'), ('verified', 'Đã kiểm tra'),
+        ('draft', 'Nháp'), ('computed', 'Đã tính'),
         ('approved', 'Đã duyệt'), ('paid', 'Đã trả lương'),
     ], string='Trạng thái duyệt', default='draft', tracking=True)
     approved_by = fields.Many2one('res.users', string='Người duyệt', readonly=True)
@@ -57,16 +57,10 @@ class HrPayslipRun(models.Model):
             run.slip_ids.compute_sheet()
         self.write({'approval_state': 'computed'})
 
-    def action_verify(self):
-        for run in self:
-            if run.approval_state != 'computed':
-                raise UserError(_('Phải tính lương trước khi kiểm tra.'))
-        self.write({'approval_state': 'verified'})
-
     def action_approve(self):
         for run in self:
-            if run.approval_state != 'verified':
-                raise UserError(_('Phải kiểm tra trước khi duyệt.'))
+            if run.approval_state != 'computed':
+                raise UserError(_('Phải tính lương trước khi duyệt.'))
         self.write({'approval_state': 'approved', 'approved_by': self.env.uid, 'approved_date': fields.Datetime.now()})
 
     def action_mark_paid(self):
@@ -77,6 +71,10 @@ class HrPayslipRun(models.Model):
 
     def action_reset_draft(self):
         self.write({'approval_state': 'draft'})
+
+    def action_verify(self):
+        """Kept for backward compatibility — redirects to approve."""
+        return self.action_approve()
 
     def action_open_bank_export(self):
         self.ensure_one()

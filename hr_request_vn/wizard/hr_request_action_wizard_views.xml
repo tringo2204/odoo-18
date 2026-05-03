@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_request_action_wizard_view_form" model="ir.ui.view">
+        <field name="name">hr.request.action.wizard.form</field>
+        <field name="model">hr.request.action.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Xác nhận thao tác">
+                <group>
+                    <field name="request_id" invisible="1"/>
+                    <field name="action_type" invisible="1"/>
+                    <field name="note" placeholder="Nhập nhận xét của người duyệt (không bắt buộc)..."
+                           string="Nhận xét của người duyệt"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Xác nhận" type="object"
+                            class="btn-primary"/>
+                    <button string="Huỷ" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

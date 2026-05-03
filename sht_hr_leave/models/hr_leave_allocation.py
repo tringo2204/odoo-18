@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import math
 
 from dateutil.relativedelta import relativedelta
 
@@ -43,3 +44,12 @@ class HrLeaveAllocation(models.Model):
                     years = relativedelta(today, start).years
                     bonus = float((years // 5) * 1)
             allocation.sht_seniority_bonus_days = bonus
+
+    def _process_accrual_plan_level(self, level, start_period, start_date, end_period, end_date):
+        """Override: round up accrued days to nearest integer for day-type plans."""
+        added_value = super()._process_accrual_plan_level(
+            level, start_period, start_date, end_period, end_date,
+        )
+        if level.added_value_type == 'day' and added_value > 0:
+            added_value = math.ceil(added_value)
+        return added_value

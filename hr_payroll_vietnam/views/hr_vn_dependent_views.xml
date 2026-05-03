@@ -4,11 +4,12 @@
         <field name="name">hr.vn.dependent.list</field>
         <field name="model">hr.vn.dependent</field>
         <field name="arch" type="xml">
-            <list>
+                <list>
                 <field name="employee_id"/>
                 <field name="name"/>
                 <field name="relationship"/>
                 <field name="id_number"/>
+                <field name="tax_code"/>
                 <field name="date_from"/>
                 <field name="date_to"/>
                 <field name="tax_office_confirmed"/>
@@ -41,6 +42,7 @@
                             <field name="employee_id"/>
                             <field name="name"/>
                             <field name="id_number"/>
+                            <field name="tax_code"/>
                             <field name="relationship"/>
                             <field name="date_of_birth"/>
                         </group>

@@ -32,10 +32,10 @@
                 <header>
                     <button name="action_submit" string="Nộp đơn" type="object"
                             class="btn-primary" invisible="state != 'draft'"/>
-                    <button name="action_approve" string="Phê duyệt" type="object"
+                    <button name="action_open_approve_wizard" string="Phê duyệt" type="object"
                             class="btn-primary" invisible="state != 'submitted'"
                             groups="hr.group_hr_manager"/>
-                    <button name="action_refuse" string="Từ chối" type="object"
+                    <button name="action_open_refuse_wizard" string="Từ chối" type="object"
                             invisible="state != 'submitted'"
                             groups="hr.group_hr_manager"/>
                     <button name="action_cancel" string="Hủy đơn" type="object"
@@ -57,7 +57,7 @@
                             <field name="reason_id"/>
                             <field name="created_by_id"/>
                         </group>
-                        <group invisible="request_type_code == 'RESIGNATION'">
+                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT')">
                             <field name="date_from"/>
                             <field name="date_to"/>
                             <field name="duration_hours"
@@ -87,10 +87,14 @@
                     <group string="Đổi ca" invisible="request_type_code != 'SHIFT_SWAP'">
                         <group>
                             <field name="shift_from_id" domain="[('resource_id.employee_id', '=', employee_id)]"/>
+                            <field name="shift_from_start" readonly="1" invisible="not shift_from_id"/>
+                            <field name="shift_from_end" readonly="1" invisible="not shift_from_id"/>
                             <field name="swap_employee_id"/>
                         </group>
                         <group>
                             <field name="shift_to_id" domain="[('resource_id.employee_id', '=', swap_employee_id)]"/>
+                            <field name="shift_to_start" readonly="1" invisible="not shift_to_id"/>
+                            <field name="shift_to_end" readonly="1" invisible="not shift_to_id"/>
                         </group>
                     </group>
 
@@ -149,7 +153,7 @@
                                            decoration-success="status == 'approved'"
                                            decoration-danger="status == 'refused'"/>
                                     <field name="approved_date"/>
-                                    <field name="note"/>
+                                    <field name="note" string="Nhận xét của người duyệt"/>
                                 </list>
                             </field>
                         </page>

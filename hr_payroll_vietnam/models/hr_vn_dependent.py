@@ -11,6 +11,7 @@ class HrVnDependent(models.Model):
     )
     name = fields.Char(string='Họ tên', required=True)
     id_number = fields.Char(string='Số CCCD/CMND')
+    tax_code = fields.Char(string='Mã số thuế')
     relationship = fields.Selection([
         ('child', 'Con'),
         ('spouse', 'Vợ/Chồng'),

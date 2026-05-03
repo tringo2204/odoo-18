@@ -39,10 +39,15 @@ class ShtHrHeadcountPlan(models.Model):
 
     @api.constrains('date_from', 'date_to')
     def _check_dates(self):
+        today = fields.Date.today()
         for plan in self:
             if plan.date_from and plan.date_to and plan.date_to < plan.date_from:
                 raise ValidationError(
                     _('Ngày kết thúc phải sau ngày bắt đầu.')
+                )
+            if plan.date_from and plan.date_from < today:
+                raise ValidationError(
+                    _('Ngày bắt đầu kế hoạch không thể trong quá khứ.')
                 )
 
     @api.constrains('planned_count')

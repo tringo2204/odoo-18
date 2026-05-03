@@ -5,7 +5,7 @@
             <field name="name">Vắng mặt</field>
             <field name="requires_allocation">no</field>
             <field name="leave_validation_type">hr</field>
-            <field name="request_unit">day</field>
+            <field name="request_unit">hour</field>
             <field name="time_type">leave</field>
             <field name="sequence">100</field>
             <field name="company_id" eval="False"/>

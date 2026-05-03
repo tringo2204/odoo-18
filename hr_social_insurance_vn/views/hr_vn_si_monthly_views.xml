@@ -70,6 +70,18 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Ốm đau / Thai sản" name="sick_maternity">
+                            <field name="sick_maternity_ids" readonly="1">
+                                <list>
+                                    <field name="employee_id"/>
+                                    <field name="bhxh_number"/>
+                                    <field name="change_type" widget="badge"/>
+                                    <field name="effective_date"/>
+                                    <field name="reason"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Ghi chú" name="notes">
                             <field name="note" placeholder="Ghi chú..."/>
                         </page>

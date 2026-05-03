@@ -39,6 +39,14 @@ class HrContract(models.Model):
         store=True,
     )
 
+    @api.onchange('sht_contract_type_id')
+    def _onchange_sht_contract_type_id(self):
+        if (
+            self.sht_contract_type_id
+            and self.sht_contract_type_id.contract_type_id
+        ):
+            self.contract_type_id = self.sht_contract_type_id.contract_type_id
+
     @api.depends('sht_contract_type_id.code')
     def _compute_is_probation(self):
         for contract in self:

@@ -50,6 +50,10 @@ class HrVnSiMonthlyList(models.Model):
         'hr.vn.si.history', compute='_compute_history_ids',
         string='Danh sách điều chỉnh',
     )
+    sick_maternity_ids = fields.One2many(
+        'hr.vn.si.history', compute='_compute_history_ids',
+        string='Ốm đau / Thai sản',
+    )
     total_increase = fields.Integer(
         string='Tổng tăng', compute='_compute_history_ids',
     )
@@ -58,6 +62,9 @@ class HrVnSiMonthlyList(models.Model):
     )
     total_adjust = fields.Integer(
         string='Tổng điều chỉnh', compute='_compute_history_ids',
+    )
+    total_sick_maternity = fields.Integer(
+        string='Tổng ốm đau/thai sản', compute='_compute_history_ids',
     )
     note = fields.Text(string='Ghi chú')
 
@@ -100,9 +107,11 @@ class HrVnSiMonthlyList(models.Model):
                 rec.increase_ids = History
                 rec.decrease_ids = History
                 rec.adjust_ids = History
+                rec.sick_maternity_ids = History
                 rec.total_increase = 0
                 rec.total_decrease = 0
                 rec.total_adjust = 0
+                rec.total_sick_maternity = 0
                 continue
             domain = rec._get_history_domain()
             all_history = History.search(domain)
@@ -116,9 +125,13 @@ class HrVnSiMonthlyList(models.Model):
             rec.adjust_ids = all_history.filtered(
                 lambda h: h.change_type == 'adjust'
             )
+            rec.sick_maternity_ids = all_history.filtered(
+                lambda h: h.change_type in ('sick', 'maternity')
+            )
             rec.total_increase = len(rec.increase_ids)
             rec.total_decrease = len(rec.decrease_ids)
             rec.total_adjust = len(rec.adjust_ids)
+            rec.total_sick_maternity = len(rec.sick_maternity_ids)
 
     def action_confirm(self):
         for rec in self:

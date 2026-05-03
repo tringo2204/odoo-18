@@ -10,3 +10,7 @@ class ShtHrContractType(models.Model):
     code = fields.Char()
     max_duration_months = fields.Integer(string='Max duration (months)')
     description = fields.Text(translate=True)
+    contract_type_id = fields.Many2one(
+        'hr.contract.type', string='Kiểu hợp đồng (Odoo)',
+        help='Liên kết tới kiểu hợp đồng chuẩn Odoo để tự động điền khi chọn loại HĐ VN',
+    )
