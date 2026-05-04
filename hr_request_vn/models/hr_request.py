@@ -380,18 +380,31 @@ class HrRequest(models.Model):
 
     def _resolve_approver(self, rule):
         if rule.approver_type == 'direct_manager':
-            return self.employee_id.parent_id.user_id if self.employee_id.parent_id else False
+            # Primary: direct manager's user account
+            if self.employee_id.parent_id and self.employee_id.parent_id.user_id:
+                return self.employee_id.parent_id.user_id
+            # Fallback 1: department head
+            dept = self.employee_id.department_id
+            if dept and dept.manager_id and dept.manager_id.user_id:
+                return dept.manager_id.user_id
+            # Fallback 2: first HR manager
+            return self._get_hr_manager_user()
         elif rule.approver_type == 'department_head':
             dept = self.employee_id.department_id
-            return dept.manager_id.user_id if dept and dept.manager_id else False
+            if dept and dept.manager_id and dept.manager_id.user_id:
+                return dept.manager_id.user_id
+            return self._get_hr_manager_user()
         elif rule.approver_type == 'hr':
-            group = self.env.ref('hr.group_hr_manager', raise_if_not_found=False)
-            if group:
-                return group.users[:1] if group.users else False
-            return False
+            return self._get_hr_manager_user()
         elif rule.approver_type == 'specific_user':
             return rule.approver_user_id
         return False
+
+    def _get_hr_manager_user(self):
+        group = self.env.ref('hr.group_hr_manager', raise_if_not_found=False)
+        if group and group.users:
+            return group.users[:1]
+        return self.env.user
 
     # ==========================================================================
     # SIDE-EFFECTS — auto-execute after all approvals done
