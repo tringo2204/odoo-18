@@ -156,6 +156,44 @@ class HrRequest(models.Model):
     # COMPUTED
     # ==========================================================================
 
+    @api.onchange('date_from', 'date_to', 'request_type_code')
+    def _onchange_check_public_holidays(self):
+        """#86: Warn when selected leave dates overlap with company public holidays."""
+        if self.request_type_code != 'LEAVE':
+            return
+        if not self.date_from or not self.date_to:
+            return
+        company = (
+            self.employee_id.company_id
+            or self.company_id
+            or self.env.company
+        )
+        calendar = company.resource_calendar_id
+        # Search global leaves (resource_id=False) matching the company calendar
+        # or without a specific calendar (country-level holidays)
+        domain = [
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
+            ('resource_id', '=', False),
+            '|',
+            ('calendar_id', '=', False),
+            ('calendar_id', '=', calendar.id if calendar else False),
+        ]
+        holidays = self.env['resource.calendar.leaves'].sudo().search(domain)
+        if holidays:
+            names = ', '.join(
+                filter(None, holidays.mapped('name'))
+            ) or _('Ngày lễ')
+            return {
+                'warning': {
+                    'title': _('Trùng ngày lễ'),
+                    'message': _(
+                        'Khoảng thời gian bạn chọn trùng với ngày lễ/nghỉ bù: %s.\n'
+                        'Vui lòng kiểm tra lại trước khi nộp đơn.'
+                    ) % names,
+                }
+            }
+
     @api.depends('date_from', 'date_to')
     def _compute_duration(self):
         for rec in self:
@@ -256,20 +294,26 @@ class HrRequest(models.Model):
 
     def action_approve(self):
         for rec in self:
-            # #98: use sudo to read approval records regardless of user ACL
-            pending = rec.approval_ids.sudo().filtered(
-                lambda a: a.status == 'pending' and a.approver_id == self.env.user
-            )
-            if not pending:
-                raise UserError(_('Bạn không có quyền duyệt đơn này.'))
-            pending[0].sudo().write({
+            all_pending = rec.approval_ids.sudo().filtered(lambda a: a.status == 'pending')
+            if not all_pending:
+                raise UserError(_('Không còn bước phê duyệt nào đang chờ.'))
+
+            # #87: strict sequential — only the lowest-sequence pending step is active
+            min_seq = min(all_pending.mapped('sequence'))
+            current_step = all_pending.filtered(lambda a: a.sequence == min_seq)
+            my_step = current_step.filtered(lambda a: a.approver_id == self.env.user)
+            if not my_step:
+                raise UserError(_(
+                    'Bạn không có quyền duyệt ở bước này. '
+                    'Vui lòng chờ bước trước hoàn thành.'
+                ))
+            my_step.sudo().write({
                 'status': 'approved',
                 'approved_date': fields.Datetime.now(),
             })
             all_done = all(
                 a.status == 'approved'
                 for a in rec.approval_ids.sudo()
-                if a.status != 'refused'
             )
             if all_done:
                 rec.write({'state': 'approved'})

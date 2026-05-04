@@ -62,6 +62,12 @@
         <field name="approver_type">direct_manager</field>
         <field name="sequence">10</field>
     </record>
+    <!-- #87: second step — HR manager approves after direct manager -->
+    <record id="rule_leave_hr" model="hr.request.approval.rule">
+        <field name="request_type_id" ref="request_type_leave"/>
+        <field name="approver_type">hr</field>
+        <field name="sequence">20</field>
+    </record>
     <record id="rule_ot_manager" model="hr.request.approval.rule">
         <field name="request_type_id" ref="request_type_ot"/>
         <field name="approver_type">direct_manager</field>
