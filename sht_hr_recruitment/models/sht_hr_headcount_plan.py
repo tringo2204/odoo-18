@@ -43,6 +43,28 @@ class ShtHrHeadcountPlan(models.Model):
         [('draft', 'Nháp'), ('approved', 'Đã duyệt'), ('closed', 'Đã đóng')],
         string='Trạng thái', default='draft', required=True, copy=False, tracking=True,
     )
+    allocation_ids = fields.One2many(
+        'sht.hr.headcount.allocation', 'plan_id',
+        string='Phân bổ định biên',
+    )
+    allocated_count = fields.Integer(
+        string='Tổng phân bổ', compute='_compute_allocation_summary', store=True,
+        help='Tổng số vị trí đã phân bổ trong kế hoạch',
+    )
+    filled_count = fields.Integer(
+        string='Đã tuyển được', compute='_compute_allocation_summary', store=True,
+        group_operator='sum',
+    )
+    total_budget = fields.Monetary(
+        string='Tổng ngân sách lương', compute='_compute_allocation_summary',
+        store=True, currency_field='currency_id',
+    )
+    currency_id = fields.Many2one(
+        related='company_id.currency_id', string='Tiền tệ',
+    )
+    allocation_count = fields.Integer(
+        string='Số dòng phân bổ', compute='_compute_allocation_count',
+    )
     note = fields.Text(string='Ghi chú')
     company_id = fields.Many2one(
         'res.company', string='Công ty', required=True,
@@ -102,6 +124,35 @@ class ShtHrHeadcountPlan(models.Model):
         for plan in self:
             plan.remaining = plan.planned_count - plan.current_count
             plan.is_over_budget = plan.current_count > plan.planned_count
+
+    @api.depends('allocation_ids.count', 'allocation_ids.filled_count',
+                 'allocation_ids.total_budget', 'allocation_ids.state')
+    def _compute_allocation_summary(self):
+        for plan in self:
+            active_allocs = plan.allocation_ids.filtered(
+                lambda a: a.state != 'cancelled'
+            )
+            plan.allocated_count = sum(active_allocs.mapped('count'))
+            plan.filled_count = sum(active_allocs.mapped('filled_count'))
+            plan.total_budget = sum(active_allocs.mapped('total_budget'))
+
+    def _compute_allocation_count(self):
+        for plan in self:
+            plan.allocation_count = len(plan.allocation_ids)
+
+    def action_view_allocations(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Phân bổ — %s') % self.name,
+            'res_model': 'sht.hr.headcount.allocation',
+            'view_mode': 'list,form',
+            'domain': [('plan_id', '=', self.id)],
+            'context': {
+                'default_plan_id': self.id,
+                'default_job_id': self.job_id.id,
+            },
+        }
 
     def action_approve(self):
         for plan in self:

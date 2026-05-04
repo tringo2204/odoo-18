@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ===== Allocation List (standalone) ===== -->
+    <record id="sht_hr_headcount_allocation_view_list" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.allocation.list</field>
+        <field name="model">sht.hr.headcount.allocation</field>
+        <field name="arch" type="xml">
+            <list string="Phân bổ định biên"
+                  decoration-success="state == 'filled'"
+                  decoration-info="state == 'recruiting'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="plan_id" optional="show"/>
+                <field name="department_id" optional="show"/>
+                <field name="job_id"/>
+                <field name="name" optional="show"/>
+                <field name="count" string="Cần tuyển"/>
+                <field name="filled_count" string="Đã có"/>
+                <field name="remaining_count" string="Còn thiếu"/>
+                <field name="applicant_count" string="Ứng viên"/>
+                <field name="target_date" string="Tháng cần"/>
+                <field name="budget_wage" string="Lương/người" optional="hide"/>
+                <field name="total_budget" string="Tổng ngân sách" optional="hide"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'filled'"
+                    decoration-info="state == 'recruiting'"
+                    decoration-warning="state == 'open'"
+                    decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ===== Allocation Form ===== -->
+    <record id="sht_hr_headcount_allocation_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.allocation.form</field>
+        <field name="model">sht.hr.headcount.allocation</field>
+        <field name="arch" type="xml">
+            <form string="Phân bổ định biên">
+                <header>
+                    <button name="action_start_recruiting" type="object"
+                            string="Mở tuyển" class="btn-primary"
+                            invisible="state != 'open'"/>
+                    <button name="action_mark_filled" type="object"
+                            string="Đã tuyển đủ"
+                            invisible="state not in ('open', 'recruiting')"/>
+                    <button name="action_cancel" type="object"
+                            string="Hủy slot"
+                            invisible="state in ('filled', 'cancelled')"/>
+                    <button name="action_reopen" type="object"
+                            string="Mở lại"
+                            invisible="state != 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="open,recruiting,filled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Thông tin vị trí">
+                            <field name="plan_id" readonly="state != 'open'"/>
+                            <field name="job_id" readonly="state != 'open'"/>
+                            <field name="department_id"/>
+                            <field name="name" placeholder="Mô tả thêm (tuỳ chọn)"/>
+                        </group>
+                        <group string="Kế hoạch tuyển dụng">
+                            <field name="count" string="Số lượng cần tuyển"/>
+                            <field name="target_date" string="Tháng cần có người"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group string="Ngân sách">
+                        <group>
+                            <field name="budget_wage" string="Ngân sách lương/tháng (1 người)"/>
+                            <field name="total_budget" string="Tổng ngân sách"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Ứng viên theo dõi" name="applicants">
+                            <field name="applicant_ids" widget="many2many_tags"
+                                   options="{'no_create': True}"/>
+                            <div class="o_field_widget" invisible="not applicant_ids">
+                                <button name="action_view_applicants" type="object"
+                                        string="Xem chi tiết ứng viên"
+                                        class="btn btn-link"/>
+                            </div>
+                        </page>
+                        <page string="Nhân viên đã tuyển" name="employees">
+                            <field name="filled_employee_ids" widget="many2many_tags"
+                                   options="{'no_create': True}"/>
+                            <group>
+                                <field name="filled_count" string="Đã tuyển"/>
+                                <field name="remaining_count" string="Còn thiếu"/>
+                            </group>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="note" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===== Allocation Search ===== -->
+    <record id="sht_hr_headcount_allocation_view_search" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.allocation.search</field>
+        <field name="model">sht.hr.headcount.allocation</field>
+        <field name="arch" type="xml">
+            <search string="Phân bổ định biên">
+                <field name="plan_id"/>
+                <field name="job_id"/>
+                <field name="department_id"/>
+                <separator/>
+                <filter string="Chưa mở" name="open"
+                        domain="[('state', '=', 'open')]"/>
+                <filter string="Đang tuyển" name="recruiting"
+                        domain="[('state', '=', 'recruiting')]"/>
+                <filter string="Đã tuyển đủ" name="filled"
+                        domain="[('state', '=', 'filled')]"/>
+                <filter string="Còn thiếu" name="has_remaining"
+                        domain="[('remaining_count', '>', 0), ('state', '!=', 'cancelled')]"/>
+                <separator/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Phòng ban" name="group_dept"
+                            context="{'group_by': 'department_id'}"/>
+                    <filter string="Vị trí" name="group_job"
+                            context="{'group_by': 'job_id'}"/>
+                    <filter string="Tháng cần" name="group_month"
+                            context="{'group_by': 'target_date:month'}"/>
+                    <filter string="Trạng thái" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Kế hoạch" name="group_plan"
+                            context="{'group_by': 'plan_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ===== Allocation Pivot ===== -->
+    <record id="sht_hr_headcount_allocation_view_pivot" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.allocation.pivot</field>
+        <field name="model">sht.hr.headcount.allocation</field>
+        <field name="arch" type="xml">
+            <pivot string="Phân bổ định biên" disable_linking="0">
+                <field name="department_id" type="row"/>
+                <field name="job_id" type="row"/>
+                <field name="target_date" type="col"/>
+                <field name="count" type="measure" string="Cần tuyển"/>
+                <field name="filled_count" type="measure" string="Đã có"/>
+                <field name="remaining_count" type="measure" string="Còn thiếu"/>
+                <field name="total_budget" type="measure" string="Ngân sách"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ===== Allocation Action ===== -->
+    <record id="sht_hr_headcount_allocation_action" model="ir.actions.act_window">
+        <field name="name">Phân bổ định biên</field>
+        <field name="res_model">sht.hr.headcount.allocation</field>
+        <field name="view_mode">list,pivot,form</field>
+        <field name="search_view_id" ref="sht_hr_headcount_allocation_view_search"/>
+        <field name="context">{}</field>
+    </record>
+</odoo>

@@ -40,6 +40,26 @@
                         statusbar_visible="draft,approved,closed"/>
                 </header>
                 <sheet>
+                    <!-- Smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_allocations" type="object"
+                                class="oe_stat_button" icon="fa-list-ul"
+                                invisible="allocation_count == 0">
+                            <div class="o_stat_info">
+                                <field name="allocation_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Phân bổ</span>
+                            </div>
+                        </button>
+                        <button name="action_view_allocations" type="object"
+                                class="oe_stat_button" icon="fa-users"
+                                invisible="filled_count == 0">
+                            <div class="o_stat_info">
+                                <field name="filled_count" class="o_stat_value"/>
+                                <span class="o_stat_text">Đã tuyển</span>
+                            </div>
+                        </button>
+                    </div>
+
                     <group>
                         <group string="Thông tin kế hoạch">
                             <field name="name"/>
@@ -53,17 +73,49 @@
                         </group>
                     </group>
                     <group>
-                        <group string="Số lượng nhân sự">
-                            <field name="planned_count"/>
-                            <field name="current_count"/>
-                            <field name="applicant_count"/>
-                            <field name="remaining"/>
+                        <group string="Nhân sự thực tế">
+                            <field name="planned_count" string="Định biên"/>
+                            <field name="current_count" string="Nhân viên hiện tại"/>
+                            <field name="remaining" string="Còn thiếu"/>
                             <field name="is_over_budget"/>
                         </group>
+                        <group string="Phân bổ tuyển dụng" invisible="allocation_count == 0">
+                            <field name="allocated_count" string="Tổng slot phân bổ"/>
+                            <field name="filled_count" string="Đã tuyển được"/>
+                            <field name="total_budget" string="Tổng ngân sách lương"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
                     </group>
-                    <group string="Ghi chú">
-                        <field name="note" nolabel="1" colspan="2"/>
-                    </group>
+
+                    <notebook>
+                        <page string="Phân bổ định biên" name="allocations">
+                            <field name="allocation_ids" context="{'default_plan_id': id, 'default_job_id': job_id}">
+                                <list editable="bottom"
+                                      decoration-success="state == 'filled'"
+                                      decoration-info="state == 'recruiting'"
+                                      decoration-muted="state == 'cancelled'">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="job_id" required="1"/>
+                                    <field name="name" placeholder="Ghi chú thêm (tuỳ chọn)"/>
+                                    <field name="count" string="Cần"/>
+                                    <field name="filled_count" string="Đã có"/>
+                                    <field name="remaining_count" string="Thiếu"/>
+                                    <field name="target_date" string="Tháng cần"/>
+                                    <field name="budget_wage" string="Lương/người" optional="hide"/>
+                                    <field name="total_budget" string="Ngân sách" optional="hide"/>
+                                    <field name="applicant_count" string="Ứng viên"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'filled'"
+                                           decoration-info="state == 'recruiting'"
+                                           decoration-warning="state == 'open'"
+                                           decoration-muted="state == 'cancelled'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Ghi chú" name="notes">
+                            <field name="note" nolabel="1"/>
+                        </page>
+                    </notebook>
                 </sheet>
                 <chatter/>
             </form>

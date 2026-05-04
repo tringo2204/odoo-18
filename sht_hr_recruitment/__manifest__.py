@@ -10,6 +10,7 @@
         'data/ir_sequence.xml',
         'data/ir_cron.xml',
         'views/sht_hr_headcount_plan_views.xml',
+        'views/sht_hr_headcount_allocation_views.xml',
         'views/sht_hr_recruitment_request_views.xml',
         'views/sht_hr_recruitment_campaign_views.xml',
         'views/sht_hr_applicant_evaluation_views.xml',

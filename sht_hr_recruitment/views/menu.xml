@@ -9,6 +9,14 @@
         groups="hr.group_hr_user"/>
 
     <menuitem
+        id="sht_hr_recruitment_menu_allocation"
+        name="Phân bổ định biên"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        action="sht_hr_headcount_allocation_action"
+        sequence="25"
+        groups="hr.group_hr_user"/>
+
+    <menuitem
         id="sht_hr_recruitment_menu_request"
         name="Đề xuất tuyển dụng"
         parent="hr_recruitment.menu_hr_recruitment_root"
