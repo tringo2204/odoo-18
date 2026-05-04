@@ -8,6 +8,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/sht_hr_contract_type_data.xml',
+        'data/vn_calendar_rename.xml',
         'views/sht_hr_contract_type_views.xml',
         'views/hr_contract_views.xml',
         'views/menu.xml',

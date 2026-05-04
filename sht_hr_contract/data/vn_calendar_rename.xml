@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="0">
+    <!-- Rename the default Odoo work schedule from "Standard 40 hours/week" to Vietnamese (#32) -->
+    <record id="resource.resource_calendar_std" model="resource.calendar">
+        <field name="name">Tiêu chuẩn 40 giờ/tuần</field>
+    </record>
+</odoo>

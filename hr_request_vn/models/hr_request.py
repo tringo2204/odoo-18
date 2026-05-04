@@ -39,7 +39,7 @@ class HrRequest(models.Model):
     date_from = fields.Datetime(string='Từ ngày')
     date_to = fields.Datetime(string='Đến ngày')
     duration_hours = fields.Float(string='Số giờ', compute='_compute_duration', store=True)
-    duration_days = fields.Float(string='Số ngày', compute='_compute_duration', store=True)
+    duration_days = fields.Float(string='Số ngày', compute='_compute_duration', store=True, digits=(16, 0))
     description = fields.Text(string='Mô tả / Ghi chú')
     state = fields.Selection(
         selection=[
