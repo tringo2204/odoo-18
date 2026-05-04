@@ -19,9 +19,21 @@ class ShtHrHeadcountPlan(models.Model):
     planned_count = fields.Integer(
         string='Số lượng định biên', required=True, tracking=True,
     )
-    current_count = fields.Integer(string='Nhân viên hiện tại', compute='_compute_current_count')
-    applicant_count = fields.Integer(string='Ứng viên đang tuyển', compute='_compute_applicant_count')
-    remaining = fields.Integer(string='Còn thiếu', compute='_compute_remaining')
+    current_count = fields.Integer(
+        string='Nhân viên hiện tại',
+        compute='_compute_current_count',
+        store=True, group_operator='sum',
+    )
+    applicant_count = fields.Integer(
+        string='Ứng viên đang tuyển',
+        compute='_compute_applicant_count',
+        store=True, group_operator='sum',
+    )
+    remaining = fields.Integer(
+        string='Còn thiếu',
+        compute='_compute_remaining',
+        store=True, group_operator='sum',
+    )
     is_over_budget = fields.Boolean(
         string='Vượt định biên', compute='_compute_remaining', store=True,
     )
