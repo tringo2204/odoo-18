@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
         <record id="sht_hr_contract_type_probation" model="sht.hr.contract.type">
             <field name="name">Hợp đồng thử việc</field>
             <field name="code">PROBATION</field>
