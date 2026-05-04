@@ -192,8 +192,7 @@
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">
-import datetime as _dt
-year = _dt.date.today().year
+year = datetime.date.today().year
 count = env['sht.hr.headcount.line'].generate_year_plan(year)
 raise UserError("Đã tạo %d dòng định biên mới cho năm %d." % (count, year))
         </field>
