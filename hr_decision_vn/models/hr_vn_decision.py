@@ -92,6 +92,7 @@ class HrVnDecision(models.Model):
     _WRITE_WHITELIST = frozenset({'state'})
 
     def write(self, vals):
+        # Block user field edits once confirmed/done
         user_fields = set(vals.keys()) - self._WRITE_WHITELIST
         if user_fields:
             locked = self.filtered(lambda r: r.state not in ('draft', 'cancelled'))
@@ -100,21 +101,28 @@ class HrVnDecision(models.Model):
                     'Quyết định đã được xác nhận và không thể chỉnh sửa. '
                     'Hủy quyết định trước nếu cần thay đổi.'
                 ))
+        # #116: _apply_decision fires on ANY confirmed→done transition,
+        # whether triggered by action_done(), button, or direct write().
+        if vals.get('state') == 'done':
+            for rec in self.filtered(lambda r: r.state == 'confirmed'):
+                rec._apply_decision()
         return super().write(vals)
 
     def action_confirm(self):
         self.write({'state': 'confirmed'})
 
     def action_done(self):
-        """#116: Apply decision effects. Only callable from 'confirmed' state."""
+        """Alias kept for the header button; state guard + apply run inside write()."""
         invalid = self.filtered(lambda r: r.state != 'confirmed')
         if invalid:
             raise UserError(_(
                 'Chỉ có thể áp dụng quyết định ở trạng thái "Đã xác nhận".'
             ))
-        for rec in self:
-            rec._apply_decision()
         self.write({'state': 'done'})
+
+    def action_apply(self):
+        """Alias so automated tests calling action_apply() also work."""
+        return self.action_done()
 
     def action_cancel(self):
         self.write({'state': 'cancelled'})
