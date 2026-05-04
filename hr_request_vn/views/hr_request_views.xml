@@ -34,10 +34,10 @@
                             class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_open_approve_wizard" string="Phê duyệt" type="object"
                             class="btn-primary" invisible="state != 'submitted'"
-                            groups="hr.group_hr_manager"/>
+                            groups="hr.group_hr_user"/>
                     <button name="action_open_refuse_wizard" string="Từ chối" type="object"
                             invisible="state != 'submitted'"
-                            groups="hr.group_hr_manager"/>
+                            groups="hr.group_hr_user"/>
                     <button name="action_cancel" string="Hủy đơn" type="object"
                             invisible="state not in ('draft', 'submitted')"/>
                     <button name="action_draft" string="Đặt lại nháp" type="object"
@@ -84,9 +84,9 @@
                     <group string="Thông tin nghỉ phép" invisible="request_type_code != 'LEAVE'"
                            readonly="state != 'draft'">
                         <group>
-                            <!-- #85: only show non-allocation leave types -->
+                            <!-- #85/#68: only show day-based leave types, exclude absence (hour) and business trip (other) -->
                             <field name="leave_type_id" required="request_type_code == 'LEAVE'"
-                                   domain="[('requires_allocation', '=', 'no')]"/>
+                                   domain="[('requires_allocation', '=', 'no'), ('request_unit', '!=', 'hour'), ('time_type', '=', 'leave')]"/>
                         </group>
                     </group>
 
@@ -220,7 +220,7 @@
                             </field>
                         </page>
                         <!-- #76/#78: always show for EXTRA_SHIFT/SHIFT_REG/SHIFT_SWAP; also show when linked records exist -->
-                        <page string="Liên kết" groups="hr.group_hr_manager"
+                        <page string="Liên kết" groups="hr.group_hr_user"
                               invisible="request_type_code not in ('EXTRA_SHIFT', 'SHIFT_REG', 'SHIFT_SWAP') and not leave_id and not attendance_id">
                             <group>
                                 <field name="leave_id" readonly="1" invisible="not leave_id"/>

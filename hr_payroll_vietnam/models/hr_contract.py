@@ -1,6 +1,6 @@
 import logging
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -26,6 +26,40 @@ class HrContract(models.Model):
     allowance_transport = fields.Float(string='PC xăng xe')
     allowance_uniform = fields.Float(string='PC đồng phục')
     allowance_other_nontax = fields.Float(string='PC khác (KCT)')
+
+    # --- Totals (computed, Row 29) ---
+    total_taxable_allowance = fields.Float(
+        string='Tổng PC chịu thuế',
+        compute='_compute_allowance_totals',
+        store=True,
+    )
+    total_nontax_allowance = fields.Float(
+        string='Tổng PC không chịu thuế',
+        compute='_compute_allowance_totals',
+        store=True,
+    )
+
+    @api.depends(
+        'allowance_position', 'allowance_responsibility',
+        'allowance_seniority', 'allowance_other_taxable',
+        'allowance_phone', 'allowance_meal',
+        'allowance_transport', 'allowance_uniform', 'allowance_other_nontax',
+    )
+    def _compute_allowance_totals(self):
+        for rec in self:
+            rec.total_taxable_allowance = (
+                rec.allowance_position
+                + rec.allowance_responsibility
+                + rec.allowance_seniority
+                + rec.allowance_other_taxable
+            )
+            rec.total_nontax_allowance = (
+                rec.allowance_phone
+                + rec.allowance_meal
+                + rec.allowance_transport
+                + rec.allowance_uniform
+                + rec.allowance_other_nontax
+            )
 
     # --- OT rates ---
     ot_rate_weekday = fields.Float(string='OT ngày thường (%)', default=150)

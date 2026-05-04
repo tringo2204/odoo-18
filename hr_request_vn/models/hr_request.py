@@ -229,9 +229,13 @@ class HrRequest(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        today = fields.Date.today()
         for vals in vals_list:
             if vals.get('name', 'Mới') == 'Mới':
                 vals['name'] = self.env['ir.sequence'].next_by_code('hr.request') or 'Mới'
+            # Row 71: ensure resignation_date is never False (required=True at model level)
+            if not vals.get('resignation_date'):
+                vals['resignation_date'] = today
         return super().create(vals_list)
 
     # Fields the workflow engine / side-effects may write after submission.
@@ -462,14 +466,15 @@ class HrRequest(models.Model):
             'notes': self.description or '',
         }
         if absence_date and self.request_hour_from and self.request_hour_to:
+            # #64: set hour fields so Odoo computes number_of_hours correctly
             leave_vals.update({
-                'request_unit_hours': True,
                 'request_hour_from': self.request_hour_from,
                 'request_hour_to': self.request_hour_to,
             })
+        # #64: don't use leave_fast_create — it bypasses hour/day computation,
+        # causing the linked leave to display "1 ngày" instead of actual hours.
         leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,
-            leave_fast_create=True,
         ).create(leave_vals)
         leave.action_approve()
         self.leave_id = leave.id

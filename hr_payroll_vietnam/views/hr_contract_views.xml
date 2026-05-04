@@ -27,6 +27,8 @@
                             <field name="allowance_responsibility"/>
                             <field name="allowance_seniority"/>
                             <field name="allowance_other_taxable"/>
+                            <field name="total_taxable_allowance" readonly="1"
+                                  class="fw-bold"/>
                         </group>
                         <group string="Phụ cấp không chịu thuế">
                             <field name="allowance_phone"/>
@@ -34,6 +36,8 @@
                             <field name="allowance_transport"/>
                             <field name="allowance_uniform"/>
                             <field name="allowance_other_nontax"/>
+                            <field name="total_nontax_allowance" readonly="1"
+                                  class="fw-bold"/>
                         </group>
                     </group>
                     <group string="Tỷ lệ OT">
