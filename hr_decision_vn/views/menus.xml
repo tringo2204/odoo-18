@@ -11,4 +11,16 @@
               parent="menu_hr_decision_root"
               action="hr_vn_decision_action"
               sequence="10"/>
+
+    <menuitem id="menu_hr_decision_reward"
+              name="Khen thưởng"
+              parent="menu_hr_decision_root"
+              action="hr_vn_decision_action_reward"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_decision_discipline"
+              name="Kỷ luật"
+              parent="menu_hr_decision_root"
+              action="hr_vn_decision_action_discipline"
+              sequence="30"/>
 </odoo>

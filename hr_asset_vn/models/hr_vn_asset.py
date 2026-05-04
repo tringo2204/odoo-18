@@ -52,6 +52,10 @@ class HrVnAsset(models.Model):
         'hr.vn.asset.disposal', 'asset_id', string='Biên bản thanh lý',
     )
     disposal_count = fields.Integer(compute='_compute_disposal_count')
+    maintenance_ids = fields.One2many(
+        'hr.vn.asset.maintenance', 'asset_id', string='Yêu cầu bảo trì',
+    )
+    maintenance_count = fields.Integer(compute='_compute_maintenance_count')
     image = fields.Binary(string='Hình ảnh')
     note = fields.Text(string='Ghi chú')
     company_id = fields.Many2one(
@@ -83,6 +87,11 @@ class HrVnAsset(models.Model):
     def _compute_disposal_count(self):
         for rec in self:
             rec.disposal_count = len(rec.disposal_ids)
+
+    @api.depends('maintenance_ids')
+    def _compute_maintenance_count(self):
+        for rec in self:
+            rec.maintenance_count = len(rec.maintenance_ids)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -148,6 +157,8 @@ class HrVnAsset(models.Model):
         }
 
     def action_maintenance(self):
+        """Direct state change to maintenance (used by allocations and tests).
+        Guard: asset must not be currently allocated to an employee (#121)."""
         for rec in self:
             if rec.state == 'allocated' and rec.current_employee_id:
                 raise UserError(_(
@@ -155,6 +166,36 @@ class HrVnAsset(models.Model):
                     'Vui lòng thu hồi tài sản trước khi chuyển sang bảo trì.'
                 ) % (rec.name, rec.current_employee_id.name))
         self.write({'state': 'maintenance'})
+
+    def action_maintenance_request(self):
+        """Open full maintenance-request wizard (#122)."""
+        self.ensure_one()
+        if self.state == 'allocated' and self.current_employee_id:
+            raise UserError(_(
+                'Tài sản "%s" đang được cấp phát cho %s.\n'
+                'Vui lòng thu hồi tài sản trước khi chuyển sang bảo trì.'
+            ) % (self.name, self.current_employee_id.name))
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Tạo yêu cầu bảo trì',
+            'res_model': 'hr.vn.asset.maintenance',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_asset_id': self.id,
+            },
+        }
+
+    def action_view_maintenances(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Yêu cầu bảo trì',
+            'res_model': 'hr.vn.asset.maintenance',
+            'view_mode': 'list,form',
+            'domain': [('asset_id', '=', self.id)],
+            'context': {'default_asset_id': self.id},
+        }
 
     def action_available(self):
         self.write({'state': 'available', 'current_employee_id': False, 'current_department_id': False})

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List -->
+    <record id="hr_vn_asset_maintenance_view_list" model="ir.ui.view">
+        <field name="name">hr.vn.asset.maintenance.list</field>
+        <field name="model">hr.vn.asset.maintenance</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'draft'"
+                  decoration-warning="state in ('submitted', 'approved', 'in_progress')"
+                  decoration-success="state == 'done'"
+                  decoration-muted="state in ('rejected', 'cancelled')">
+                <field name="name"/>
+                <field name="asset_id"/>
+                <field name="asset_category_id"/>
+                <field name="maintenance_type"/>
+                <field name="date"/>
+                <field name="requested_by_id"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state in ('submitted', 'approved')"
+                       decoration-primary="state == 'in_progress'"
+                       decoration-success="state == 'done'"
+                       decoration-danger="state in ('rejected', 'cancelled')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="hr_vn_asset_maintenance_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.asset.maintenance.form</field>
+        <field name="model">hr.vn.asset.maintenance</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" string="Gửi duyệt" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Phê duyệt" type="object"
+                            class="btn-primary" invisible="state != 'submitted'"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_start" string="Bắt đầu bảo trì" type="object"
+                            class="btn-primary" invisible="state != 'approved'"
+                            groups="hr.group_hr_user"/>
+                    <button name="action_done" string="Hoàn tất bảo trì" type="object"
+                            class="btn-success" invisible="state != 'in_progress'"
+                            groups="hr.group_hr_user"/>
+                    <button name="action_reject" string="Từ chối" type="object"
+                            invisible="state not in ('submitted',)"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_cancel" string="Hủy" type="object"
+                            invisible="state in ('done', 'rejected', 'cancelled')"/>
+                    <button name="action_reset_draft" string="Về nháp" type="object"
+                            invisible="state not in ('cancelled', 'rejected')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,approved,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin tài sản">
+                            <field name="asset_id" readonly="state != 'draft'"/>
+                            <field name="asset_category_id" readonly="1"/>
+                            <field name="asset_state" readonly="1"/>
+                            <field name="current_employee_id" readonly="1"/>
+                        </group>
+                        <group string="Thông tin yêu cầu">
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="maintenance_type" readonly="state != 'draft'"/>
+                            <field name="requested_by_id" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Chi phí">
+                            <field name="estimated_cost" readonly="state != 'draft'"/>
+                            <field name="actual_cost"
+                                   readonly="state not in ('in_progress', 'done')"/>
+                        </group>
+                        <group string="Phê duyệt" invisible="state == 'draft'">
+                            <field name="approved_by_id" readonly="1"/>
+                            <field name="approved_date" readonly="1"/>
+                            <field name="date_start" readonly="1"/>
+                            <field name="date_done" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Lý do từ chối" invisible="state != 'rejected'">
+                        <field name="rejection_reason" nolabel="1"
+                               readonly="state != 'rejected'"
+                               placeholder="Lý do từ chối..."/>
+                    </group>
+                    <notebook>
+                        <page string="Mô tả yêu cầu">
+                            <field name="description" placeholder="Mô tả sự cố / yêu cầu bảo trì..."
+                                   readonly="state != 'draft'"/>
+                        </page>
+                        <page string="Kết quả bảo trì" invisible="state not in ('in_progress', 'done')">
+                            <field name="maintenance_note" placeholder="Ghi chú kết quả bảo trì..."
+                                   readonly="state == 'done'"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="hr_vn_asset_maintenance_view_search" model="ir.ui.view">
+        <field name="name">hr.vn.asset.maintenance.search</field>
+        <field name="model">hr.vn.asset.maintenance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="asset_id"/>
+                <field name="requested_by_id"/>
+                <filter string="Nháp" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Chờ duyệt" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                <filter string="Đã duyệt" name="approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Đang bảo trì" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Hoàn tất" name="done" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter string="Bảo trì định kỳ" name="routine" domain="[('maintenance_type', '=', 'routine')]"/>
+                <filter string="Sửa chữa" name="repair" domain="[('maintenance_type', '=', 'repair')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter string="Trạng thái" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Loại bảo trì" name="group_type" context="{'group_by': 'maintenance_type'}"/>
+                    <filter string="Tài sản" name="group_asset" context="{'group_by': 'asset_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hr_vn_asset_maintenance" model="ir.actions.act_window">
+        <field name="name">Yêu cầu bảo trì tài sản</field>
+        <field name="res_model">hr.vn.asset.maintenance</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="hr_vn_asset_maintenance_view_search"/>
+    </record>
+</odoo>

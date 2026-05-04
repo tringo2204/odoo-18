@@ -67,6 +67,14 @@
                             <field name="new_insurance_salary"
                                    invisible="decision_type != 'salary_adjustment'"
                                    readonly="state != 'draft'"/>
+                            <!-- Reward / Discipline -->
+                            <field name="rd_amount"
+                                   invisible="decision_type not in ('reward', 'discipline')"
+                                   readonly="state != 'draft'"/>
+                            <field name="rd_reason"
+                                   invisible="decision_type not in ('reward', 'discipline')"
+                                   readonly="state != 'draft'"
+                                   placeholder="Lý do chi tiết..."/>
                         </group>
                     </group>
                     <notebook>
@@ -108,12 +116,32 @@
         </field>
     </record>
 
-    <!-- Action -->
+    <!-- Action: all -->
     <record id="hr_vn_decision_action" model="ir.actions.act_window">
         <field name="name">Quyết định nhân sự</field>
         <field name="res_model">hr.vn.decision</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="hr_vn_decision_view_search"/>
         <field name="context">{'search_default_done': 0}</field>
+    </record>
+
+    <!-- Action: Reward only -->
+    <record id="hr_vn_decision_action_reward" model="ir.actions.act_window">
+        <field name="name">Khen thưởng</field>
+        <field name="res_model">hr.vn.decision</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="hr_vn_decision_view_search"/>
+        <field name="domain">[('decision_type', '=', 'reward')]</field>
+        <field name="context">{'default_decision_type': 'reward'}</field>
+    </record>
+
+    <!-- Action: Discipline only -->
+    <record id="hr_vn_decision_action_discipline" model="ir.actions.act_window">
+        <field name="name">Kỷ luật</field>
+        <field name="res_model">hr.vn.decision</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="hr_vn_decision_view_search"/>
+        <field name="domain">[('decision_type', '=', 'discipline')]</field>
+        <field name="context">{'default_decision_type': 'discipline'}</field>
     </record>
 </odoo>

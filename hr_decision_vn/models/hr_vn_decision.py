@@ -74,6 +74,16 @@ class HrVnDecision(models.Model):
         default='draft',
         tracking=True,
     )
+    # --- REWARD / DISCIPLINE specific fields (#105) ---
+    rd_amount = fields.Float(
+        string='Số tiền (VND)',
+        help='Số tiền khen thưởng hoặc phạt',
+    )
+    rd_reason = fields.Text(
+        string='Lý do',
+        help='Lý do khen thưởng / kỷ luật chi tiết',
+    )
+
     note = fields.Html(string='Ghi chú')
     company_id = fields.Many2one(
         'res.company',
@@ -175,6 +185,30 @@ class HrVnDecision(models.Model):
             if self.new_insurance_salary:
                 vals['insurance_salary'] = self.new_insurance_salary
             contract.write(vals)
+
+        elif self.decision_type in ('reward', 'discipline'):
+            # Create / update linked sht.hr.rd record if module is installed
+            if 'sht.hr.rd' in self.env:
+                category = 'reward' if self.decision_type == 'reward' else 'discipline'
+                rd_type = self.env['sht.hr.rd.type'].search(
+                    [('category', '=', category)], limit=1
+                )
+                vals = {
+                    'employee_id': employee.id,
+                    'category': category,
+                    'date': self.effective_date,
+                    'decision_number': self.name,
+                    'decision_date': self.effective_date,
+                    'reason': self.rd_reason or (self.note and ' '.join(
+                        (self.note or '').replace('<p>', '').replace('</p>', '\n').split()
+                    ) or '/'),
+                    'state': 'confirmed',
+                }
+                if rd_type:
+                    vals['rd_type_id'] = rd_type.id
+                if self.rd_amount:
+                    vals['amount'] = self.rd_amount
+                self.env['sht.hr.rd'].create(vals)
 
         elif self.decision_type == 'termination':
             employee.write({'departure_date': self.effective_date})

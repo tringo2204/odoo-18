@@ -11,6 +11,13 @@
               action="hr_vn_asset_action"
               sequence="10"/>
 
+    <menuitem id="menu_hr_asset_maintenance"
+              name="Yêu cầu bảo trì"
+              parent="menu_hr_asset_root"
+              action="action_hr_vn_asset_maintenance"
+              sequence="15"
+              groups="hr.group_hr_user"/>
+
     <menuitem id="menu_hr_asset_disposal"
               name="Biên bản thanh lý"
               parent="menu_hr_asset_root"

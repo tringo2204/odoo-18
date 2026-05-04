@@ -13,6 +13,7 @@
         'views/hr_vn_asset_views.xml',
         'views/hr_vn_asset_category_views.xml',
         'views/hr_vn_asset_disposal_views.xml',
+        'views/hr_vn_asset_maintenance_views.xml',
         'views/hr_employee_views.xml',
         'views/menus.xml',
     ],

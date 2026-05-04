@@ -8,4 +8,13 @@
         <field name="number_next">1</field>
         <field name="number_increment">1</field>
     </record>
+
+    <record id="seq_hr_vn_asset_maintenance" model="ir.sequence">
+        <field name="name">Yêu cầu bảo trì tài sản</field>
+        <field name="code">hr.vn.asset.maintenance</field>
+        <field name="prefix">BT/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
 </odoo>

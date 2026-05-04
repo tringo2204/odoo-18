@@ -179,6 +179,8 @@
                     <group string="Thông tin thôi việc" invisible="request_type_code != 'RESIGNATION'"
                            readonly="state != 'draft'">
                         <group>
+                            <field name="resignation_date"
+                                   required="request_type_code == 'RESIGNATION'"/>
                             <field name="resignation_last_working_date"
                                    required="request_type_code == 'RESIGNATION'"/>
                             <field name="resignation_announcement_date"/>

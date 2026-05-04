@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit hr.attendance list to show shift_status badge -->
+    <record id="hr_attendance_vn_view_list" model="ir.ui.view">
+        <field name="name">hr.attendance.vn.list</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='worked_hours']" position="after">
+                <field name="shift_status" widget="badge" optional="show"
+                       decoration-success="shift_status == 'in_shift'"
+                       decoration-warning="shift_status == 'overtime'"
+                       decoration-muted="shift_status == 'unscheduled'"/>
+                <field name="scheduled_hours" optional="hide"/>
+                <field name="overtime_hours" optional="show"
+                       decoration-warning="overtime_hours &gt; 0"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit hr.attendance form to show shift info -->
+    <record id="hr_attendance_vn_view_form" model="ir.ui.view">
+        <field name="name">hr.attendance.vn.form</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='worked_hours']" position="after">
+                <field name="shift_status" widget="badge"
+                       decoration-success="shift_status == 'in_shift'"
+                       decoration-warning="shift_status == 'overtime'"
+                       decoration-muted="shift_status == 'unscheduled'"/>
+                <field name="scheduled_hours" readonly="1"/>
+                <field name="overtime_hours" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Search filter: OT only -->
+    <record id="hr_attendance_vn_view_search" model="ir.ui.view">
+        <field name="name">hr.attendance.vn.search</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="Đúng ca" name="in_shift"
+                        domain="[('shift_status', '=', 'in_shift')]"/>
+                <filter string="Ngoài ca / OT" name="overtime"
+                        domain="[('shift_status', '=', 'overtime')]"/>
+                <filter string="Không có lịch" name="unscheduled"
+                        domain="[('shift_status', '=', 'unscheduled')]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
