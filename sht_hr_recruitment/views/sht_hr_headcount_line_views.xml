@@ -132,7 +132,7 @@
         <field name="name">sht.hr.headcount.line.pivot</field>
         <field name="model">sht.hr.headcount.line</field>
         <field name="arch" type="xml">
-            <pivot string="Bảng định biên" disable_linking="0" display_quantity="true">
+            <pivot string="Bảng định biên" disable_linking="0">
                 <field name="department_id" type="row"/>
                 <field name="job_id" type="row"/>
                 <field name="year" type="col"/>
