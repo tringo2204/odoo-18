@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'SHT Vietnam HR Contract',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'category': 'Human Resources/Contracts',
     'summary': 'Vietnam-specific contract types, probation, renewal alerts, termination',
     'depends': ['hr_contract'],
