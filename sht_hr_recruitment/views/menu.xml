@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Bảng định biên (1Office style grid) -->
+    <menuitem
+        id="sht_hr_recruitment_menu_staffing_table"
+        name="Bảng định biên"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        action="sht_hr_headcount_line_action_pivot"
+        sequence="20"
+        groups="hr.group_hr_user"/>
+
+    <menuitem
+        id="sht_hr_recruitment_menu_staffing_manage"
+        name="Quản lý định biên"
+        parent="hr_recruitment.menu_hr_recruitment_root"
+        action="sht_hr_headcount_line_action_list"
+        sequence="21"
+        groups="hr.group_hr_manager"/>
+
+    <!-- Kế hoạch định biên (existing plan-based approach) -->
     <menuitem
         id="sht_hr_recruitment_menu_headcount_plans"
-        name="Định biên"
+        name="Kế hoạch tuyển dụng"
         parent="hr_recruitment.menu_hr_recruitment_root"
         action="sht_hr_recruitment_headcount_plan_action"
-        sequence="25"
+        sequence="23"
         groups="hr.group_hr_user"/>
 
     <menuitem
         id="sht_hr_recruitment_menu_allocation"
-        name="Phân bổ định biên"
+        name="Phân bổ vị trí"
         parent="hr_recruitment.menu_hr_recruitment_root"
         action="sht_hr_headcount_allocation_action"
-        sequence="25"
+        sequence="24"
         groups="hr.group_hr_user"/>
 
     <menuitem

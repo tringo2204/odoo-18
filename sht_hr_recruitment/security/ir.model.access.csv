@@ -9,5 +9,7 @@ sht_hr_recruitment_access_evaluation_user,sht.hr.applicant.evaluation user,model
 sht_hr_recruitment_access_evaluation_manager,sht.hr.applicant.evaluation manager,model_sht_hr_applicant_evaluation,hr.group_hr_manager,1,1,1,1
 sht_hr_recruitment_access_allocation_user,sht.hr.headcount.allocation user,model_sht_hr_headcount_allocation,hr.group_hr_user,1,0,0,0
 sht_hr_recruitment_access_allocation_manager,sht.hr.headcount.allocation manager,model_sht_hr_headcount_allocation,hr.group_hr_manager,1,1,1,1
+sht_hr_recruitment_access_hcline_user,sht.hr.headcount.line user,model_sht_hr_headcount_line,hr.group_hr_user,1,0,0,0
+sht_hr_recruitment_access_hcline_manager,sht.hr.headcount.line manager,model_sht_hr_headcount_line,hr.group_hr_manager,1,1,1,1
 sht_hr_recruitment_access_eval_criteria_user,sht.hr.evaluation.criteria user,model_sht_hr_evaluation_criteria,hr.group_hr_user,1,0,0,0
 sht_hr_recruitment_access_eval_criteria_manager,sht.hr.evaluation.criteria manager,model_sht_hr_evaluation_criteria,hr.group_hr_manager,1,1,1,1

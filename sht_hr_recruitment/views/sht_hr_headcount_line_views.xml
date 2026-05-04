@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ===== Search View ===== -->
+    <record id="sht_hr_headcount_line_view_search" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.line.search</field>
+        <field name="model">sht.hr.headcount.line</field>
+        <field name="arch" type="xml">
+            <search string="Bảng định biên">
+                <field name="department_id"/>
+                <field name="job_id"/>
+                <field name="year" string="Năm" filter_domain="[('year', '=', self)]"/>
+                <separator/>
+                <filter string="Năm nay" name="current_year"
+                        domain="[('year', '=', context_today().year)]"/>
+                <filter string="Chưa duyệt" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Đã duyệt" name="approved"
+                        domain="[('state', '=', 'approved')]"/>
+                <filter string="Còn thiếu nhân sự" name="has_gap"
+                        domain="[('gap', '>', 0), ('state', '=', 'approved')]"/>
+                <separator/>
+                <group expand="1" string="Nhóm theo">
+                    <filter string="Phòng ban" name="group_dept"
+                            context="{'group_by': 'department_id'}"/>
+                    <filter string="Vị trí" name="group_job"
+                            context="{'group_by': 'job_id'}"/>
+                    <filter string="Tháng" name="group_month"
+                            context="{'group_by': 'month'}"/>
+                    <filter string="Năm" name="group_year"
+                            context="{'group_by': 'year'}"/>
+                    <filter string="Trạng thái" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ===== List View (Bảng định biên style) ===== -->
+    <record id="sht_hr_headcount_line_view_list" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.line.list</field>
+        <field name="model">sht.hr.headcount.line</field>
+        <field name="arch" type="xml">
+            <list string="Bảng định biên"
+                  multi_edit="1"
+                  decoration-success="state == 'approved'"
+                  decoration-warning="state == 'draft' and gap > 0"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-danger="state == 'draft' and gap > 0">
+                <field name="department_id" optional="show"/>
+                <field name="job_id"/>
+                <field name="year" string="Năm"/>
+                <field name="month" string="Tháng"/>
+                <field name="planned_count" string="ĐB" sum="Tổng ĐB"/>
+                <field name="current_count" string="NS" sum="Tổng NS"/>
+                <field name="gap" string="CT"
+                       decoration-danger="gap > 0"
+                       decoration-success="gap &lt;= 0"
+                       sum="Tổng CT"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-warning="state == 'draft'"
+                       decoration-muted="state == 'cancelled'"/>
+                <field name="approved_by" optional="hide"/>
+                <field name="note" optional="hide"/>
+                <button name="action_approve" type="object"
+                        string="Duyệt" class="btn-success btn-sm"
+                        invisible="state != 'draft'"
+                        groups="hr.group_hr_manager"/>
+                <button name="action_reset_draft" type="object"
+                        string="Hủy duyệt" class="btn-warning btn-sm"
+                        invisible="state != 'approved'"
+                        groups="hr.group_hr_manager"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ===== Form View ===== -->
+    <record id="sht_hr_headcount_line_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.line.form</field>
+        <field name="model">sht.hr.headcount.line</field>
+        <field name="arch" type="xml">
+            <form string="Định biên tháng">
+                <header>
+                    <button name="action_approve" type="object"
+                            string="Duyệt định biên" class="btn-primary"
+                            invisible="state != 'draft'"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_reset_draft" type="object"
+                            string="Hủy duyệt"
+                            invisible="state != 'approved'"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_cancel" type="object"
+                            string="Không áp dụng"
+                            invisible="state == 'cancelled'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,approved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Vị trí">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                        </group>
+                        <group string="Kỳ định biên">
+                            <field name="year"/>
+                            <field name="month"/>
+                        </group>
+                    </group>
+                    <group string="Số liệu định biên">
+                        <group>
+                            <field name="planned_count" string="ĐB — Số lượng định biên"/>
+                            <field name="current_count" string="NS — Nhân sự hiện tại"/>
+                            <field name="gap" string="CT — Còn thiếu (ĐB − NS)"/>
+                        </group>
+                        <group invisible="state != 'approved'">
+                            <field name="approved_by"/>
+                            <field name="approved_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="note" placeholder="Ghi chú thêm..."/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===== Pivot View (Bảng định biên grid) ===== -->
+    <record id="sht_hr_headcount_line_view_pivot" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.line.pivot</field>
+        <field name="model">sht.hr.headcount.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Bảng định biên" disable_linking="0" display_quantity="true">
+                <field name="department_id" type="row"/>
+                <field name="job_id" type="row"/>
+                <field name="year" type="col"/>
+                <field name="month" type="col"/>
+                <field name="planned_count" type="measure" string="ĐB"/>
+                <field name="current_count" type="measure" string="NS"/>
+                <field name="gap" type="measure" string="CT"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ===== Graph View ===== -->
+    <record id="sht_hr_headcount_line_view_graph" model="ir.ui.view">
+        <field name="name">sht.hr.headcount.line.graph</field>
+        <field name="model">sht.hr.headcount.line</field>
+        <field name="arch" type="xml">
+            <graph string="Định biên vs Thực tế" type="bar" stacked="0">
+                <field name="month" type="row"/>
+                <field name="planned_count" type="measure" string="ĐB"/>
+                <field name="current_count" type="measure" string="NS"/>
+                <field name="gap" type="measure" string="CT"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ===== Action: Bảng định biên (pivot default) ===== -->
+    <record id="sht_hr_headcount_line_action_pivot" model="ir.actions.act_window">
+        <field name="name">Bảng định biên</field>
+        <field name="res_model">sht.hr.headcount.line</field>
+        <field name="view_mode">pivot,list,graph,form</field>
+        <field name="search_view_id" ref="sht_hr_headcount_line_view_search"/>
+        <field name="context">{
+            'search_default_current_year': 1,
+            'search_default_group_dept': 1,
+            'search_default_group_job': 1
+        }</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <!-- ===== Action: Quản lý định biên (list default) ===== -->
+    <record id="sht_hr_headcount_line_action_list" model="ir.actions.act_window">
+        <field name="name">Quản lý định biên</field>
+        <field name="res_model">sht.hr.headcount.line</field>
+        <field name="view_mode">list,form,pivot</field>
+        <field name="search_view_id" ref="sht_hr_headcount_line_view_search"/>
+        <field name="context">{
+            'search_default_current_year': 1,
+            'search_default_group_dept': 1
+        }</field>
+    </record>
+
+    <!-- ===== Wizard: Generate Year Plan ===== -->
+    <record id="sht_hr_headcount_line_action_generate" model="ir.actions.server">
+        <field name="name">Tạo bảng định biên năm</field>
+        <field name="model_id" ref="model_sht_hr_headcount_line"/>
+        <field name="binding_model_id" ref="model_sht_hr_headcount_line"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+import datetime as _dt
+year = _dt.date.today().year
+count = env['sht.hr.headcount.line'].generate_year_plan(year)
+raise UserError("Đã tạo %d dòng định biên mới cho năm %d." % (count, year))
+        </field>
+    </record>
+</odoo>
