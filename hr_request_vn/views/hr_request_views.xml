@@ -49,19 +49,21 @@
                     <div class="oe_title">
                         <h1><field name="name" readonly="state != 'draft'"/></h1>
                     </div>
-                    <group>
+                    <!-- #99: all editable content is readonly once submitted -->
+                    <group readonly="state != 'draft'">
                         <group>
                             <field name="request_type_id"/>
                             <field name="request_type_code" invisible="1"/>
                             <field name="employee_id"/>
                             <field name="reason_id"/>
-                            <field name="created_by_id"/>
+                            <field name="created_by_id" readonly="1"/>
                         </group>
                         <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'ABSENCE')">
                             <field name="date_from"/>
                             <field name="date_to"/>
+                            <!-- #83: hide duration_hours for SPECIAL_SCHEDULE -->
                             <field name="duration_hours"
-                                   invisible="request_type_code in ('LEAVE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION')"/>
+                                   invisible="request_type_code in ('LEAVE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"/>
                             <field name="duration_days"
                                    invisible="request_type_code in ('ABSENCE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION')"/>
                             <field name="company_id" groups="base.group_multi_company"/>
@@ -69,14 +71,16 @@
                     </group>
 
                     <!-- LEAVE -->
-                    <group string="Thông tin nghỉ phép" invisible="request_type_code != 'LEAVE'">
+                    <group string="Thông tin nghỉ phép" invisible="request_type_code != 'LEAVE'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="leave_type_id" required="request_type_code == 'LEAVE'"/>
                         </group>
                     </group>
 
                     <!-- ABSENCE (hour-based) -->
-                    <group string="Thông tin vắng mặt" invisible="request_type_code != 'ABSENCE'">
+                    <group string="Thông tin vắng mặt" invisible="request_type_code != 'ABSENCE'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="absence_date" required="request_type_code == 'ABSENCE'"/>
                             <field name="request_hour_from" widget="float_time"
@@ -87,7 +91,8 @@
                     </group>
 
                     <!-- CHECKIN -->
-                    <group string="Bổ sung chấm công" invisible="request_type_code != 'CHECKIN'">
+                    <group string="Bổ sung chấm công" invisible="request_type_code != 'CHECKIN'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="checkin_type" required="request_type_code == 'CHECKIN'"/>
                             <field name="checkin_time" required="request_type_code == 'CHECKIN'"/>
@@ -95,7 +100,8 @@
                     </group>
 
                     <!-- SHIFT_SWAP -->
-                    <group string="Đổi ca" invisible="request_type_code != 'SHIFT_SWAP'">
+                    <group string="Đổi ca" invisible="request_type_code != 'SHIFT_SWAP'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="shift_from_id" domain="[('resource_id.employee_id', '=', employee_id)]"/>
                             <field name="shift_from_start" readonly="1" invisible="not shift_from_id"/>
@@ -110,7 +116,8 @@
                     </group>
 
                     <!-- EXTRA_SHIFT -->
-                    <group string="Tăng ca" invisible="request_type_code != 'EXTRA_SHIFT'">
+                    <group string="Tăng ca" invisible="request_type_code != 'EXTRA_SHIFT'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="extra_shift_date"/>
                             <field name="extra_shift_start" widget="float_time"/>
@@ -119,7 +126,8 @@
                     </group>
 
                     <!-- SHIFT_REG -->
-                    <group string="Đăng ký ca" invisible="request_type_code != 'SHIFT_REG'">
+                    <group string="Đăng ký ca" invisible="request_type_code != 'SHIFT_REG'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="shift_reg_date"/>
                             <field name="shift_reg_start" widget="float_time"/>
@@ -128,21 +136,24 @@
                     </group>
 
                     <!-- BUSINESS_TRIP -->
-                    <group string="Công tác" invisible="request_type_code != 'BUSINESS_TRIP'">
+                    <group string="Công tác" invisible="request_type_code != 'BUSINESS_TRIP'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="business_trip_location"/>
                         </group>
                     </group>
 
                     <!-- SPECIAL_SCHEDULE -->
-                    <group string="Chế độ đặc biệt" invisible="request_type_code != 'SPECIAL_SCHEDULE'">
+                    <group string="Chế độ đặc biệt" invisible="request_type_code != 'SPECIAL_SCHEDULE'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="special_schedule_type"/>
                         </group>
                     </group>
 
                     <!-- RESIGNATION -->
-                    <group string="Thông tin thôi việc" invisible="request_type_code != 'RESIGNATION'">
+                    <group string="Thông tin thôi việc" invisible="request_type_code != 'RESIGNATION'"
+                           readonly="state != 'draft'">
                         <group>
                             <field name="resignation_last_working_date"
                                    required="request_type_code == 'RESIGNATION'"/>
@@ -152,7 +163,8 @@
 
                     <notebook>
                         <page string="Mô tả">
-                            <field name="description" placeholder="Lý do chi tiết..."/>
+                            <field name="description" placeholder="Lý do chi tiết..."
+                                   readonly="state != 'draft'"/>
                         </page>
                         <page string="Phê duyệt">
                             <field name="approval_ids" readonly="1">
@@ -168,12 +180,14 @@
                                 </list>
                             </field>
                         </page>
+                        <!-- #76/#78: always show for EXTRA_SHIFT/SHIFT_REG/SHIFT_SWAP -->
                         <page string="Liên kết" groups="hr.group_hr_manager"
-                              invisible="not leave_id and not attendance_id and not planning_slot_id and not shift_from_id and not shift_to_id">
+                              invisible="request_type_code not in ('EXTRA_SHIFT', 'SHIFT_REG', 'SHIFT_SWAP') and not leave_id and not attendance_id and not planning_slot_id">
                             <group>
-                                <field name="leave_id" invisible="not leave_id"/>
-                                <field name="attendance_id" invisible="not attendance_id"/>
-                                <field name="planning_slot_id" invisible="not planning_slot_id"/>
+                                <field name="leave_id" readonly="1" invisible="not leave_id"/>
+                                <field name="attendance_id" readonly="1" invisible="not attendance_id"/>
+                                <field name="planning_slot_id" readonly="1"
+                                       invisible="not planning_slot_id and request_type_code not in ('EXTRA_SHIFT', 'SHIFT_REG')"/>
                                 <field name="shift_from_id" readonly="1"
                                        invisible="request_type_code != 'SHIFT_SWAP' or not shift_from_id"/>
                                 <field name="shift_to_id" readonly="1"

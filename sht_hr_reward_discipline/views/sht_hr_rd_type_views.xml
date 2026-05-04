@@ -4,10 +4,10 @@
         <field name="name">sht.hr.rd.type.tree</field>
         <field name="model">sht.hr.rd.type</field>
         <field name="arch" type="xml">
-            <list string="Reward &amp; Discipline Types">
-                <field name="name"/>
-                <field name="code" optional="show"/>
-                <field name="category"/>
+            <list string="Loại khen thưởng &amp; kỷ luật">
+                <field name="name" string="Tên loại"/>
+                <field name="code" string="Mã" optional="show"/>
+                <field name="category" string="Phân loại"/>
             </list>
         </field>
     </record>
@@ -16,15 +16,15 @@
         <field name="name">sht.hr.rd.type.form</field>
         <field name="model">sht.hr.rd.type</field>
         <field name="arch" type="xml">
-            <form string="Type">
+            <form string="Loại khen thưởng/kỷ luật">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="code"/>
-                        <field name="category"/>
+                        <field name="name" string="Tên loại"/>
+                        <field name="code" string="Mã"/>
+                        <field name="category" string="Phân loại"/>
                     </group>
                     <group>
-                        <field name="description" colspan="2" nolabel="1"/>
+                        <field name="description" string="Mô tả" colspan="2" nolabel="1"/>
                     </group>
                 </sheet>
             </form>
@@ -35,19 +35,19 @@
         <field name="name">sht.hr.rd.type.search</field>
         <field name="model">sht.hr.rd.type</field>
         <field name="arch" type="xml">
-            <search string="Types">
+            <search string="Loại khen thưởng/kỷ luật">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="category"/>
                 <separator/>
-                <filter string="Rewards" name="filter_reward" domain="[('category', '=', 'reward')]"/>
-                <filter string="Disciplines" name="filter_discipline" domain="[('category', '=', 'discipline')]"/>
+                <filter string="Khen thưởng" name="filter_reward" domain="[('category', '=', 'reward')]"/>
+                <filter string="Kỷ luật" name="filter_discipline" domain="[('category', '=', 'discipline')]"/>
             </search>
         </field>
     </record>
 
     <record id="action_sht_hr_rd_type" model="ir.actions.act_window">
-        <field name="name">Reward Types</field>
+        <field name="name">Loại khen thưởng/kỷ luật</field>
         <field name="res_model">sht.hr.rd.type</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="sht_hr_rd_type_view_search"/>

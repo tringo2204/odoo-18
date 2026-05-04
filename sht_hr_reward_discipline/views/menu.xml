@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="menu_sht_hr_rd_root"
-              name="Rewards &amp; Discipline"
+              name="Khen thưởng &amp; Kỷ luật"
               parent="hr.menu_hr_root"
               groups="hr.group_hr_user"
               sequence="25"/>
 
     <menuitem id="menu_sht_hr_rd_all"
-              name="All Records"
+              name="Tất cả hồ sơ"
               parent="menu_sht_hr_rd_root"
               action="action_sht_hr_rd"
               sequence="10"/>
 
+    <!-- #100-101: Loại khen thưởng/kỷ luật accessible from Cấu hình -->
     <menuitem id="menu_sht_hr_rd_types"
-              name="Reward Types"
+              name="Loại khen thưởng/kỷ luật"
               parent="hr.menu_human_resources_configuration"
               action="action_sht_hr_rd_type"
               groups="hr.group_hr_user"

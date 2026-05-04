@@ -11,9 +11,10 @@
               action="hr_vn_asset_action"
               sequence="10"/>
 
+    <!-- #119: Danh mục tài sản moved to Cấu hình -->
     <menuitem id="menu_hr_asset_category"
               name="Danh mục tài sản"
-              parent="menu_hr_asset_root"
+              parent="hr.menu_human_resources_configuration"
               action="hr_vn_asset_category_action"
-              sequence="20"/>
+              sequence="60"/>
 </odoo>

@@ -131,6 +131,11 @@ class HrVnDecision(models.Model):
             if self.job_id:
                 employee.write({'job_id': self.job_id.id})
 
+        elif self.decision_type == 'dismissal':
+            # #116: clear job position on dismissal; optionally set to subordinate job
+            update_vals = {'job_id': self.job_id.id} if self.job_id else {'job_id': False}
+            employee.write(update_vals)
+
         elif self.decision_type == 'salary_adjustment':
             contract = employee.contract_id
             if not contract:
