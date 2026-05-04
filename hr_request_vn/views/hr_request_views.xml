@@ -101,7 +101,7 @@
                     </group>
 
                     <!-- ABSENCE (hour-based) -->
-                    <!-- #63: hide Số ngày, show Số giờ (duration_hours — FIRST occurrence in arch) -->
+                    <!-- #63: hide Số ngày, show Số giờ via absence_duration_hours in this section -->
                     <group string="Thông tin vắng mặt" invisible="request_type_code != 'ABSENCE'"
                            readonly="state != 'draft'">
                         <group>
@@ -110,15 +110,16 @@
                                    required="request_type_code == 'ABSENCE'"/>
                             <field name="request_hour_to" widget="float_time"
                                    required="request_type_code == 'ABSENCE'"/>
-                            <field name="duration_hours" string="Số giờ" readonly="1"/>
+                            <field name="absence_duration_hours" string="Số giờ" readonly="1"/>
                         </group>
                     </group>
 
-                    <!-- OT: show computed Số giờ (second occurrence, after ABSENCE) -->
-                    <!-- #77: duration_hours visible for OT via this dedicated display -->
-                    <group invisible="request_type_code != 'OT'">
-                        <field name="duration_hours" string="Số giờ" readonly="1"/>
-                    </group>
+                    <!-- #63/#77: SINGLE duration_hours in the form, directly under the page
+                         (no type-specific parent group), explicit field-level invisible.
+                         Visible for ABSENCE and OT; hidden for all other types. -->
+                    <field name="duration_hours" string="Số giờ"
+                           invisible="request_type_code not in ('ABSENCE', 'OT')"
+                           readonly="1"/>
 
                     <!-- CHECKIN -->
                     <group string="Bổ sung chấm công" invisible="request_type_code != 'CHECKIN'"
