@@ -88,10 +88,30 @@ class HrVnDecision(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('hr.vn.decision') or 'Mới'
         return super().create(vals_list)
 
+    # Fields the state-machine may write; everything else is locked after confirmation.
+    _WRITE_WHITELIST = frozenset({'state'})
+
+    def write(self, vals):
+        user_fields = set(vals.keys()) - self._WRITE_WHITELIST
+        if user_fields:
+            locked = self.filtered(lambda r: r.state not in ('draft', 'cancelled'))
+            if locked:
+                raise UserError(_(
+                    'Quyết định đã được xác nhận và không thể chỉnh sửa. '
+                    'Hủy quyết định trước nếu cần thay đổi.'
+                ))
+        return super().write(vals)
+
     def action_confirm(self):
         self.write({'state': 'confirmed'})
 
     def action_done(self):
+        """#116: Apply decision effects. Only callable from 'confirmed' state."""
+        invalid = self.filtered(lambda r: r.state != 'confirmed')
+        if invalid:
+            raise UserError(_(
+                'Chỉ có thể áp dụng quyết định ở trạng thái "Đã xác nhận".'
+            ))
         for rec in self:
             rec._apply_decision()
         self.write({'state': 'done'})

@@ -195,12 +195,24 @@ class HrRequest(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('hr.request') or 'Mới'
         return super().create(vals_list)
 
+    # Fields the workflow engine / side-effects may write after submission.
+    # Everything else is blocked once state != 'draft'.
+    _WRITE_WHITELIST = frozenset({
+        'state',
+        # linked records set by side-effects after approval
+        'leave_id',
+        'attendance_id',
+        'planning_slot_id',
+    })
+
     def write(self, vals):
-        if 'name' in vals:
+        user_fields = set(vals.keys()) - self._WRITE_WHITELIST
+        if user_fields:
             locked = self.filtered(lambda r: r.state != 'draft')
             if locked:
                 raise UserError(_(
-                    'Không thể thay đổi số đơn khi đơn đã được nộp/xử lý.'
+                    'Đơn đã được nộp và không thể chỉnh sửa. '
+                    'Vui lòng hủy đơn trước nếu cần thay đổi thông tin.'
                 ))
         return super().write(vals)
 
