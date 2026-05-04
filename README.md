@@ -61,3 +61,4 @@ git fetch https://github.com/tringo2204/odoo-18.git main
 git checkout FETCH_HEAD -- sht_hr_base sht_hr_training ...
 sudo systemctl restart odoo18
 ```
+# Mon May  4 15:50:10 +07 2026
