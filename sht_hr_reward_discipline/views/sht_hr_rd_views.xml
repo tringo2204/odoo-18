@@ -43,8 +43,10 @@
                         <group>
                             <field name="employee_id"/>
                             <field name="department_id" readonly="1"/>
-                            <field name="rd_type_id" string="Loại"/>
-                            <field name="category" readonly="1"/>
+                            <field name="category"/>
+                            <field name="rd_type_id" string="Loại"
+                                   domain="[('category', '=', category)]"
+                                   context="{'default_category': category}"/>
                         </group>
                         <group>
                             <field name="company_id" groups="base.group_multi_company"/>

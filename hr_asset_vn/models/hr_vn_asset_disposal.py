@@ -60,7 +60,7 @@ class HrVnAssetDisposal(models.Model):
         ('submitted', 'Chờ duyệt'),
         ('approved', 'Đã duyệt'),
         ('rejected', 'Từ chối'),
-        ('done', 'Đã thanh lý'),
+        ('disposed', 'Đã thanh lý'),
     ], string='Trạng thái', default='draft', tracking=True)
 
     company_id = fields.Many2one(
@@ -104,7 +104,7 @@ class HrVnAssetDisposal(models.Model):
                 'current_employee_id': False,
                 'current_department_id': False,
             })
-            rec.write({'state': 'done'})
+            rec.write({'state': 'disposed'})
 
     def action_reset_draft(self):
         self.write({'state': 'draft'})

@@ -101,7 +101,7 @@
                                     <field name="proposed_value"/>
                                     <field name="approved_by_id"/>
                                     <field name="state" widget="badge"
-                                           decoration-success="state == 'done'"
+                                           decoration-success="state == 'disposed'"
                                            decoration-info="state == 'approved'"
                                            decoration-warning="state == 'submitted'"
                                            decoration-muted="state == 'rejected'"/>

@@ -5,8 +5,11 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
-            <!-- Hide standard Odoo contract_type_id — replaced by sht_contract_type_id -->
-            <xpath expr="//field[@name='contract_type_id']" position="attributes">
+            <!-- Hide both occurrences of contract_type_id (Odoo renders two: per-group variant) -->
+            <xpath expr="//group[@name='top_info_right']/field[@name='contract_type_id'][not(@groups='hr_contract.group_hr_contract_manager')]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//group[@name='top_info_right']/field[@name='contract_type_id'][@groups='hr_contract.group_hr_contract_manager']" position="attributes">
                 <attribute name="invisible">True</attribute>
             </xpath>
             <xpath expr="//notebook" position="inside">

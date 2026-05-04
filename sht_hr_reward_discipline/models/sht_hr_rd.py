@@ -11,29 +11,37 @@ class ShtHrRd(models.Model):
     name = fields.Char(required=True, default='New', copy=False)
     employee_id = fields.Many2one(
         'hr.employee',
-        string='Employee',
+        string='Nhân viên',
         required=True,
         ondelete='restrict',
         tracking=True,
     )
     department_id = fields.Many2one(
         'hr.department',
+        string='Phòng ban',
         related='employee_id.department_id',
         store=True,
         readonly=True,
     )
     rd_type_id = fields.Many2one(
         'sht.hr.rd.type',
-        string='Type',
+        string='Loại',
         required=True,
         ondelete='restrict',
         tracking=True,
     )
+    # Standalone field (not related) so default_category context works
     category = fields.Selection(
-        related='rd_type_id.category',
+        [('reward', 'Khen thưởng'), ('discipline', 'Kỷ luật')],
+        string='Phân loại',
         store=True,
-        readonly=True,
+        tracking=True,
     )
+
+    @api.onchange('rd_type_id')
+    def _onchange_rd_type_id(self):
+        if self.rd_type_id:
+            self.category = self.rd_type_id.category
     date = fields.Date(required=True, default=fields.Date.today, tracking=True)
     decision_number = fields.Char(string='Decision No.')
     decision_date = fields.Date(string='Decision Date')

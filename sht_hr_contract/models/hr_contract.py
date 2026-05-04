@@ -26,11 +26,11 @@ class HrContract(models.Model):
     termination_reason = fields.Selection(
         string='Lý do chấm dứt',
         selection=[
-            ('resignation', 'Nghỉ việc tự nguyện'),
-            ('termination', 'Chấm dứt HĐ'),
-            ('contract_end', 'Hết hạn HĐ'),
+            ('resignation', 'Tự nguyện nghỉ việc'),
+            ('termination', 'Chấm dứt hợp đồng'),
+            ('contract_end', 'Hết hạn hợp đồng'),
             ('retirement', 'Nghỉ hưu'),
-            ('other', 'Khác'),
+            ('other', 'Lý do khác'),
         ],
         tracking=True,
     )
