@@ -5,3 +5,5 @@ access_hr_vn_asset_user,hr.vn.asset.user,model_hr_vn_asset,hr.group_hr_user,1,0,
 access_hr_vn_asset_manager,hr.vn.asset.manager,model_hr_vn_asset,hr.group_hr_manager,1,1,1,1
 access_hr_vn_asset_allocation_user,hr.vn.asset.allocation.user,model_hr_vn_asset_allocation,hr.group_hr_user,1,0,0,0
 access_hr_vn_asset_allocation_manager,hr.vn.asset.allocation.manager,model_hr_vn_asset_allocation,hr.group_hr_manager,1,1,1,1
+access_hr_vn_asset_disposal_user,hr.vn.asset.disposal.user,model_hr_vn_asset_disposal,hr.group_hr_user,1,0,0,0
+access_hr_vn_asset_disposal_manager,hr.vn.asset.disposal.manager,model_hr_vn_asset_disposal,hr.group_hr_manager,1,1,1,1

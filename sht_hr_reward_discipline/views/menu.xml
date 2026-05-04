@@ -6,11 +6,23 @@
               groups="hr.group_hr_user"
               sequence="25"/>
 
+    <menuitem id="menu_sht_hr_rd_reward"
+              name="Khen thưởng"
+              parent="menu_sht_hr_rd_root"
+              action="action_sht_hr_rd_reward"
+              sequence="10"/>
+
+    <menuitem id="menu_sht_hr_rd_discipline"
+              name="Kỷ luật"
+              parent="menu_sht_hr_rd_root"
+              action="action_sht_hr_rd_discipline"
+              sequence="20"/>
+
     <menuitem id="menu_sht_hr_rd_all"
               name="Tất cả hồ sơ"
               parent="menu_sht_hr_rd_root"
               action="action_sht_hr_rd"
-              sequence="10"/>
+              sequence="30"/>
 
     <!-- #100-101: Loại khen thưởng/kỷ luật accessible from Cấu hình -->
     <menuitem id="menu_sht_hr_rd_types"

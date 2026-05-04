@@ -27,9 +27,31 @@ class HrEmployee(models.Model):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Rewards & Discipline',
+            'name': 'Khen thưởng & Kỷ luật',
             'res_model': 'sht.hr.rd',
             'view_mode': 'list,form',
             'domain': [('employee_id', '=', self.id)],
             'context': {'default_employee_id': self.id},
+        }
+
+    def action_open_reward_records(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Khen thưởng',
+            'res_model': 'sht.hr.rd',
+            'view_mode': 'list,form',
+            'domain': [('employee_id', '=', self.id), ('category', '=', 'reward')],
+            'context': {'default_employee_id': self.id, 'default_category': 'reward'},
+        }
+
+    def action_open_discipline_records(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Kỷ luật',
+            'res_model': 'sht.hr.rd',
+            'view_mode': 'list,form',
+            'domain': [('employee_id', '=', self.id), ('category', '=', 'discipline')],
+            'context': {'default_employee_id': self.id, 'default_category': 'discipline'},
         }

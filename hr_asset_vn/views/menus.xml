@@ -11,6 +11,13 @@
               action="hr_vn_asset_action"
               sequence="10"/>
 
+    <menuitem id="menu_hr_asset_disposal"
+              name="Biên bản thanh lý"
+              parent="menu_hr_asset_root"
+              action="action_hr_vn_asset_disposal"
+              sequence="20"
+              groups="hr.group_hr_user"/>
+
     <!-- #119: Danh mục tài sản moved to Cấu hình -->
     <menuitem id="menu_hr_asset_category"
               name="Danh mục tài sản"

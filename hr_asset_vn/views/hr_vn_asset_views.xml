@@ -32,15 +32,22 @@
                     <button name="action_return" string="Thu hồi" type="object"
                             class="btn-primary" invisible="state != 'allocated'"/>
                     <button name="action_maintenance" string="Bảo trì" type="object"
-                            invisible="state not in ('available', 'allocated')"/>
+                            invisible="state != 'available'"
+                            help="Chỉ có thể chuyển sang bảo trì khi tài sản đang sẵn có. Nếu đang cấp phát, vui lòng thu hồi trước."/>
                     <button name="action_available" string="Sẵn có" type="object"
                             invisible="state not in ('maintenance',)"/>
-                    <button name="action_dispose" string="Thanh lý" type="object"
-                            class="btn-danger" invisible="state == 'disposed'"
-                            confirm="Thanh lý tài sản này?"/>
+                    <button name="action_dispose" string="Lập biên bản thanh lý" type="object"
+                            invisible="state == 'disposed'"/>
                     <field name="state" widget="statusbar" statusbar_visible="available,allocated,maintenance,disposed"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_disposals" type="object"
+                                class="oe_stat_button" icon="fa-file-text-o"
+                                invisible="disposal_count == 0">
+                            <field name="disposal_count" widget="statinfo" string="Biên bản TL"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <label for="code" string="Mã tài sản"/>
                         <h1><field name="code" readonly="1"/> — <field name="name" placeholder="Tên tài sản"/></h1>
@@ -82,6 +89,22 @@
                                     <field name="condition_on_return"/>
                                     <field name="approved_by_id"/>
                                     <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Biên bản thanh lý" invisible="disposal_count == 0">
+                            <field name="disposal_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="disposal_reason"/>
+                                    <field name="proposed_value"/>
+                                    <field name="approved_by_id"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'done'"
+                                           decoration-info="state == 'approved'"
+                                           decoration-warning="state == 'submitted'"
+                                           decoration-muted="state == 'rejected'"/>
                                 </list>
                             </field>
                         </page>

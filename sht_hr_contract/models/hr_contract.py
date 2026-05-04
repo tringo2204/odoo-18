@@ -9,32 +9,36 @@ class HrContract(models.Model):
 
     sht_contract_type_id = fields.Many2one(
         'sht.hr.contract.type',
-        string='Vietnam contract type',
+        string='Loại hợp đồng VN',
         tracking=True,
     )
-    probation_end_date = fields.Date()
+    probation_end_date = fields.Date(string='Ngày kết thúc thử việc')
     is_probation = fields.Boolean(
+        string='Đang thử việc',
         compute='_compute_is_probation',
         store=True,
     )
-    renewal_count = fields.Integer(default=0)
+    renewal_count = fields.Integer(string='Số lần gia hạn', default=0)
     original_start_date = fields.Date(
-        help='First contract start date with the company',
+        string='Ngày bắt đầu gốc',
+        help='Ngày ký hợp đồng đầu tiên với công ty',
     )
     termination_reason = fields.Selection(
+        string='Lý do chấm dứt',
         selection=[
-            ('resignation', 'Resignation'),
-            ('termination', 'Termination'),
-            ('contract_end', 'Contract End'),
-            ('retirement', 'Retirement'),
-            ('other', 'Other'),
+            ('resignation', 'Nghỉ việc tự nguyện'),
+            ('termination', 'Chấm dứt HĐ'),
+            ('contract_end', 'Hết hạn HĐ'),
+            ('retirement', 'Nghỉ hưu'),
+            ('other', 'Khác'),
         ],
         tracking=True,
     )
-    termination_date = fields.Date(tracking=True)
-    termination_note = fields.Text()
-    days_to_expire = fields.Integer(compute='_compute_days_to_expire')
+    termination_date = fields.Date(string='Ngày chấm dứt', tracking=True)
+    termination_note = fields.Text(string='Ghi chú chấm dứt')
+    days_to_expire = fields.Integer(string='Số ngày còn lại', compute='_compute_days_to_expire')
     is_expiring_soon = fields.Boolean(
+        string='Sắp hết hạn',
         compute='_compute_is_expiring_soon',
         store=True,
     )

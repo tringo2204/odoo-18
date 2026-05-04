@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class HrVnAsset(models.Model):
@@ -47,6 +48,10 @@ class HrVnAsset(models.Model):
         'hr.vn.asset.allocation', 'asset_id', string='Lịch sử cấp phát/thu hồi',
     )
     allocation_count = fields.Integer(compute='_compute_allocation_count')
+    disposal_ids = fields.One2many(
+        'hr.vn.asset.disposal', 'asset_id', string='Biên bản thanh lý',
+    )
+    disposal_count = fields.Integer(compute='_compute_disposal_count')
     image = fields.Binary(string='Hình ảnh')
     note = fields.Text(string='Ghi chú')
     company_id = fields.Many2one(
@@ -73,6 +78,11 @@ class HrVnAsset(models.Model):
     def _compute_allocation_count(self):
         for rec in self:
             rec.allocation_count = len(rec.allocation_ids)
+
+    @api.depends('disposal_ids')
+    def _compute_disposal_count(self):
+        for rec in self:
+            rec.disposal_count = len(rec.disposal_ids)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -113,9 +123,37 @@ class HrVnAsset(models.Model):
         }
 
     def action_dispose(self):
-        self.write({'state': 'disposed'})
+        """Open disposal wizard instead of direct state change."""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Lập biên bản thanh lý',
+            'res_model': 'hr.vn.asset.disposal',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_asset_id': self.id,
+            },
+        }
+
+    def action_view_disposals(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Biên bản thanh lý',
+            'res_model': 'hr.vn.asset.disposal',
+            'view_mode': 'list,form',
+            'domain': [('asset_id', '=', self.id)],
+            'context': {'default_asset_id': self.id},
+        }
 
     def action_maintenance(self):
+        for rec in self:
+            if rec.state == 'allocated' and rec.current_employee_id:
+                raise UserError(_(
+                    'Tài sản "%s" đang được cấp phát cho %s.\n'
+                    'Vui lòng thu hồi tài sản trước khi chuyển sang bảo trì.'
+                ) % (rec.name, rec.current_employee_id.name))
         self.write({'state': 'maintenance'})
 
     def action_available(self):
