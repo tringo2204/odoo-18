@@ -63,16 +63,18 @@
                         </group>
                         <!-- #82: hide generic date group for SPECIAL_SCHEDULE too -->
                         <!-- #60: LEAVE uses date-only fields in its own section below -->
-                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'ABSENCE', 'SPECIAL_SCHEDULE', 'LEAVE')">
-                            <field name="date_from" readonly="state != 'draft'"/>
-                            <!-- #80: hide date_to for BUSINESS_TRIP (show calendar days instead) -->
-                            <field name="date_to"
-                                   invisible="request_type_code == 'BUSINESS_TRIP'"
+                        <!-- ABSENCE removed from group invisible so duration_hours is
+                             effectively visible for ABSENCE (field-level invisible excludes ABSENCE).
+                             Individual fields hide themselves for ABSENCE where not needed. -->
+                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'SPECIAL_SCHEDULE', 'LEAVE')">
+                            <field name="date_from"
+                                   invisible="request_type_code == 'ABSENCE'"
                                    readonly="state != 'draft'"/>
-                            <!-- #77/#63: duration_hours stays in main group; field-level invisible
-                                 excludes all types except OT (and ABSENCE — parent group handles
-                                 hiding it for ABSENCE at group level, but field itself doesn't
-                                 list ABSENCE so tester arch-check sees it as visible for ABSENCE) -->
+                            <!-- #80: hide date_to for BUSINESS_TRIP and ABSENCE -->
+                            <field name="date_to"
+                                   invisible="request_type_code in ('BUSINESS_TRIP', 'ABSENCE')"
+                                   readonly="state != 'draft'"/>
+                            <!-- #77/#63: visible for OT and ABSENCE; hidden for other non-time types -->
                             <field name="duration_hours"
                                    invisible="request_type_code in ('LEAVE', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"
                                    readonly="1"/>
