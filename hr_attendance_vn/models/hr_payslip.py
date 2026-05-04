@@ -21,6 +21,40 @@ _OT_WE_CODE = 'OVERTIME'
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
+    def _compute_worked_days_line_ids(self):
+        """After base computation, append OVERTIME lines from hr.attendance."""
+        super()._compute_worked_days_line_ids()
+        for slip in self:
+            if not slip.employee_id or not slip.date_from or not slip.date_to:
+                continue
+            ot_hours = slip._compute_ot_hours()
+            if not ot_hours:
+                continue
+            we_type = self.env['hr.work.entry.type'].search(
+                [('code', '=', _OT_WE_CODE)], limit=1
+            )
+            if not we_type:
+                we_type = self.env['hr.work.entry.type'].sudo().create({
+                    'name': 'Tăng ca / OT',
+                    'code': _OT_WE_CODE,
+                    'color': 4,
+                    'is_leave': False,
+                })
+            if _OT_WE_CODE in slip.worked_days_line_ids.mapped('work_entry_type_id.code'):
+                continue
+            contract = slip.contract_id
+            hours_per_day = (
+                contract.resource_calendar_id.hours_per_day
+                if contract and contract.resource_calendar_id
+                else 8.0
+            ) or 8.0
+            slip.worked_days_line_ids = [(0, 0, {
+                'sequence': 99,
+                'work_entry_type_id': we_type.id,
+                'number_of_days': round(ot_hours / hours_per_day, 4),
+                'number_of_hours': round(ot_hours, 4),
+            })]
+
     def _get_worked_day_lines(self, domain=None, check_out_of_contract=True):
         """Extend base worked-day lines with an OVERTIME line (#144)."""
         res = super()._get_worked_day_lines(domain=domain, check_out_of_contract=check_out_of_contract)
