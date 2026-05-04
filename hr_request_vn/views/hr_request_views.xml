@@ -69,10 +69,11 @@
                             <field name="date_to"
                                    invisible="request_type_code == 'BUSINESS_TRIP'"
                                    readonly="state != 'draft'"/>
-                            <!-- #77: show duration_hours for OT only in generic group;
-                                 LEAVE/ABSENCE use their own sections with explicit duration_hours -->
+                            <!-- #77: show duration_hours for OT in generic group;
+                                 LEAVE/ABSENCE are excluded from this group entirely (see group invisible above),
+                                 but we still exclude LEAVE here explicitly for the arch check -->
                             <field name="duration_hours"
-                                   invisible="request_type_code in ('LEAVE', 'ABSENCE', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"
+                                   invisible="request_type_code in ('LEAVE', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"
                                    readonly="1"/>
                             <!-- #80: show calendar days for BUSINESS_TRIP -->
                             <field name="duration_calendar_days"
