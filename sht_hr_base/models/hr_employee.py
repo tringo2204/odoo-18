@@ -19,34 +19,34 @@ class HrEmployee(models.Model):
                 )
 
     identification_number = fields.Char(
-        string='Identification Number',
+        string='Số CCCD/CMND',
         help='CCCD/CMND number',
         related='identification_id',
         readonly=False,
         groups='hr.group_hr_user',
     )
     tax_id = fields.Char(
-        string='Personal Tax Code',
+        string='Mã số thuế',
         help='Mã số thuế cá nhân',
         groups='hr.group_hr_user',
     )
     social_insurance_id = fields.Char(
-        string='Social Insurance Number',
+        string='Số BHXH',
         help='Số sổ BHXH',
         groups='hr.group_hr_user',
     )
     seniority_start_date = fields.Date(
-        string='Seniority Start Date',
+        string='Ngày bắt đầu thâm niên',
         help='Ngày bắt đầu tính thâm niên',
         groups='hr.group_hr_user',
     )
     seniority_years = fields.Float(
-        string='Seniority (Years)',
+        string='Thâm niên (năm)',
         compute='_compute_seniority_years',
         groups='hr.group_hr_user',
     )
     children_under_72m = fields.Integer(
-        string='Children Under 72 Months',
+        string='Con dưới 72 tháng',
         help='Số con nhỏ dưới 72 tháng',
         groups='hr.group_hr_user',
     )
@@ -59,13 +59,13 @@ class HrEmployee(models.Model):
         groups='hr.group_hr_user',
     )
     bank_name = fields.Char(
-        string='Bank Name',
+        string='Tên ngân hàng',
         help='Tên ngân hàng',
         groups='hr.group_hr_user',
     )
     bank_account_number = fields.Char(
-        string='Bank Account Number',
-        help='Số tài khoản',
+        string='Số tài khoản',
+        help='Số tài khoản ngân hàng',
         groups='hr.group_hr_user',
     )
     document_ids = fields.One2many(

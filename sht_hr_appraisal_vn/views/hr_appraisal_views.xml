@@ -5,9 +5,16 @@
         <field name="model">hr.appraisal</field>
         <field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_form"/>
         <field name="arch" type="xml">
+            <!-- #200-202: hide standard Enterprise template field; use only VN sht_template_id -->
+            <xpath expr="//field[@name='appraisal_template_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
+                <attribute name="optional">hide</attribute>
+            </xpath>
             <xpath expr="//group" position="inside">
-                <field name="appraisal_cycle_id"/>
-                <field name="sht_template_id"/>
+                <!-- #203: add help text so users understand appraisal_cycle_id -->
+                <field name="appraisal_cycle_id"
+                       help="Kỳ đánh giá xác định khoảng thời gian thực hiện đánh giá (ví dụ: Q1/2026, Giữa năm 2026)."/>
+                <field name="sht_template_id" string="Mẫu đánh giá VN"/>
                 <field name="evaluator_type"/>
                 <!-- #204: Ẩn trường overall_score vì hiển thị 0,00 gây khó hiểu -->
                 <field name="overall_score" invisible="overall_score == 0"/>

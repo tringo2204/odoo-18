@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- #200-202: Hide standard Enterprise template menu to avoid confusion with VN template -->
+    <menuitem id="hr_appraisal.hr_appraisal_template_menu" active="0"/>
+
     <menuitem id="menu_hr_appraisal_vn_config"
               name="Đánh giá VN"
               parent="hr_appraisal.menu_hr_appraisal_configuration"

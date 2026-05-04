@@ -67,3 +67,36 @@ class HrApplicant(models.Model):
                 ) / len(evals)
             else:
                 rec.evaluation_score = 0
+
+    def create_employee(self):
+        """Override to also create a draft contract pre-filled from recruitment data."""
+        result = super().create_employee()
+        for applicant in self:
+            if not applicant.emp_id:
+                continue
+            employee = applicant.emp_id
+            # Find default salary structure type
+            structure_type = self.env['hr.payroll.structure.type'].search(
+                [('country_id', '=', False)], limit=1
+            ) or self.env['hr.payroll.structure.type'].search([], limit=1)
+            # Find default contract type
+            contract_type = self.env['hr.contract.type'].search([], limit=1)
+            contract_vals = {
+                'name': _('Hợp đồng - %s') % employee.name,
+                'employee_id': employee.id,
+                'job_id': applicant.job_id.id if applicant.job_id else False,
+                'department_id': applicant.department_id.id if applicant.department_id else False,
+                'company_id': applicant.company_id.id or self.env.company.id,
+                'state': 'draft',
+            }
+            if structure_type:
+                contract_vals['structure_type_id'] = structure_type.id
+            if contract_type:
+                contract_vals['contract_type_id'] = contract_type.id
+            # Copy expected wage from job position if available
+            if applicant.job_id and applicant.job_id.suggested_contracts_count:
+                contract_vals['wage'] = 0.0
+            else:
+                contract_vals['wage'] = 0.0
+            self.env['hr.contract'].sudo().create(contract_vals)
+        return result

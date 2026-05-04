@@ -19,7 +19,7 @@
                     </group>
                     <separator string="Người phụ thuộc"/>
                     <field name="dependent_ids">
-                        <list editable="bottom">
+                        <list>
                             <field name="name"/>
                             <field name="id_number"/>
                             <field name="tax_code"/>
