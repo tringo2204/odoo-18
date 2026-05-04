@@ -89,44 +89,47 @@ jobs:
             echo "✅ Code updated successfully ($(git rev-parse --short origin/main))"
           DEPLOY_EOF
 
-      - name: Stop Odoo before upgrade
-        if: ${{ steps.changes.outputs.modules != '' }}
-        run: |
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
-            "systemctl stop odoo18 2>/dev/null; pkill -9 -f 'odoo-bin' 2>/dev/null; sleep 2; echo 'Odoo stopped'"
-
       - name: Upgrade odoo HR database
-        if: ${{ steps.changes.outputs.modules != '' && (github.event_name == 'push' || github.event.inputs.database == 'odoo HR') }}
+        if: >
+          steps.changes.outputs.modules != '' &&
+          (github.event_name == 'push' || github.event.inputs.database == 'odoo HR')
         run: |
           MODULES="${{ steps.changes.outputs.modules }}"
           echo "=== Upgrading odoo HR: $MODULES ==="
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
-            "/opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
-              -c /opt/odoo18/odoo.conf -d 'odoo HR' -u $MODULES \
-              --stop-after-init --no-http 2>&1 | tail -10; echo EXIT_HR:\$?"
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << SSHEOF
+          systemctl stop odoo18 2>/dev/null || true
+          pkill -9 -f 'odoo-bin' 2>/dev/null || true
+          sleep 2
+          /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
+            -c /opt/odoo18/odoo.conf -d 'odoo HR' -u $MODULES \
+            --stop-after-init --no-http 2>&1 | tail -10
+          echo "EXIT_HR:\$?"
+          SSHEOF
 
       - name: Upgrade odoo18 database
-        if: ${{ steps.changes.outputs.modules != '' && (github.event_name == 'push' || github.event.inputs.database == 'odoo18') }}
+        if: >
+          steps.changes.outputs.modules != '' &&
+          (github.event_name == 'push' || github.event.inputs.database == 'odoo18')
         run: |
           MODULES="${{ steps.changes.outputs.modules }}"
           echo "=== Upgrading odoo18: $MODULES ==="
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
-            "/opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
-              -c /opt/odoo18/odoo.conf -d odoo18 -u $MODULES \
-              --stop-after-init --no-http 2>&1 | tail -10; echo EXIT_O18:\$?"
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << SSHEOF
+          pkill -9 -f 'odoo-bin' 2>/dev/null || true
+          sleep 2
+          /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
+            -c /opt/odoo18/odoo.conf -d odoo18 -u $MODULES \
+            --stop-after-init --no-http 2>&1 | tail -10
+          echo "EXIT_O18:\$?"
+          SSHEOF
 
       - name: Start Odoo after upgrade
-        if: ${{ steps.changes.outputs.modules != '' }}
+        if: steps.changes.outputs.modules != ''
         run: |
           ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
-            "systemctl start odoo18 && sleep 3 && \
-             (systemctl is-active odoo18 && echo '✅ Odoo restarted') || echo '❌ Odoo failed to restart'"
+            "systemctl start odoo18 && sleep 3 && systemctl is-active odoo18 && echo 'Odoo restarted OK' || echo 'Odoo failed to start'"
 
       - name: Restart Odoo (no module changes)
-        if: ${{ steps.changes.outputs.modules == '' }}
+        if: steps.changes.outputs.modules == ''
         run: |
-          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-            systemctl restart odoo18
-            sleep 3
-            systemctl is-active odoo18 && echo "✅ Odoo restarted" || echo "❌ Odoo failed"
-          EOF
+          ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
+            "systemctl restart odoo18 && sleep 3 && systemctl is-active odoo18 && echo 'Odoo restarted OK'"
