@@ -69,9 +69,10 @@
                             <field name="date_to"
                                    invisible="request_type_code == 'BUSINESS_TRIP'"
                                    readonly="state != 'draft'"/>
-                            <!-- #83/#77: show duration_hours for ABSENCE(OT), hide for other non-time types -->
+                            <!-- #77: show duration_hours for OT only in generic group;
+                                 LEAVE/ABSENCE use their own sections with explicit duration_hours -->
                             <field name="duration_hours"
-                                   invisible="request_type_code in ('SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"
+                                   invisible="request_type_code in ('LEAVE', 'ABSENCE', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"
                                    readonly="1"/>
                             <!-- #80: show calendar days for BUSINESS_TRIP -->
                             <field name="duration_calendar_days"
@@ -103,7 +104,7 @@
                     </group>
 
                     <!-- ABSENCE (hour-based) -->
-                    <!-- #63: show Số giờ = request_hour_to - request_hour_from, hide Số ngày -->
+                    <!-- #63: hide Số ngày (in generic group), show Số giờ = duration_hours -->
                     <group string="Thông tin vắng mặt" invisible="request_type_code != 'ABSENCE'"
                            readonly="state != 'draft'">
                         <group>
@@ -112,7 +113,7 @@
                                    required="request_type_code == 'ABSENCE'"/>
                             <field name="request_hour_to" widget="float_time"
                                    required="request_type_code == 'ABSENCE'"/>
-                            <field name="absence_duration_hours" string="Số giờ" readonly="1"/>
+                            <field name="duration_hours" string="Số giờ" readonly="1"/>
                         </group>
                     </group>
 
