@@ -448,11 +448,12 @@ class HrRequest(models.Model):
         self.leave_id = leave.id
 
     def _side_effect_absence(self):
-        """Tạo hr.leave loại vắng mặt (ghi nhận theo giờ)."""
+        """Tạo hr.leave + hr.attendance cho vắng mặt theo giờ (#64)."""
         absence_type = self.env.ref(
             'hr_request_vn.leave_type_absence', raise_if_not_found=False
         ) or self.env['hr.leave.type'].search([
             ('requires_allocation', '=', 'no'),
+            ('request_unit', '=', 'hour'),
         ], limit=1)
         if not absence_type:
             return
@@ -466,18 +467,33 @@ class HrRequest(models.Model):
             'notes': self.description or '',
         }
         if absence_date and self.request_hour_from and self.request_hour_to:
-            # #64: set hour fields so Odoo computes number_of_hours correctly
+            # #64: pass hour fields so Odoo computes number_of_hours correctly
             leave_vals.update({
                 'request_hour_from': self.request_hour_from,
                 'request_hour_to': self.request_hour_to,
             })
-        # #64: don't use leave_fast_create — it bypasses hour/day computation,
-        # causing the linked leave to display "1 ngày" instead of actual hours.
+        # #64: don't use leave_fast_create — it bypasses hour/day computation
         leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,
         ).create(leave_vals)
         leave.action_approve()
         self.leave_id = leave.id
+
+        # #64: also create hr.attendance to populate attendance_id in linked tab
+        if absence_date and self.request_hour_from and self.request_hour_to:
+            def _flt_to_time(flt):
+                h = int(flt)
+                m = int(round((flt - h) * 60))
+                return time(h, m)
+
+            ci_local = datetime.combine(absence_date, _flt_to_time(self.request_hour_from))
+            co_local = datetime.combine(absence_date, _flt_to_time(self.request_hour_to))
+            attendance = self.env['hr.attendance'].sudo().create({
+                'employee_id': self.employee_id.id,
+                'check_in': self._local_to_utc(ci_local),
+                'check_out': self._local_to_utc(co_local),
+            })
+            self.attendance_id = attendance.id
 
     def _side_effect_ot(self):
         """Tạo hr.attendance record cho giờ OT."""
