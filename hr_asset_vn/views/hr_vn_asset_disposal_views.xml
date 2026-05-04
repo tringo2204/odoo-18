@@ -41,7 +41,7 @@
                     <button name="action_reject" string="Từ chối" type="object"
                             invisible="state != 'submitted'"
                             groups="hr.group_hr_manager"/>
-                    <button name="action_confirm_disposal" string="Hoàn tất thanh lý" type="object"
+                    <button name="action_done" string="Hoàn tất thanh lý" type="object"
                             class="btn-danger" invisible="state != 'approved'"
                             groups="hr.group_hr_manager"
                             confirm="Xác nhận hoàn tất thanh lý? Tài sản sẽ được đánh dấu 'Đã thanh lý'."/>

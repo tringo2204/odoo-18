@@ -106,5 +106,12 @@ class HrVnAssetDisposal(models.Model):
             })
             rec.write({'state': 'disposed'})
 
+    # Aliases so test scripts / button calls using common names all work
+    def action_done(self):
+        return self.action_confirm_disposal()
+
+    def action_dispose(self):
+        return self.action_confirm_disposal()
+
     def action_reset_draft(self):
         self.write({'state': 'draft'})
