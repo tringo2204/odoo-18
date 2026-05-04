@@ -77,7 +77,7 @@ class HrRequest(models.Model):
     request_hour_from = fields.Float(string='Giờ bắt đầu', digits=(2, 2))
     request_hour_to = fields.Float(string='Giờ kết thúc', digits=(2, 2))
     absence_duration_hours = fields.Float(
-        string='Số giờ', compute='_compute_absence_duration', digits=(16, 2),
+        string='Số giờ vắng mặt', compute='_compute_absence_duration', digits=(16, 2),
     )
 
     @api.depends('request_hour_from', 'request_hour_to')

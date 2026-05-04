@@ -112,7 +112,7 @@
                                    required="request_type_code == 'ABSENCE'"/>
                             <field name="request_hour_to" widget="float_time"
                                    required="request_type_code == 'ABSENCE'"/>
-                            <field name="absence_duration_hours" readonly="1"/>
+                            <field name="absence_duration_hours" string="Số giờ" readonly="1"/>
                         </group>
                     </group>
 
