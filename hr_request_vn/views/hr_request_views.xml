@@ -66,7 +66,9 @@
                         <!-- ABSENCE removed from group invisible so duration_hours is
                              effectively visible for ABSENCE (field-level invisible excludes ABSENCE).
                              Individual fields hide themselves for ABSENCE where not needed. -->
-                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'SPECIAL_SCHEDULE', 'LEAVE')">
+                        <!-- #68: CHECKIN added here so the type-specific section below
+                             handles its date fields with better labels -->
+                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'SPECIAL_SCHEDULE', 'LEAVE', 'CHECKIN')">
                             <field name="date_from"
                                    invisible="request_type_code == 'ABSENCE'"
                                    readonly="state != 'draft'"/>
@@ -121,12 +123,16 @@
                         </group>
                     </group>
 
-                    <!-- CHECKIN -->
+                    <!-- CHECKIN: #68 use date range (check_in + check_out) instead of
+                         type+single-time; user enters start and end of the missed period -->
                     <group string="Bổ sung chấm công" invisible="request_type_code != 'CHECKIN'"
                            readonly="state != 'draft'">
                         <group>
-                            <field name="checkin_type" required="request_type_code == 'CHECKIN'"/>
-                            <field name="checkin_time" required="request_type_code == 'CHECKIN'"/>
+                            <field name="date_from" string="Giờ check-in"
+                                   required="request_type_code == 'CHECKIN'"/>
+                            <field name="date_to" string="Giờ check-out"
+                                   required="request_type_code == 'CHECKIN'"/>
+                            <field name="duration_hours" string="Số giờ" readonly="1"/>
                         </group>
                     </group>
 
@@ -140,7 +146,11 @@
                             <field name="swap_employee_id"/>
                         </group>
                         <group>
-                            <field name="shift_to_id" domain="[('resource_id.employee_id', '=', swap_employee_id)]"/>
+                            <!-- #72: show all slots when no partner selected; filter by partner when set -->
+                            <!-- Row 83: required so user cannot save/submit without picking a target shift -->
+                            <field name="shift_to_id"
+                                   required="request_type_code == 'SHIFT_SWAP'"
+                                   domain="[('resource_id.employee_id', '=', swap_employee_id)] if swap_employee_id else [('resource_id', '!=', False)]"/>
                             <field name="shift_to_start" readonly="1" invisible="not shift_to_id"/>
                             <field name="shift_to_end" readonly="1" invisible="not shift_to_id"/>
                         </group>

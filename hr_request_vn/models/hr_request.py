@@ -273,6 +273,9 @@ class HrRequest(models.Model):
 
     def action_submit(self):
         for rec in self:
+            # Row 83: validate shift_to_id required for SHIFT_SWAP before submitting
+            if rec.request_type_code == 'SHIFT_SWAP' and not rec.shift_to_id:
+                raise UserError(_('Vui lòng chọn "Ca muốn đổi sang" trước khi nộp đơn.'))
             rec._check_frequency()
             rec._create_approval_records()
         self.write({'state': 'submitted'})
@@ -505,27 +508,18 @@ class HrRequest(models.Model):
                       emp.name, self.date_from, self.date_to)
 
     def _side_effect_checkin(self):
-        """Tạo/cập nhật hr.attendance record."""
-        emp = self.employee_id
-        if self.checkin_type == 'check_in':
-            attendance = self.env['hr.attendance'].create({
-                'employee_id': emp.id,
-                'check_in': self.checkin_time,
-                'in_mode': 'manual',
-            })
-            self.attendance_id = attendance.id
-        elif self.checkin_type == 'check_out':
-            # Tìm attendance mở (chưa check_out) gần nhất
-            open_att = self.env['hr.attendance'].search([
-                ('employee_id', '=', emp.id),
-                ('check_out', '=', False),
-            ], order='check_in desc', limit=1)
-            if open_att:
-                open_att.write({
-                    'check_out': self.checkin_time,
-                    'out_mode': 'manual',
-                })
-                self.attendance_id = open_att.id
+        """Tạo hr.attendance record từ date_from (check_in) và date_to (check_out) — #68."""
+        if not self.date_from or not self.date_to:
+            _logger.info("CHECKIN request %s: missing date_from/date_to, skip", self.name)
+            return
+        att = self.env['hr.attendance'].sudo().create({
+            'employee_id': self.employee_id.id,
+            'check_in': self.date_from,
+            'check_out': self.date_to,
+            'in_mode': 'manual',
+            'out_mode': 'manual',
+        })
+        self.attendance_id = att.id
 
     def _side_effect_shift_swap(self):
         """Swap planning.slot giữa 2 nhân viên."""
