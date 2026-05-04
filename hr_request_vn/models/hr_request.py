@@ -146,7 +146,7 @@ class HrRequest(models.Model):
     planning_slot_id = fields.Many2one('planning.slot', string='Ca làm việc liên kết', readonly=True)
 
     # #88: show expected approval chain in draft
-    approval_rule_ids = fields.Many2many(
+    approval_rule_ids = fields.One2many(
         related='request_type_id.approval_rule_ids',
         string='Quy tắc phê duyệt',
         readonly=True,
