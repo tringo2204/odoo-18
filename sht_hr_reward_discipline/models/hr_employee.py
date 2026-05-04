@@ -8,14 +8,20 @@ class HrEmployee(models.Model):
     rd_ids = fields.One2many(
         'sht.hr.rd',
         'employee_id',
-        string='Reward & Discipline',
+        string='Khen thưởng & Kỷ luật',
         groups='hr.group_hr_user',
     )
-    rd_count = fields.Integer(compute='_compute_rd_counts', groups='hr.group_hr_user')
-    reward_count = fields.Integer(compute='_compute_rd_counts', groups='hr.group_hr_user')
-    discipline_count = fields.Integer(compute='_compute_rd_counts', groups='hr.group_hr_user')
+    rd_count = fields.Integer(
+        compute='_compute_rd_counts', store=True, groups='hr.group_hr_user',
+    )
+    reward_count = fields.Integer(
+        compute='_compute_rd_counts', store=True, groups='hr.group_hr_user',
+    )
+    discipline_count = fields.Integer(
+        compute='_compute_rd_counts', store=True, groups='hr.group_hr_user',
+    )
 
-    @api.depends('rd_ids', 'rd_ids.category')
+    @api.depends('rd_ids', 'rd_ids.category', 'rd_ids.state')
     def _compute_rd_counts(self):
         for employee in self:
             records = employee.rd_ids

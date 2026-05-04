@@ -7,7 +7,7 @@ class HrVnAssetDisposal(models.Model):
     _name = 'hr.vn.asset.disposal'
     _description = 'Biên bản đề xuất thanh lý tài sản'
     _order = 'date desc, id desc'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread']
 
     name = fields.Char(
         string='Số biên bản', required=True, copy=False,

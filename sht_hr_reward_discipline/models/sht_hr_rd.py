@@ -50,10 +50,11 @@ class ShtHrRd(models.Model):
     description = fields.Html()
     state = fields.Selection(
         [
-            ('draft', 'Draft'),
-            ('confirmed', 'Confirmed'),
-            ('cancelled', 'Cancelled'),
+            ('draft', 'Nháp'),
+            ('confirmed', 'Đã xác nhận'),
+            ('cancelled', 'Đã hủy'),
         ],
+        string='Trạng thái',
         default='draft',
         tracking=True,
     )

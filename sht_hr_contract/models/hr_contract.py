@@ -51,6 +51,28 @@ class HrContract(models.Model):
         ):
             self.contract_type_id = self.sht_contract_type_id.contract_type_id
 
+    def _sync_contract_type(self):
+        """Sync contract_type_id from sht_contract_type_id (for create/write flows)."""
+        for rec in self:
+            if (
+                rec.sht_contract_type_id
+                and rec.sht_contract_type_id.contract_type_id
+                and rec.contract_type_id != rec.sht_contract_type_id.contract_type_id
+            ):
+                rec.contract_type_id = rec.sht_contract_type_id.contract_type_id
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._sync_contract_type()
+        return records
+
+    def write(self, vals):
+        res = super().write(vals)
+        if 'sht_contract_type_id' in vals:
+            self._sync_contract_type()
+        return res
+
     @api.depends('sht_contract_type_id.code')
     def _compute_is_probation(self):
         for contract in self:
