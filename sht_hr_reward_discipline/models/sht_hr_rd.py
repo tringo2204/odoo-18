@@ -42,6 +42,14 @@ class ShtHrRd(models.Model):
     def _onchange_rd_type_id(self):
         if self.rd_type_id:
             self.category = self.rd_type_id.category
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('rd_type_id') and not vals.get('category'):
+                rd_type = self.env['sht.hr.rd.type'].browse(vals['rd_type_id'])
+                vals['category'] = rd_type.category
+        return super().create(vals_list)
     date = fields.Date(required=True, default=fields.Date.today, tracking=True)
     decision_number = fields.Char(string='Decision No.')
     decision_date = fields.Date(string='Decision Date')
