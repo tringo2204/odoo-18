@@ -135,7 +135,7 @@ class HrRequest(models.Model):
     early_minutes = fields.Float(string='Số phút về sớm', digits=(6, 0))
 
     # --- RESIGNATION ---
-    resignation_date = fields.Date(string='Ngày nghỉ')
+    resignation_date = fields.Date(string='Ngày nghỉ', required=True, default=lambda self: fields.Date.today())
     resignation_last_working_date = fields.Date(string='Ngày làm việc cuối')
     resignation_announcement_date = fields.Date(string='Ngày công bố quyết định')
 

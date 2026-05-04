@@ -208,7 +208,7 @@ class HrVnDecision(models.Model):
                     vals['rd_type_id'] = rd_type.id
                 if self.rd_amount:
                     vals['amount'] = self.rd_amount
-                self.env['sht.hr.rd'].create(vals)
+                self.env['sht.hr.rd'].sudo().create(vals)
 
         elif self.decision_type == 'termination':
             employee.write({'departure_date': self.effective_date})

@@ -2,8 +2,9 @@
 """
 #144 — OT giờ từ chấm công → worked days trong bảng lương.
 
-Overrides _get_worked_day_lines() to add an extra OVERTIME line
+Overrides _get_worked_day_lines() to add an OVERTIME worked-day line
 by summing overtime_hours from hr.attendance within the pay period.
+The override matches Odoo 18 enterprise signature exactly.
 """
 import logging
 from datetime import datetime
@@ -14,72 +15,64 @@ from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
-# Work-entry type technical name for overtime (create if missing).
 _OT_WE_CODE = 'OVERTIME'
 
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    def _get_worked_day_lines(self, domain=None):
+    def _get_worked_day_lines(self, domain=None, check_out_of_contract=True):
         """Extend base worked-day lines with an OVERTIME line (#144)."""
-        res = super()._get_worked_day_lines(domain=domain)
+        res = super()._get_worked_day_lines(domain=domain, check_out_of_contract=check_out_of_contract)
 
-        for payslip in self:
-            if not payslip.employee_id or not payslip.date_from or not payslip.date_to:
-                continue
+        # Only add OT when computing regular (non-credit) lines
+        if domain and any('is_credit_time' in str(d) for d in domain):
+            return res
 
-            # Fetch overtime hours from attendance records in the pay period.
-            ot_hours = payslip._compute_ot_hours()
-            if not ot_hours:
-                continue
+        ot_hours = self._compute_ot_hours()
+        if not ot_hours:
+            return res
 
-            # Find or create the OVERTIME work-entry type.
-            we_type = self.env['hr.work.entry.type'].search(
-                [('code', '=', _OT_WE_CODE)], limit=1
-            )
-            if not we_type:
-                we_type = self.env['hr.work.entry.type'].create({
-                    'name': 'Tăng ca / OT',
-                    'code': _OT_WE_CODE,
-                    'color': 4,
-                    'is_leave': False,
-                })
+        we_type = self.env['hr.work.entry.type'].search(
+            [('code', '=', _OT_WE_CODE)], limit=1
+        )
+        if not we_type:
+            we_type = self.env['hr.work.entry.type'].sudo().create({
+                'name': 'Tăng ca / OT',
+                'code': _OT_WE_CODE,
+                'color': 4,
+                'is_leave': False,
+            })
 
-            # Convert OT hours to "days" using the contract's work-hour denominator.
-            contract = payslip.contract_id
-            hours_per_day = (
-                contract.resource_calendar_id.hours_per_day
-                if contract and contract.resource_calendar_id
-                else 8.0
-            ) or 8.0
+        contract = self.contract_id
+        hours_per_day = (
+            contract.resource_calendar_id.hours_per_day
+            if contract and contract.resource_calendar_id
+            else 8.0
+        ) or 8.0
+        ot_days = round(ot_hours / hours_per_day, 4)
 
-            ot_days = ot_hours / hours_per_day
+        # Skip if an OT line already exists
+        if any(l.get('work_entry_type_id') == we_type.id for l in res):
+            return res
 
-            # Check if an OT line already exists (avoid duplicates on recompute).
-            existing = next(
-                (l for l in res if l.get('work_entry_type_id') == we_type.id),
-                None
-            )
-            if existing:
-                existing['number_of_hours'] += ot_hours
-                existing['number_of_days'] += ot_days
-            else:
-                res.append({
-                    'sequence': 99,
-                    'work_entry_type_id': we_type.id,
-                    'number_of_days': round(ot_days, 4),
-                    'number_of_hours': round(ot_hours, 4),
-                })
-
+        res.append({
+            'sequence': 99,
+            'work_entry_type_id': we_type.id,
+            'number_of_days': ot_days,
+            'number_of_hours': round(ot_hours, 4),
+        })
         return res
 
     def _compute_ot_hours(self):
-        """Sum overtime_hours from hr.attendance in the pay period."""
+        """Sum overtime_hours from hr.attendance records in the pay period."""
         self.ensure_one()
-        # Convert date_from / date_to to UTC datetimes for attendance comparison
+        if not self.employee_id or not self.date_from or not self.date_to:
+            return 0.0
+
         tz_name = (
-            self.employee_id.resource_calendar_id.tz
+            (self.contract_id.resource_calendar_id.tz if self.contract_id else None)
+            or self.employee_id.resource_calendar_id.tz
             or self.env.user.tz
             or 'UTC'
         )
@@ -95,6 +88,11 @@ class HrPayslip(models.Model):
             ('check_in', '>=', dt_from_utc),
             ('check_in', '<=', dt_to_utc),
             ('check_out', '!=', False),
-            ('overtime_hours', '>', 0),
         ])
-        return sum(attendances.mapped('overtime_hours'))
+        if not attendances:
+            return 0.0
+
+        # Flush computed fields to ensure overtime_hours is up-to-date
+        attendances.flush_recordset(['overtime_hours'])
+        ot = sum(att.overtime_hours for att in attendances if att.overtime_hours > 0)
+        return ot
