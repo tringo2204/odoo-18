@@ -100,9 +100,10 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             DATABASES="${{ github.event.inputs.database }}"
           else
-            DATABASES="odoo HR,odoo18"
+            DATABASES="odoo HR|odoo18"
           fi
 
+          # Pass DATABASES using pipe delimiter to avoid space-in-name splitting
           ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} \
             "set -e
             systemctl stop odoo18
@@ -110,7 +111,8 @@ jobs:
             sleep 2
 
             FAILED=0
-            for DB in $(echo '$DATABASES' | tr ',' '\n'); do
+            IFS='|' read -ra DBS <<< \"$DATABASES\"
+            for DB in \"\${DBS[@]}\"; do
               [ \"\$DB\" = 'none' ] && continue
               echo \"--- Upgrading DB: \$DB ---\"
               /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
