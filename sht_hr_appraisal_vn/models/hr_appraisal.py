@@ -7,6 +7,7 @@ class HrAppraisal(models.Model):
     appraisal_cycle_id = fields.Many2one(
         'sht.hr.appraisal.cycle', string='Kỳ đánh giá',
         ondelete='set null',
+        help='Kỳ đánh giá xác định khoảng thời gian thực hiện đánh giá (ví dụ: Q1/2026, Giữa năm 2026).',
     )
     sht_template_id = fields.Many2one(
         'sht.hr.appraisal.template', string='Mẫu đánh giá',

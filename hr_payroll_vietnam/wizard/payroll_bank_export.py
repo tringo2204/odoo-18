@@ -48,13 +48,14 @@ class HrVnBankExport(models.TransientModel):
             net = net_line[0].total if net_line else 0
             if net <= 0:
                 continue
-            # Use custom fields first; fall back to standard res.partner.bank
+            # Use custom fields first; fall back to hr_payroll bank_account_id (M2O)
             bank_account = emp.bank_account_number or ''
             bank_name = emp.bank_name or ''
-            if not bank_account and emp.bank_account_ids:
-                first = emp.bank_account_ids[0]
-                bank_account = first.acc_number or ''
-                bank_name = first.bank_id.name or ''
+            if not bank_account:
+                std = getattr(emp, 'bank_account_id', False)
+                if std:
+                    bank_account = std.acc_number or ''
+                    bank_name = std.bank_id.name or ''
             data.append({
                 'name': emp.name, 'bank_account': bank_account,
                 'bank_name': bank_name, 'amount': net,
