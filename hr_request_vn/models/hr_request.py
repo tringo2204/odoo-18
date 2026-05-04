@@ -126,11 +126,13 @@ class HrRequest(models.Model):
     # --- BUSINESS_TRIP ---
     business_trip_location = fields.Char(string='Địa điểm công tác')
 
-    # --- SPECIAL_SCHEDULE ---
+    # --- SPECIAL_SCHEDULE (#81) ---
     special_schedule_type = fields.Selection(
         [('late_arrival', 'Đi muộn'), ('early_departure', 'Về sớm')],
         string='Loại chế độ',
     )
+    late_minutes = fields.Float(string='Số phút đi muộn', digits=(6, 0))
+    early_minutes = fields.Float(string='Số phút về sớm', digits=(6, 0))
 
     # --- RESIGNATION ---
     resignation_last_working_date = fields.Date(string='Ngày làm việc cuối')
@@ -142,6 +144,13 @@ class HrRequest(models.Model):
     leave_id = fields.Many2one('hr.leave', string='Đơn nghỉ phép liên kết', readonly=True)
     attendance_id = fields.Many2one('hr.attendance', string='Chấm công liên kết', readonly=True)
     planning_slot_id = fields.Many2one('planning.slot', string='Ca làm việc liên kết', readonly=True)
+
+    # #88: show expected approval chain in draft
+    approval_rule_ids = fields.Many2many(
+        related='request_type_id.approval_rule_ids',
+        string='Quy tắc phê duyệt',
+        readonly=True,
+    )
 
     # ==========================================================================
     # COMPUTED
@@ -157,6 +166,23 @@ class HrRequest(models.Model):
             else:
                 rec.duration_hours = 0.0
                 rec.duration_days = 0.0
+
+    @api.depends('date_from', 'date_to', 'request_type_code')
+    def _compute_calendar_days(self):
+        """#80: Business trip day count = inclusive calendar days."""
+        for rec in self:
+            if rec.date_from and rec.date_to:
+                tz_name = rec.employee_id.tz or self.env.user.tz or 'UTC'
+                local_tz = pytz.timezone(tz_name)
+                d_from = rec.date_from.astimezone(local_tz).date()
+                d_to = rec.date_to.astimezone(local_tz).date()
+                rec.duration_calendar_days = max((d_to - d_from).days + 1, 1)
+            else:
+                rec.duration_calendar_days = 0
+
+    duration_calendar_days = fields.Integer(
+        string='Số ngày', compute='_compute_calendar_days', store=True,
+    )
 
     # ==========================================================================
     # CRUD
@@ -218,17 +244,20 @@ class HrRequest(models.Model):
 
     def action_approve(self):
         for rec in self:
-            pending = rec.approval_ids.filtered(
+            # #98: use sudo to read approval records regardless of user ACL
+            pending = rec.approval_ids.sudo().filtered(
                 lambda a: a.status == 'pending' and a.approver_id == self.env.user
             )
             if not pending:
                 raise UserError(_('Bạn không có quyền duyệt đơn này.'))
-            pending[0].write({
+            pending[0].sudo().write({
                 'status': 'approved',
                 'approved_date': fields.Datetime.now(),
             })
             all_done = all(
-                a.status == 'approved' for a in rec.approval_ids if a.status != 'refused'
+                a.status == 'approved'
+                for a in rec.approval_ids.sudo()
+                if a.status != 'refused'
             )
             if all_done:
                 rec.write({'state': 'approved'})
@@ -236,11 +265,11 @@ class HrRequest(models.Model):
 
     def action_refuse(self):
         for rec in self:
-            pending = rec.approval_ids.filtered(
+            pending = rec.approval_ids.sudo().filtered(
                 lambda a: a.status == 'pending' and a.approver_id == self.env.user
             )
             if pending:
-                pending[0].write({
+                pending[0].sudo().write({
                     'status': 'refused',
                     'approved_date': fields.Datetime.now(),
                 })
@@ -280,11 +309,13 @@ class HrRequest(models.Model):
 
     def _create_approval_records(self):
         self.ensure_one()
-        self.approval_ids.unlink()
+        # #89: use sudo so regular employees can submit without needing
+        # direct write/create access on hr.request.approval
+        self.approval_ids.sudo().unlink()
         for rule in self.request_type_id.approval_rule_ids.sorted('sequence'):
             approver = self._resolve_approver(rule)
             if approver:
-                self.env['hr.request.approval'].create({
+                self.env['hr.request.approval'].sudo().create({
                     'request_id': self.id,
                     'approver_id': approver.id,
                     'sequence': rule.sequence,
@@ -327,8 +358,8 @@ class HrRequest(models.Model):
         vals = {
             'employee_id': self.employee_id.id,
             'holiday_status_id': self.leave_type_id.id,
-            'request_date_from': self.date_from.date() if self.date_from else False,
-            'request_date_to': self.date_to.date() if self.date_to else False,
+            'request_date_from': self._utc_to_local_date(self.date_from),
+            'request_date_to': self._utc_to_local_date(self.date_to),
             'notes': self.description or '',
         }
         if self.request_unit_half:
@@ -351,7 +382,8 @@ class HrRequest(models.Model):
         ], limit=1)
         if not absence_type:
             return
-        absence_date = self.absence_date or (self.date_from.date() if self.date_from else False)
+        # #91: prefer explicit absence_date, fall back to local date from UTC date_from
+        absence_date = self.absence_date or self._utc_to_local_date(self.date_from)
         leave_vals = {
             'employee_id': self.employee_id.id,
             'holiday_status_id': absence_type.id,
@@ -427,14 +459,20 @@ class HrRequest(models.Model):
 
     def _local_to_utc(self, naive_dt):
         """Convert naive datetime from employee's timezone to UTC."""
-        tz_name = (
-            self.employee_id.tz
-            or self.env.user.tz
-            or 'UTC'
-        )
+        tz_name = self.employee_id.tz or self.env.user.tz or 'UTC'
         local_tz = pytz.timezone(tz_name)
         local_dt = local_tz.localize(naive_dt)
         return local_dt.astimezone(pytz.utc).replace(tzinfo=None)
+
+    def _utc_to_local_date(self, utc_dt):
+        """#91/#97: Convert UTC-aware/naive datetime to local date."""
+        if not utc_dt:
+            return False
+        tz_name = self.employee_id.tz or self.env.user.tz or 'UTC'
+        local_tz = pytz.timezone(tz_name)
+        if utc_dt.tzinfo is None:
+            utc_dt = pytz.utc.localize(utc_dt)
+        return utc_dt.astimezone(local_tz).date()
 
     def _side_effect_extra_shift(self):
         """Tạo planning.slot mới cho NV (tăng ca) — lưu UTC."""
@@ -493,14 +531,15 @@ class HrRequest(models.Model):
         ], limit=1)
         if not trip_type:
             return
+        # #97: convert UTC datetimes to local dates using employee timezone
         leave = self.env['hr.leave'].sudo().with_context(
             tracking_disable=True,
             leave_fast_create=True,
         ).create({
             'employee_id': self.employee_id.id,
             'holiday_status_id': trip_type.id,
-            'request_date_from': self.date_from.date() if self.date_from else False,
-            'request_date_to': self.date_to.date() if self.date_to else False,
+            'request_date_from': self._utc_to_local_date(self.date_from),
+            'request_date_to': self._utc_to_local_date(self.date_to),
             'notes': f"Công tác tại: {self.business_trip_location or ''}",
         })
         leave.action_approve()

@@ -10,6 +10,7 @@ access_hr_request_approval_rule_manager,hr.request.approval.rule.manager,model_h
 access_hr_request_user,hr.request.user,model_hr_request,hr.group_hr_user,1,1,1,0
 access_hr_request_manager,hr.request.manager,model_hr_request,hr.group_hr_manager,1,1,1,1
 access_hr_request_portal,hr.request.portal,model_hr_request,base.group_portal,1,0,0,0
+access_hr_request_approval_employee,hr.request.approval.employee,model_hr_request_approval,base.group_user,1,0,0,0
 access_hr_request_approval_user,hr.request.approval.user,model_hr_request_approval,hr.group_hr_user,1,0,0,0
 access_hr_request_approval_manager,hr.request.approval.manager,model_hr_request_approval,hr.group_hr_manager,1,1,1,1
 access_hr_request_approval_portal,hr.request.approval.portal,model_hr_request_approval,base.group_portal,1,0,0,0

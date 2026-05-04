@@ -48,6 +48,24 @@ class ShtHrEmployeeDocument(models.Model):
         for doc in self:
             doc.is_expired = bool(doc.expiry_date and doc.expiry_date < today)
 
+    @api.depends('is_expired', 'expiry_date')
+    def _compute_state_from_expiry(self):
+        """#107: auto-sync state to 'expired' when is_expired becomes True."""
+        for doc in self:
+            if doc.is_expired and doc.state == 'valid':
+                doc.state = 'expired'
+
+    def write(self, vals):
+        res = super().write(vals)
+        # #107: when expiry_date changes, sync state
+        if 'expiry_date' in vals or 'is_expired' in vals:
+            for doc in self:
+                if doc.is_expired and doc.state == 'valid':
+                    doc.state = 'expired'
+                elif not doc.is_expired and doc.state == 'expired':
+                    doc.state = 'valid'
+        return res
+
     @api.constrains('issue_date', 'expiry_date')
     def _check_issue_expiry_dates(self):
         for doc in self:
