@@ -49,25 +49,25 @@ class ShtHrHeadcountLine(models.Model):
 
     # ── ĐB: Định biên (planned) ───────────────────────────────────────────────
     planned_count = fields.Integer(
-        string='ĐB (Định biên)', default=0, required=True,
+        string='Số lượng định biên', default=0, required=True,
         tracking=True, group_operator='sum',
         help='Số lượng nhân sự định biên cho tháng này',
     )
 
-    # ── NS: Nhân sự hiện tại (actual) ────────────────────────────────────────
+    # ── Nhân sự hiện tại (actual) ─────────────────────────────────────────────
     current_count = fields.Integer(
-        string='NS (Nhân sự hiện tại)',
+        string='Nhân sự hiện tại',
         compute='_compute_current_count',
         store=True, group_operator='sum',
         help='Số nhân viên đang hoạt động tại vị trí này',
     )
 
-    # ── CT: Còn thiếu (gap) ───────────────────────────────────────────────────
+    # ── Còn thiếu (gap) ───────────────────────────────────────────────────────
     gap = fields.Integer(
-        string='CT (Còn thiếu/thừa)',
+        string='Còn thiếu',
         compute='_compute_gap',
         store=True, group_operator='sum',
-        help='ĐB − NS. Âm = thừa nhân sự, dương = còn thiếu',
+        help='Định biên − Nhân sự hiện tại. Âm = thừa nhân sự, dương = còn thiếu',
     )
 
     # ── State ─────────────────────────────────────────────────────────────────
