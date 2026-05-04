@@ -49,30 +49,34 @@
                     <div class="oe_title">
                         <h1><field name="name" readonly="state != 'draft'"/></h1>
                     </div>
-                    <!-- #99: all editable content is readonly once submitted -->
-                    <group readonly="state != 'draft'">
+                    <!-- #99: explicit readonly on each field (group-level readonly not reliable in Odoo 18) -->
+                    <group>
                         <group>
-                            <field name="request_type_id"/>
+                            <field name="request_type_id" readonly="state != 'draft'"/>
                             <field name="request_type_code" invisible="1"/>
-                            <field name="employee_id"/>
-                            <field name="reason_id"/>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="reason_id" readonly="state != 'draft'"/>
                             <field name="created_by_id" readonly="1"/>
                         </group>
                         <!-- #82: hide generic date group for SPECIAL_SCHEDULE too -->
                         <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'ABSENCE', 'SPECIAL_SCHEDULE')">
-                            <field name="date_from"/>
+                            <field name="date_from" readonly="state != 'draft'"/>
                             <!-- #80: hide date_to for BUSINESS_TRIP (show calendar days instead) -->
                             <field name="date_to"
-                                   invisible="request_type_code == 'BUSINESS_TRIP'"/>
+                                   invisible="request_type_code == 'BUSINESS_TRIP'"
+                                   readonly="state != 'draft'"/>
                             <!-- #83: hide duration_hours for SPECIAL_SCHEDULE/BUSINESS_TRIP -->
                             <field name="duration_hours"
-                                   invisible="request_type_code in ('LEAVE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"/>
+                                   invisible="request_type_code in ('LEAVE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"
+                                   readonly="state != 'draft'"/>
                             <!-- #80: show calendar days for BUSINESS_TRIP -->
                             <field name="duration_calendar_days"
                                    invisible="request_type_code != 'BUSINESS_TRIP'"/>
                             <field name="duration_days"
-                                   invisible="request_type_code in ('ABSENCE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION')"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                                   invisible="request_type_code in ('ABSENCE', 'OT', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION')"
+                                   readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   readonly="state != 'draft'"/>
                         </group>
                     </group>
 
@@ -213,9 +217,9 @@
                                 </list>
                             </field>
                         </page>
-                        <!-- #76/#78: always show for EXTRA_SHIFT/SHIFT_REG/SHIFT_SWAP -->
+                        <!-- #76/#78: always show for EXTRA_SHIFT/SHIFT_REG/SHIFT_SWAP; also show when linked records exist -->
                         <page string="Liên kết" groups="hr.group_hr_manager"
-                              invisible="request_type_code not in ('EXTRA_SHIFT', 'SHIFT_REG', 'SHIFT_SWAP') and not leave_id and not attendance_id and not planning_slot_id">
+                              invisible="request_type_code not in ('EXTRA_SHIFT', 'SHIFT_REG', 'SHIFT_SWAP') and not leave_id and not attendance_id">
                             <group>
                                 <field name="leave_id" readonly="1" invisible="not leave_id"/>
                                 <field name="attendance_id" readonly="1" invisible="not attendance_id"/>
