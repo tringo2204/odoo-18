@@ -1,6 +1,6 @@
 {
     'name': 'Đơn từ & Phê duyệt',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'category': 'Human Resources',
     'summary': 'Hệ thống đơn từ: nghỉ phép, OT, chấm công, đổi ca, công tác, thôi việc',
     'author': 'SHT',
