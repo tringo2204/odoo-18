@@ -83,6 +83,20 @@ result = payslip.paid_amount
         <field name="amount_python_compute">result = contract.allowance_other_taxable</field>
     </record>
 
+    <!-- 5b. REWARD — auto-injected from confirmed sht.hr.rd (category=reward) -->
+    <record id="vn_rule_reward" model="hr.salary.rule">
+        <field name="name">Khen thưởng</field>
+        <field name="code">REWARD</field>
+        <field name="sequence">50</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.REWARD.amount > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = inputs.REWARD.amount</field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
     <!-- 6. GROSS -->
     <record id="vn_rule_gross" model="hr.salary.rule">
         <field name="name">GROSS (Tổng thu nhập)</field>
@@ -216,7 +230,21 @@ else:
         </field>
     </record>
 
-    <!-- 12b. MONTHLY SALARY DEDUCTION (Khấu trừ lương hàng tháng) -->
+    <!-- 12b. DISCIPLINE — auto-injected from confirmed sht.hr.rd (category=discipline) -->
+    <record id="vn_rule_discipline" model="hr.salary.rule">
+        <field name="name">Kỷ luật (khấu trừ)</field>
+        <field name="code">DISCIPLINE</field>
+        <field name="sequence">320</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.DISCIPLINE.amount > 0</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = -inputs.DISCIPLINE.amount</field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
+    <!-- 12c. MONTHLY SALARY DEDUCTION (Khấu trừ lương hàng tháng) -->
     <record id="vn_rule_monthly_deduction" model="hr.salary.rule">
         <field name="name">Khấu trừ lương</field>
         <field name="code">VN_DED_MONTHLY</field>

@@ -505,9 +505,26 @@ class HrRequest(models.Model):
             'request_date_to': absence_date,
             'notes': self.description or '',
         }
-        if absence_date and self.request_hour_from and self.request_hour_to:
-            # #64: pass hour fields so Odoo computes number_of_hours correctly
+        # #91: extract hours from date_from/date_to datetimes (ABSENCE uses datetime picker)
+        # request_hour_from/to are only filled when the form uses explicit float-hour fields
+        if self.date_from and self.date_to:
+            tz_name = self.employee_id.tz or self.env.user.tz or 'UTC'
+            try:
+                local_tz = pytz.timezone(tz_name)
+                dt_from_local = self.date_from.replace(tzinfo=pytz.UTC).astimezone(local_tz)
+                dt_to_local = self.date_to.replace(tzinfo=pytz.UTC).astimezone(local_tz)
+                hour_from = dt_from_local.hour + dt_from_local.minute / 60.0
+                hour_to = dt_to_local.hour + dt_to_local.minute / 60.0
+                leave_vals.update({
+                    'request_unit_hours': True,
+                    'request_hour_from': hour_from,
+                    'request_hour_to': hour_to,
+                })
+            except Exception:
+                pass
+        elif self.request_hour_from and self.request_hour_to:
             leave_vals.update({
+                'request_unit_hours': True,
                 'request_hour_from': self.request_hour_from,
                 'request_hour_to': self.request_hour_to,
             })

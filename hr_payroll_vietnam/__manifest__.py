@@ -7,7 +7,7 @@
 Requires Odoo Enterprise: hr_payroll, hr_work_entry_contract_enterprise.
     """,
     'author': 'SHT',
-    'depends': ['hr_payroll', 'hr_work_entry_contract_enterprise', 'sht_hr_base', 'sht_hr_contract', 'mail'],
+    'depends': ['hr_payroll', 'hr_work_entry_contract_enterprise', 'sht_hr_base', 'sht_hr_contract', 'sht_hr_reward_discipline', 'mail'],
     'data': [
         'security/hr_payroll_vietnam_security.xml',
         'security/ir.model.access.csv',
@@ -21,6 +21,7 @@ Requires Odoo Enterprise: hr_payroll, hr_work_entry_contract_enterprise.
         'data/salary_structure_parttime.xml',
         'data/salary_structure_bonus.xml',
         'data/salary_structure_fixednet.xml',
+        'data/reward_input_type.xml',
         'data/vn_public_holidays.xml',
         'data/vn_work_schedules.xml',
         'views/hr_employee_views.xml',
