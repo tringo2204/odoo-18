@@ -19,7 +19,7 @@
     <record id="view_hr_salary_rule_form_tabs_vn" model="ir.ui.view">
         <field name="name">hr.salary.rule.form.tabs.vn</field>
         <field name="model">hr.salary.rule</field>
-        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_view_form"/>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
         <field name="arch" type="xml">
             <page name="general" position="attributes">
                 <attribute name="string">Chung</attribute>
@@ -75,7 +75,7 @@
     <!-- #196: Dịch Rule Parameter "Description" tab -->
     <record id="view_hr_rule_parameter_desc_tab_vn" model="ir.ui.view">
         <field name="name">hr.rule.parameter.desc.tab.vn</field>
-        <field name="model">hr.rule.parameters</field>
+        <field name="model">hr.rule.parameter</field>
         <field name="inherit_id" ref="hr_payroll.hr_rule_parameter_view_form"/>
         <field name="arch" type="xml">
             <page name="description" position="attributes">
