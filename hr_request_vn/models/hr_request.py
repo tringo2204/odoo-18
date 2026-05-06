@@ -505,28 +505,24 @@ class HrRequest(models.Model):
             'request_date_to': absence_date,
             'notes': self.description or '',
         }
-        # #91: extract hours from date_from/date_to datetimes (ABSENCE uses datetime picker)
-        # request_hour_from/to are only filled when the form uses explicit float-hour fields
-        if self.date_from and self.date_to:
-            tz_name = self.employee_id.tz or self.env.user.tz or 'UTC'
-            try:
-                local_tz = pytz.timezone(tz_name)
-                dt_from_local = self.date_from.replace(tzinfo=pytz.UTC).astimezone(local_tz)
-                dt_to_local = self.date_to.replace(tzinfo=pytz.UTC).astimezone(local_tz)
-                hour_from = dt_from_local.hour + dt_from_local.minute / 60.0
-                hour_to = dt_to_local.hour + dt_to_local.minute / 60.0
-                leave_vals.update({
-                    'request_unit_hours': True,
-                    'request_hour_from': hour_from,
-                    'request_hour_to': hour_to,
-                })
-            except Exception:
-                pass
-        elif self.request_hour_from and self.request_hour_to:
+        # #91: ABSENCE form uses float_time fields (request_hour_from/to).
+        # These take priority over date_from/date_to which may contain stale/unrelated values.
+        # When date_from is set programmatically it stores LOCAL time as naive datetime,
+        # so read .hour directly (no UTC→local conversion).
+        if self.request_hour_from or self.request_hour_to:
             leave_vals.update({
                 'request_unit_hours': True,
                 'request_hour_from': self.request_hour_from,
                 'request_hour_to': self.request_hour_to,
+            })
+        elif self.date_from and self.date_to:
+            # Fallback: date_from stores local time as naive datetime — use .hour directly
+            hour_from = self.date_from.hour + self.date_from.minute / 60.0
+            hour_to = self.date_to.hour + self.date_to.minute / 60.0
+            leave_vals.update({
+                'request_unit_hours': True,
+                'request_hour_from': hour_from,
+                'request_hour_to': hour_to,
             })
         # #64: don't use leave_fast_create — it bypasses hour/day computation,
         # causing the linked leave to display "1 ngày" instead of actual hours.

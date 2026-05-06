@@ -28,9 +28,10 @@ class HrPayslip(models.Model):
     def _inject_rd_inputs(self):
         """Create hr.payslip.input records for each confirmed sht.hr.rd in the period."""
         RewardType = self.env['hr.payslip.input.type'].sudo()
-        Rd = self.env['sht.hr.rd'].sudo() if 'sht.hr.rd' in self.env else None
-        if Rd is None:
-            return
+        try:
+            Rd = self.env['sht.hr.rd'].sudo()
+        except KeyError:
+            return  # sht_hr_reward_discipline not installed
 
         for payslip in self:
             if not payslip.employee_id or not payslip.date_from or not payslip.date_to:
@@ -46,10 +47,17 @@ class HrPayslip(models.Model):
                 ('state', '=', 'confirmed'),
                 ('date', '>=', payslip.date_from),
                 ('date', '<=', payslip.date_to),
-                ('amount', '>', 0),
             ])
+            _logger.info(
+                'payslip %s (%s): found %d RD records in period %s–%s',
+                payslip.id, payslip.employee_id.name, len(rd_records),
+                payslip.date_from, payslip.date_to,
+            )
 
             for rd in rd_records:
+                if not rd.amount:
+                    _logger.info('RD %s has amount=0 — skipping', rd.id)
+                    continue
                 code = 'REWARD' if rd.category == 'reward' else 'DISCIPLINE'
                 input_type = RewardType.search([('code', '=', code)], limit=1)
                 if not input_type:
@@ -60,3 +68,7 @@ class HrPayslip(models.Model):
                     'input_type_id': input_type.id,
                     'amount': rd.amount,
                 })
+                _logger.info(
+                    'Injected %s input amount=%s into payslip %s',
+                    code, rd.amount, payslip.id,
+                )
