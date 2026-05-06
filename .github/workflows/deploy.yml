@@ -70,6 +70,8 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'DEPLOY_EOF'
             set -e
+            # Fix git safe.directory for root-owned repo
+            git config --global --add safe.directory /opt/odoo18/custom_addons
             cd /opt/odoo18/custom_addons
 
             # Ensure .git exists and remote is set
