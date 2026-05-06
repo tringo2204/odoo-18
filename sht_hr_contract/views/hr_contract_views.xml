@@ -23,8 +23,19 @@
                             <field name="original_start_date"/>
                         </group>
                         <group>
-                            <field name="days_to_expire" readonly="1"/>
-                            <field name="is_expiring_soon" readonly="1"/>
+                            <!-- Rows 44/45/46: show meaningful expiry status -->
+                            <field name="contract_expiry_status" readonly="1" widget="badge"
+                                   decoration-success="contract_expiry_status == 'ok'"
+                                   decoration-warning="contract_expiry_status == 'expiring_soon'"
+                                   decoration-danger="contract_expiry_status == 'overdue'"
+                                   decoration-muted="contract_expiry_status == 'no_end'"/>
+                            <field name="days_to_expire" readonly="1"
+                                   invisible="contract_expiry_status not in ('ok', 'expiring_soon')"
+                                   string="Số ngày còn lại"/>
+                            <field name="days_overdue" readonly="1"
+                                   invisible="contract_expiry_status != 'overdue'"
+                                   string="Số ngày quá hạn"/>
+                            <field name="is_expiring_soon" readonly="1" invisible="1"/>
                         </group>
                     </group>
                 </page>

@@ -20,7 +20,8 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="year"/>
+                            <!-- Row 149: widget="char" prevents locale thousands separator (2.025→2025) -->
+                            <field name="year" widget="char"/>
                             <field name="department_ids" widget="many2many_tags"/>
                         </group>
                         <group>
@@ -60,7 +61,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="year"/>
+                <field name="year" widget="char"/>
                 <field name="budget"/>
                 <field name="spent"/>
                 <field name="remaining_budget"/>

@@ -37,6 +37,13 @@ class HrContract(models.Model):
     termination_date = fields.Date(string='Ngày chấm dứt', tracking=True)
     termination_note = fields.Text(string='Ghi chú chấm dứt')
     days_to_expire = fields.Integer(string='Số ngày còn lại', compute='_compute_days_to_expire')
+    days_overdue = fields.Integer(string='Số ngày quá hạn', compute='_compute_days_to_expire')
+    contract_expiry_status = fields.Selection([
+        ('ok', 'Còn hạn'),
+        ('expiring_soon', 'Sắp hết hạn'),
+        ('overdue', 'Đã quá hạn'),
+        ('no_end', '—'),
+    ], string='Trạng thái hạn HĐ', compute='_compute_days_to_expire')
     is_expiring_soon = fields.Boolean(
         string='Sắp hết hạn',
         compute='_compute_is_expiring_soon',
@@ -84,10 +91,22 @@ class HrContract(models.Model):
     def _compute_days_to_expire(self):
         today = fields.Date.today()
         for contract in self:
-            if contract.date_end:
-                contract.days_to_expire = (contract.date_end - today).days
+            if not contract.date_end:
+                contract.days_to_expire = 0
+                contract.days_overdue = 0
+                contract.contract_expiry_status = 'no_end'
+                continue
+            diff = (contract.date_end - today).days
+            if diff >= 0:
+                # Still valid
+                contract.days_to_expire = diff
+                contract.days_overdue = 0
+                contract.contract_expiry_status = 'expiring_soon' if diff <= 15 else 'ok'
             else:
-                contract.days_to_expire = False
+                # Expired: show positive overdue days
+                contract.days_to_expire = 0
+                contract.days_overdue = abs(diff)
+                contract.contract_expiry_status = 'overdue'
 
     @api.depends('date_end', 'state')
     def _compute_is_expiring_soon(self):

@@ -66,9 +66,9 @@
                         <!-- ABSENCE removed from group invisible so duration_hours is
                              effectively visible for ABSENCE (field-level invisible excludes ABSENCE).
                              Individual fields hide themselves for ABSENCE where not needed. -->
-                        <!-- #68: CHECKIN added here so the type-specific section below
-                             handles its date fields with better labels -->
-                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'SPECIAL_SCHEDULE', 'LEAVE', 'CHECKIN')">
+                        <!-- #68: CHECKIN / BUSINESS_TRIP added so type-specific sections
+                             handle their own date fields without duplication -->
+                        <group invisible="request_type_code in ('RESIGNATION', 'SHIFT_SWAP', 'SHIFT_REG', 'EXTRA_SHIFT', 'SPECIAL_SCHEDULE', 'LEAVE', 'CHECKIN', 'BUSINESS_TRIP')">
                             <field name="date_from"
                                    invisible="request_type_code == 'ABSENCE'"
                                    readonly="state != 'draft'"/>
@@ -76,9 +76,10 @@
                             <field name="date_to"
                                    invisible="request_type_code in ('BUSINESS_TRIP', 'ABSENCE')"
                                    readonly="state != 'draft'"/>
-                            <!-- #77/#63: visible for OT and ABSENCE; hidden for other non-time types -->
+                            <!-- #77/#63: visible for OT; ABSENCE hidden here (shown in ABSENCE section) -->
+                            <!-- Row 78: ABSENCE added to avoid duplicate hours in top group -->
                             <field name="duration_hours"
-                                   invisible="request_type_code in ('LEAVE', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE')"
+                                   invisible="request_type_code in ('LEAVE', 'SHIFT_SWAP', 'EXTRA_SHIFT', 'SHIFT_REG', 'BUSINESS_TRIP', 'RESIGNATION', 'SPECIAL_SCHEDULE', 'ABSENCE')"
                                    readonly="1"/>
                             <!-- #80: show calendar days for BUSINESS_TRIP -->
                             <field name="duration_calendar_days"
@@ -163,6 +164,8 @@
                             <field name="extra_shift_date"/>
                             <field name="extra_shift_start" widget="float_time"/>
                             <field name="extra_shift_end" widget="float_time"/>
+                            <!-- Row 95: show computed hours -->
+                            <field name="extra_shift_hours" string="Số giờ tăng ca" readonly="1"/>
                         </group>
                     </group>
 
@@ -173,6 +176,8 @@
                             <field name="shift_reg_date"/>
                             <field name="shift_reg_start" widget="float_time"/>
                             <field name="shift_reg_end" widget="float_time"/>
+                            <!-- Row 98: show computed hours -->
+                            <field name="shift_reg_hours" string="Số giờ" readonly="1"/>
                         </group>
                     </group>
 

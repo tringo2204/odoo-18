@@ -125,11 +125,29 @@ class HrRequest(models.Model):
     extra_shift_date = fields.Date(string='Ngày tăng ca')
     extra_shift_start = fields.Float(string='Giờ bắt đầu')
     extra_shift_end = fields.Float(string='Giờ kết thúc')
+    extra_shift_hours = fields.Float(
+        string='Số giờ tăng ca', compute='_compute_extra_shift_hours',
+        digits=(16, 2),
+    )
+
+    @api.depends('extra_shift_start', 'extra_shift_end')
+    def _compute_extra_shift_hours(self):
+        for rec in self:
+            rec.extra_shift_hours = max(0.0, rec.extra_shift_end - rec.extra_shift_start)
 
     # --- SHIFT_REG ---
     shift_reg_date = fields.Date(string='Ngày đăng ký')
     shift_reg_start = fields.Float(string='Giờ bắt đầu')
     shift_reg_end = fields.Float(string='Giờ kết thúc')
+    shift_reg_hours = fields.Float(
+        string='Số giờ', compute='_compute_shift_reg_hours',
+        digits=(16, 2),
+    )
+
+    @api.depends('shift_reg_start', 'shift_reg_end')
+    def _compute_shift_reg_hours(self):
+        for rec in self:
+            rec.shift_reg_hours = max(0.0, rec.shift_reg_end - rec.shift_reg_start)
 
     # --- BUSINESS_TRIP ---
     business_trip_location = fields.Char(string='Địa điểm công tác')
@@ -230,6 +248,16 @@ class HrRequest(models.Model):
     duration_calendar_days = fields.Integer(
         string='Số ngày', compute='_compute_calendar_days', store=True,
     )
+
+    @api.onchange('employee_id', 'request_type_code')
+    def _onchange_shift_from_autofill(self):
+        """Row 91: auto-fill shift_from_id with employee's next upcoming slot."""
+        if self.request_type_code == 'SHIFT_SWAP' and self.employee_id:
+            slot = self.env['planning.slot'].search([
+                ('resource_id.employee_id', '=', self.employee_id.id),
+                ('start_datetime', '>=', fields.Datetime.now()),
+            ], order='start_datetime asc', limit=1)
+            self.shift_from_id = slot or False
 
     # ==========================================================================
     # CRUD

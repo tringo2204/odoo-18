@@ -75,14 +75,17 @@
                     <group>
                         <group string="Chi phí">
                             <field name="estimated_cost" readonly="state != 'draft'"/>
+                            <!-- Row 145: actual_cost editable in all non-cancelled states -->
                             <field name="actual_cost"
-                                   readonly="state not in ('in_progress', 'done')"/>
+                                   readonly="state in ('cancelled', 'rejected')"
+                                   groups="hr.group_hr_user"/>
                         </group>
                         <group string="Phê duyệt" invisible="state == 'draft'">
-                            <field name="approved_by_id" readonly="1"/>
-                            <field name="approved_date" readonly="1"/>
-                            <field name="date_start" readonly="1"/>
-                            <field name="date_done" readonly="1"/>
+                            <!-- Row 145: approval fields editable by managers -->
+                            <field name="approved_by_id" groups="hr.group_hr_manager"/>
+                            <field name="approved_date" groups="hr.group_hr_manager"/>
+                            <field name="date_start" groups="hr.group_hr_manager"/>
+                            <field name="date_done" groups="hr.group_hr_manager"/>
                         </group>
                     </group>
                     <group string="Lý do từ chối" invisible="state != 'rejected'">

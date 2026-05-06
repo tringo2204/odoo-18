@@ -31,7 +31,7 @@
                         <group>
                             <field name="issue_date"/>
                             <field name="expiry_date"/>
-                            <field name="is_expired" readonly="1"/>
+                            <!-- #107: is_expired is auto-synced into state; show state only -->
                         </group>
                     </group>
                     <group>

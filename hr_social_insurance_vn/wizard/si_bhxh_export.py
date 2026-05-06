@@ -38,6 +38,7 @@ class SiBhxhExport(models.TransientModel):
     export_filename = fields.Char()
 
     def action_export(self):
+        """Row 163/#139: generate file and trigger direct browser download."""
         self.ensure_one()
         method = {
             'tk1_ts': self._export_tk1_ts,
@@ -47,10 +48,14 @@ class SiBhxhExport(models.TransientModel):
         file_data, filename = method[self.report_type]()
         self.write({'export_file': file_data, 'export_filename': filename})
         return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'res_id': self.id,
-            'view_mode': 'form',
+            'type': 'ir.actions.act_url',
+            'url': (
+                f'/web/content?model={self._name}'
+                f'&id={self.id}'
+                f'&field=export_file'
+                f'&filename_field=export_filename'
+                f'&download=true'
+            ),
             'target': 'new',
         }
 

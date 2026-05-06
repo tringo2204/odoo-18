@@ -7,6 +7,7 @@ access_hr_request_reason_manager,hr.request.reason.manager,model_hr_request_reas
 access_hr_request_reason_portal,hr.request.reason.portal,model_hr_request_reason,base.group_portal,1,0,0,0
 access_hr_request_approval_rule_user,hr.request.approval.rule.user,model_hr_request_approval_rule,hr.group_hr_user,1,0,0,0
 access_hr_request_approval_rule_manager,hr.request.approval.rule.manager,model_hr_request_approval_rule,hr.group_hr_manager,1,1,1,1
+access_hr_request_employee,hr.request.employee,model_hr_request,base.group_user,1,1,1,0
 access_hr_request_user,hr.request.user,model_hr_request,hr.group_hr_user,1,1,1,0
 access_hr_request_manager,hr.request.manager,model_hr_request,hr.group_hr_manager,1,1,1,1
 access_hr_request_portal,hr.request.portal,model_hr_request,base.group_portal,1,0,0,0
