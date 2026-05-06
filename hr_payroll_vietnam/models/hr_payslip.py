@@ -20,10 +20,10 @@ class HrPayslip(models.Model):
         readonly=True,
     )
 
-    def action_compute_sheet(self):
-        """Inject confirmed reward/discipline inputs (#130) before computing."""
+    def compute_sheet(self):
+        """Inject confirmed reward/discipline inputs (#130) before computing lines."""
         self._inject_rd_inputs()
-        return super().action_compute_sheet()
+        return super().compute_sheet()
 
     def _inject_rd_inputs(self):
         """Create hr.payslip.input records for each confirmed sht.hr.rd in the period."""
