@@ -1,0 +1,122 @@
+# Vietnamese translations for SHT HR Leave module
+# Ensures hr_holidays accrual plan strings are fully translated
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. hr_holidays: accrual plan level strings
+msgid "Accrual Plan"
+msgstr "Kế hoạch tích lũy"
+
+msgid "Accrual Plans"
+msgstr "Kế hoạch tích lũy"
+
+msgid "Accrual Level"
+msgstr "Mốc tích lũy"
+
+msgid "Accrual Plan Level"
+msgstr "Mốc kế hoạch tích lũy"
+
+msgid "Start Accruing"
+msgstr "Bắt đầu tích lũy"
+
+msgid "Carry over"
+msgstr "Chuyển tiếp"
+
+msgid "Carry over with a maximum"
+msgstr "Chuyển tiếp với số ngày tối đa"
+
+msgid "Up to"
+msgstr "Tối đa"
+
+msgid "Carry Over Validity"
+msgstr "Thời hạn hiệu lực chuyển tiếp"
+
+msgid "Carry-Over Date"
+msgstr "Ngày chuyển tiếp"
+
+msgid "Employee accrue"
+msgstr "Nhân viên tích lũy"
+
+msgid "days"
+msgstr "ngày"
+
+msgid "Days"
+msgstr "Ngày"
+
+msgid "day"
+msgstr "ngày"
+
+msgid "months"
+msgstr "tháng"
+
+msgid "Months"
+msgstr "Tháng"
+
+msgid "month"
+msgstr "tháng"
+
+msgid "years"
+msgstr "năm"
+
+msgid "Years"
+msgstr "Năm"
+
+msgid "year"
+msgstr "năm"
+
+msgid "hours"
+msgstr "giờ"
+
+msgid "Hours"
+msgstr "Giờ"
+
+msgid "days of the months"
+msgstr "ngày trong tháng"
+
+msgid "Accrual Plans"
+msgstr "Kế hoạch tích lũy"
+
+msgid "No carry-over"
+msgstr "Không chuyển tiếp"
+
+msgid "All remaining days"
+msgstr "Toàn bộ ngày còn lại"
+
+msgid "Yearly"
+msgstr "Hàng năm"
+
+msgid "Monthly"
+msgstr "Hàng tháng"
+
+msgid "Weekly"
+msgstr "Hàng tuần"
+
+msgid "Twice a month"
+msgstr "Hai lần mỗi tháng"
+
+msgid "Twice a year"
+msgstr "Hai lần mỗi năm"
+
+msgid "Daily"
+msgstr "Hàng ngày"
+
+msgid "On allocation start date"
+msgstr "Từ ngày bắt đầu phân bổ"
+
+msgid "After some time"
+msgstr "Sau một khoảng thời gian"
+
+msgid "and on the"
+msgstr "và vào ngày"
+
+msgid "on the"
+msgstr "vào ngày"
+
+msgid "on"
+msgstr "vào"

@@ -33,6 +33,7 @@ Requires Odoo Enterprise: hr_payroll, hr_work_entry_contract_enterprise.
         'wizard/payroll_bank_export_views.xml',
         'wizard/pit_annual_settlement_views.xml',
         'views/hr_payslip_run_views.xml',
+        'views/hr_payroll_config_vn_views.xml',
         'views/menus.xml',
     ],
     'installable': True,

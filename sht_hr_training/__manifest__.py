@@ -10,6 +10,7 @@
     'depends': ['hr', 'mail'],
     'data': [
         'security/ir.model.access.csv',
+        'data/training_course_data.xml',
         'views/sht_hr_training_plan_views.xml',
         'views/sht_hr_training_course_views.xml',
         'views/sht_hr_training_views.xml',

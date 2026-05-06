@@ -2,14 +2,14 @@
 <odoo>
     <menuitem
         id="sht_hr_base_menu_documents"
-        name="Documents"
+        name="Hồ sơ"
         parent="hr.menu_hr_root"
         groups="hr.group_hr_user"
         sequence="25"/>
 
     <menuitem
         id="sht_hr_base_menu_employee_documents"
-        name="Employee Documents"
+        name="Hồ sơ nhân viên"
         parent="sht_hr_base_menu_documents"
         action="sht_hr_base_action_sht_hr_employee_document"
         groups="hr.group_hr_user"
@@ -17,7 +17,7 @@
 
     <menuitem
         id="sht_hr_base_menu_document_types"
-        name="Document Types"
+        name="Loại tài liệu"
         parent="hr.menu_human_resources_configuration"
         action="sht_hr_base_action_sht_hr_document_type"
         groups="hr.group_hr_user"

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sht_hr_doc_type_cccd" model="sht.hr.document.type">
+            <field name="name">CMND / CCCD</field>
+            <field name="code">CCCD</field>
+            <field name="is_required">True</field>
+            <field name="description">Chứng minh nhân dân hoặc Căn cước công dân</field>
+        </record>
+        <record id="sht_hr_doc_type_passport" model="sht.hr.document.type">
+            <field name="name">Hộ chiếu</field>
+            <field name="code">PASSPORT</field>
+            <field name="is_required">False</field>
+            <field name="description">Hộ chiếu còn hiệu lực</field>
+        </record>
+        <record id="sht_hr_doc_type_degree" model="sht.hr.document.type">
+            <field name="name">Bằng cấp / Chứng chỉ học vấn</field>
+            <field name="code">DEGREE</field>
+            <field name="is_required">True</field>
+            <field name="description">Bằng đại học, cao đẳng, trung cấp hoặc chứng chỉ nghề</field>
+        </record>
+        <record id="sht_hr_doc_type_driving" model="sht.hr.document.type">
+            <field name="name">Giấy phép lái xe</field>
+            <field name="code">DRIVING</field>
+            <field name="is_required">False</field>
+            <field name="description">Giấy phép lái xe các hạng</field>
+        </record>
+        <record id="sht_hr_doc_type_health" model="sht.hr.document.type">
+            <field name="name">Giấy khám sức khỏe</field>
+            <field name="code">HEALTH</field>
+            <field name="is_required">True</field>
+            <field name="description">Giấy khám sức khỏe đủ điều kiện lao động</field>
+        </record>
+        <record id="sht_hr_doc_type_social_book" model="sht.hr.document.type">
+            <field name="name">Sổ BHXH</field>
+            <field name="code">BHXH_BOOK</field>
+            <field name="is_required">False</field>
+            <field name="description">Sổ bảo hiểm xã hội</field>
+        </record>
+        <record id="sht_hr_doc_type_household" model="sht.hr.document.type">
+            <field name="name">Hộ khẩu / Sổ tạm trú</field>
+            <field name="code">HOUSEHOLD</field>
+            <field name="is_required">False</field>
+            <field name="description">Hộ khẩu thường trú hoặc sổ đăng ký tạm trú</field>
+        </record>
+    </data>
+</odoo>

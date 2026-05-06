@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sht_hr_training_course_onboarding" model="sht.hr.training.course">
+            <field name="name">Định hướng nhân viên mới</field>
+            <field name="code">ONBOARDING</field>
+            <field name="category">internal</field>
+            <field name="duration_hours">8</field>
+            <field name="is_active">True</field>
+            <field name="description"><![CDATA[<p>Chương trình đào tạo hội nhập cho nhân viên mới: văn hóa công ty, quy trình nội bộ, an toàn lao động.</p>]]></field>
+        </record>
+        <record id="sht_hr_training_course_safety" model="sht.hr.training.course">
+            <field name="name">An toàn lao động</field>
+            <field name="code">SAFETY</field>
+            <field name="category">internal</field>
+            <field name="duration_hours">4</field>
+            <field name="is_active">True</field>
+            <field name="description"><![CDATA[<p>Đào tạo các quy định an toàn lao động, phòng cháy chữa cháy và sơ cứu cơ bản.</p>]]></field>
+        </record>
+        <record id="sht_hr_training_course_leadership" model="sht.hr.training.course">
+            <field name="name">Kỹ năng lãnh đạo</field>
+            <field name="code">LEADERSHIP</field>
+            <field name="category">external</field>
+            <field name="duration_hours">16</field>
+            <field name="is_active">True</field>
+            <field name="description"><![CDATA[<p>Khóa học phát triển kỹ năng quản lý và lãnh đạo nhóm.</p>]]></field>
+        </record>
+        <record id="sht_hr_training_course_excel" model="sht.hr.training.course">
+            <field name="name">Tin học văn phòng (Excel nâng cao)</field>
+            <field name="code">EXCEL_ADV</field>
+            <field name="category">online</field>
+            <field name="duration_hours">12</field>
+            <field name="is_active">True</field>
+            <field name="description"><![CDATA[<p>Excel nâng cao: Pivot Table, VBA cơ bản, Power Query.</p>]]></field>
+        </record>
+        <record id="sht_hr_training_course_communication" model="sht.hr.training.course">
+            <field name="name">Kỹ năng giao tiếp &amp; thuyết trình</field>
+            <field name="code">COMM</field>
+            <field name="category">internal</field>
+            <field name="duration_hours">8</field>
+            <field name="is_active">True</field>
+            <field name="description"><![CDATA[<p>Đào tạo kỹ năng mềm: giao tiếp chuyên nghiệp, thuyết trình và xử lý tình huống.</p>]]></field>
+        </record>
+    </data>
+</odoo>

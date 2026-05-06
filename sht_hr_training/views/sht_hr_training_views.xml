@@ -4,7 +4,7 @@
         <field name="name">sht.hr.training.list</field>
         <field name="model">sht.hr.training</field>
         <field name="arch" type="xml">
-            <list string="Training Records"
+            <list string="Hồ sơ đào tạo"
                 decoration-success="state == 'completed'"
                 decoration-info="state == 'in_progress'">
                 <field name="name"/>
@@ -23,13 +23,13 @@
         <field name="name">sht.hr.training.form</field>
         <field name="model">sht.hr.training</field>
         <field name="arch" type="xml">
-            <form string="Training Record">
+            <form string="Hồ sơ đào tạo">
                 <header>
-                    <button name="action_start" type="object" string="Start" class="btn-primary"
+                    <button name="action_start" type="object" string="Bắt đầu" class="btn-primary"
                         invisible="state != 'planned'"/>
-                    <button name="action_complete" type="object" string="Complete" class="btn-primary"
+                    <button name="action_complete" type="object" string="Hoàn thành" class="btn-primary"
                         invisible="state not in ('planned', 'in_progress')"/>
-                    <button name="action_cancel" type="object" string="Cancel"
+                    <button name="action_cancel" type="object" string="Hủy"
                         invisible="state in ('completed', 'cancelled')"/>
                     <field name="state" widget="statusbar"
                         statusbar_visible="planned,in_progress,completed,cancelled"/>
@@ -48,19 +48,19 @@
                         <field name="company_id" groups="base.group_multi_company"/>
                     </group>
                     <group>
-                        <group string="Schedule &amp; Cost">
+                        <group string="Lịch &amp; Chi phí">
                             <field name="date_start"/>
                             <field name="date_end"/>
                             <field name="cost"/>
                         </group>
-                        <group string="Outcome">
+                        <group string="Kết quả">
                             <field name="result"/>
                             <field name="score"/>
                             <field name="certificate_attachment" filename="certificate_filename"/>
                             <field name="certificate_filename" invisible="1"/>
                         </group>
                     </group>
-                    <field name="note" placeholder="Notes..."/>
+                    <field name="note" placeholder="Ghi chú..."/>
                 </sheet>
                 <chatter/>
             </form>
@@ -71,34 +71,34 @@
         <field name="name">sht.hr.training.search</field>
         <field name="model">sht.hr.training</field>
         <field name="arch" type="xml">
-            <search string="Training Records">
+            <search string="Hồ sơ đào tạo">
                 <field name="name"/>
-                <field name="employee_id"/>
-                <field name="department_id"/>
-                <field name="course_id"/>
+                <field name="employee_id" string="Nhân viên"/>
+                <field name="department_id" string="Phòng ban"/>
+                <field name="course_id" string="Khóa học"/>
                 <separator/>
-                <filter name="sht_hr_training_filter_planned" string="Planned" domain="[('state', '=', 'planned')]"/>
-                <filter name="sht_hr_training_filter_in_progress" string="In Progress" domain="[('state', '=', 'in_progress')]"/>
-                <filter name="sht_hr_training_filter_completed" string="Completed" domain="[('state', '=', 'completed')]"/>
+                <filter name="sht_hr_training_filter_planned" string="Kế hoạch" domain="[('state', '=', 'planned')]"/>
+                <filter name="sht_hr_training_filter_in_progress" string="Đang thực hiện" domain="[('state', '=', 'in_progress')]"/>
+                <filter name="sht_hr_training_filter_completed" string="Hoàn thành" domain="[('state', '=', 'completed')]"/>
                 <separator/>
-                <group expand="0" string="Group By">
-                    <filter name="sht_hr_training_group_employee" string="Employee" domain="[]" context="{'group_by': 'employee_id'}"/>
-                    <filter name="sht_hr_training_group_department" string="Department" domain="[]" context="{'group_by': 'department_id'}"/>
-                    <filter name="sht_hr_training_group_course" string="Course" domain="[]" context="{'group_by': 'course_id'}"/>
-                    <filter name="sht_hr_training_group_month" string="Month" domain="[]" context="{'group_by': 'date_start:month'}"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter name="sht_hr_training_group_employee" string="Nhân viên" domain="[]" context="{'group_by': 'employee_id'}"/>
+                    <filter name="sht_hr_training_group_department" string="Phòng ban" domain="[]" context="{'group_by': 'department_id'}"/>
+                    <filter name="sht_hr_training_group_course" string="Khóa học" domain="[]" context="{'group_by': 'course_id'}"/>
+                    <filter name="sht_hr_training_group_month" string="Tháng" domain="[]" context="{'group_by': 'date_start:month'}"/>
                 </group>
             </search>
         </field>
     </record>
 
     <record id="sht_hr_training_action" model="ir.actions.act_window">
-        <field name="name">Training Records</field>
+        <field name="name">Hồ sơ đào tạo</field>
         <field name="res_model">sht.hr.training</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="sht_hr_training_view_search"/>
         <field name="context">{}</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">Enroll an employee in a training course.</p>
+            <p class="o_view_nocontent_smiling_face">Đăng ký nhân viên vào khóa đào tạo.</p>
         </field>
     </record>
 </odoo>

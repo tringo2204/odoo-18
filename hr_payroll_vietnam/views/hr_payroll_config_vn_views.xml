@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- #196: Dịch Salary Rule Category form (group "Notes" → "Ghi chú") -->
+    <record id="view_hr_salary_rule_category_form_vn" model="ir.ui.view">
+        <field name="name">hr.salary.rule.category.form.vn</field>
+        <field name="model">hr.salary.rule.category</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_category_form"/>
+        <field name="arch" type="xml">
+            <form position="attributes">
+                <attribute name="string">Phân loại lương</attribute>
+            </form>
+            <group name="notes" position="attributes">
+                <attribute name="string">Ghi chú</attribute>
+            </group>
+        </field>
+    </record>
+
+    <!-- #196: Dịch Salary Rule form tabs: General → Chung, Description → Mô tả -->
+    <record id="view_hr_salary_rule_form_tabs_vn" model="ir.ui.view">
+        <field name="name">hr.salary.rule.form.tabs.vn</field>
+        <field name="model">hr.salary.rule</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_view_form"/>
+        <field name="arch" type="xml">
+            <page name="general" position="attributes">
+                <attribute name="string">Chung</attribute>
+            </page>
+            <page name="description" position="attributes">
+                <attribute name="string">Mô tả</attribute>
+            </page>
+        </field>
+    </record>
+
+    <!-- #196: Dịch Payroll Structure form tabs -->
+    <record id="view_hr_payroll_structure_form_tabs_vn" model="ir.ui.view">
+        <field name="name">hr.payroll.structure.form.tabs.vn</field>
+        <field name="model">hr.payroll.structure</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_employee_grade_form"/>
+        <field name="arch" type="xml">
+            <page name="salary_rules" position="attributes">
+                <attribute name="string">Quy tắc lương</attribute>
+            </page>
+            <page name="unpaid_work_entry_types" position="attributes">
+                <attribute name="string">Loại công không lương</attribute>
+            </page>
+            <page name="other_input" position="attributes">
+                <attribute name="string">Đầu vào khác</attribute>
+            </page>
+        </field>
+    </record>
+
+    <!-- #196: Dịch Employee form "Payroll" tab → "Lương" -->
+    <record id="view_hr_employee_payroll_tab_vn" model="ir.ui.view">
+        <field name="name">hr.employee.payroll.tab.vn</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_payroll.payroll_hr_employee_view_form"/>
+        <field name="arch" type="xml">
+            <page name="hr_payroll" position="attributes">
+                <attribute name="string">Lương</attribute>
+            </page>
+        </field>
+    </record>
+
+    <!-- #196: Dịch Payroll Dashboard Warning form -->
+    <record id="view_hr_payroll_dashboard_warning_vn" model="ir.ui.view">
+        <field name="name">hr.payroll.dashboard.warning.vn</field>
+        <field name="model">hr.payroll.dashboard.warning</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payroll_dashboard_warning_view_form"/>
+        <field name="arch" type="xml">
+            <form position="attributes">
+                <attribute name="string">Cảnh báo dashboard lương</attribute>
+            </form>
+        </field>
+    </record>
+
+    <!-- #196: Dịch Rule Parameter "Description" tab -->
+    <record id="view_hr_rule_parameter_desc_tab_vn" model="ir.ui.view">
+        <field name="name">hr.rule.parameter.desc.tab.vn</field>
+        <field name="model">hr.rule.parameters</field>
+        <field name="inherit_id" ref="hr_payroll.hr_rule_parameter_view_form"/>
+        <field name="arch" type="xml">
+            <page name="description" position="attributes">
+                <attribute name="string">Mô tả</attribute>
+            </page>
+        </field>
+    </record>
+</odoo>

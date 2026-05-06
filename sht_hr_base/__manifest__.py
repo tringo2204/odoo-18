@@ -9,6 +9,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron.xml',
+        'data/document_type_data.xml',
         'views/hr_employee_views.xml',
         'views/sht_hr_document_type_views.xml',
         'views/sht_hr_employee_document_views.xml',

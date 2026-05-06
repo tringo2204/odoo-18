@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="sht_hr_training_menu_root"
-        name="Training"
+        name="Đào tạo"
         parent="hr.menu_hr_root"
         sequence="50"
         groups="hr.group_hr_user"/>
@@ -13,13 +13,13 @@
         sequence="5"/>
 
     <menuitem id="sht_hr_training_menu_records"
-        name="Training Records"
+        name="Hồ sơ đào tạo"
         parent="sht_hr_training_menu_root"
         action="sht_hr_training_action"
         sequence="10"/>
 
     <menuitem id="sht_hr_training_menu_courses"
-        name="Courses"
+        name="Khóa học"
         parent="hr.menu_human_resources_configuration"
         action="sht_hr_training_course_action"
         sequence="55"
