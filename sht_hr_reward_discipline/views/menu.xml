@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- #Fix: Ẩn menu này vì hr_decision_vn đã có Khen thưởng/Kỷ luật trong Quyết định.
-         Dữ liệu sht.hr.rd vẫn giữ nguyên, truy cập qua smart button trên nhân viên. -->
     <menuitem id="menu_sht_hr_rd_root"
               name="Khen thưởng &amp; Kỷ luật"
               parent="hr.menu_hr_root"
-              groups="base.group_no_one"
               sequence="25"/>
+    <!-- #Fix: Ẩn menu này vì hr_decision_vn đã có Khen thưởng/Kỷ luật trong Quyết định.
+         Dùng record + eval (6,0,[...]) để REPLACE groups thay vì (4,id) của menuitem.
+         Dữ liệu sht.hr.rd vẫn giữ nguyên, truy cập qua smart button trên nhân viên. -->
+    <record id="menu_sht_hr_rd_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
 
     <menuitem id="menu_sht_hr_rd_reward"
               name="Khen thưởng"
