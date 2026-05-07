@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- #Fix: Ẩn menu này vì hr_decision_vn đã có Khen thưởng/Kỷ luật trong Quyết định.
+         Dữ liệu sht.hr.rd vẫn giữ nguyên, truy cập qua smart button trên nhân viên. -->
     <menuitem id="menu_sht_hr_rd_root"
               name="Khen thưởng &amp; Kỷ luật"
               parent="hr.menu_hr_root"
-              groups="hr.group_hr_user"
+              groups="base.group_no_one"
               sequence="25"/>
 
     <menuitem id="menu_sht_hr_rd_reward"
