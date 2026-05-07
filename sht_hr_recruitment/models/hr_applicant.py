@@ -75,10 +75,11 @@ class HrApplicant(models.Model):
         employee = self.env['hr.employee'].browse(result.get('res_id'))
         if not employee.exists():
             return result
-        # Find default salary structure type
-        structure_type = self.env['hr.payroll.structure.type'].search(
-            [('country_id', '=', False)], limit=1
-        ) or self.env['hr.payroll.structure.type'].search([], limit=1)
+        # Find VN salary structure type first, fallback to any
+        structure_type = (
+            self.env.ref('hr_payroll_vietnam.structure_type_vn_employee', raise_if_not_found=False)
+            or self.env['hr.payroll.structure.type'].search([], limit=1)
+        )
         # Find default contract type
         contract_type = self.env['hr.contract.type'].search([], limit=1)
         contract_vals = {
@@ -88,7 +89,7 @@ class HrApplicant(models.Model):
             'department_id': self.department_id.id if self.department_id else False,
             'company_id': self.company_id.id or self.env.company.id,
             'state': 'draft',
-            'wage': 0.0,
+            'wage': self.salary_proposed or 0.0,
         }
         if structure_type:
             contract_vals['structure_type_id'] = structure_type.id

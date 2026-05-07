@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="sht_hr_health_record_view_list" model="ir.ui.view">
+        <field name="name">sht.hr.health.record.list</field>
+        <field name="model">sht.hr.health.record</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'draft'"
+                  decoration-success="result == 'fit'"
+                  decoration-warning="result in ('conditional', 'follow_up')"
+                  decoration-danger="result == 'unfit'">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="department_id" optional="show"/>
+                <field name="examination_date"/>
+                <field name="clinic" optional="show"/>
+                <field name="weight" optional="show"/>
+                <field name="height" optional="show"/>
+                <field name="bmi" optional="show"/>
+                <field name="result" widget="badge"
+                       decoration-success="result == 'fit'"
+                       decoration-warning="result in ('conditional', 'follow_up')"
+                       decoration-danger="result == 'unfit'"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'draft'"
+                       decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="sht_hr_health_record_view_form" model="ir.ui.view">
+        <field name="name">sht.hr.health.record.form</field>
+        <field name="model">sht.hr.health.record</field>
+        <field name="arch" type="xml">
+            <form string="Hồ sơ khám sức khoẻ">
+                <header>
+                    <button name="action_confirm" string="Hoàn thành"
+                            type="object" class="btn-primary"
+                            invisible="state == 'done'"/>
+                    <button name="action_reset_draft" string="Đặt lại nháp"
+                            type="object"
+                            invisible="state == 'draft'"
+                            groups="hr.group_hr_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Thông tin nhân viên">
+                            <field name="employee_id" readonly="state == 'done'"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Thông tin khám">
+                            <field name="examination_date" readonly="state == 'done'"/>
+                            <field name="clinic" readonly="state == 'done'"/>
+                            <field name="doctor_name" readonly="state == 'done'"/>
+                            <field name="next_examination_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Chỉ số sinh tồn" name="vitals">
+                            <group>
+                                <group string="Nhân trắc học">
+                                    <field name="height" readonly="state == 'done'"/>
+                                    <field name="weight" readonly="state == 'done'"/>
+                                    <field name="bmi" readonly="1"/>
+                                    <field name="blood_type" readonly="state == 'done'"/>
+                                </group>
+                                <group string="Tim mạch &amp; huyết áp">
+                                    <field name="blood_pressure_systolic" readonly="state == 'done'"/>
+                                    <field name="blood_pressure_diastolic" readonly="state == 'done'"/>
+                                    <field name="heart_rate" readonly="state == 'done'"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Mắt &amp; tai">
+                                    <field name="vision_left" readonly="state == 'done'"/>
+                                    <field name="vision_right" readonly="state == 'done'"/>
+                                    <field name="hearing" readonly="state == 'done'"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Kết luận" name="conclusion">
+                            <group>
+                                <field name="result" readonly="state == 'done'"/>
+                                <field name="notes" readonly="state == 'done'" placeholder="Ghi chú chẩn đoán, bệnh lý, khuyến nghị..."/>
+                            </group>
+                        </page>
+                        <page string="Tài liệu đính kèm" name="attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="sht_hr_health_record_view_search" model="ir.ui.view">
+        <field name="name">sht.hr.health.record.search</field>
+        <field name="model">sht.hr.health.record</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="clinic"/>
+                <field name="examination_date"/>
+                <separator/>
+                <filter name="fit" string="Đủ sức khoẻ" domain="[('result', '=', 'fit')]"/>
+                <filter name="follow_up" string="Cần theo dõi"
+                        domain="[('result', 'in', ('conditional', 'follow_up'))]"/>
+                <filter name="unfit" string="Không đủ sức khoẻ"
+                        domain="[('result', '=', 'unfit')]"/>
+                <separator/>
+                <filter name="done" string="Hoàn thành" domain="[('state', '=', 'done')]"/>
+                <filter name="draft" string="Nháp" domain="[('state', '=', 'draft')]"/>
+                <group expand="0" string="Nhóm theo">
+                    <filter name="group_employee" string="Nhân viên"
+                            context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_department" string="Phòng ban"
+                            context="{'group_by': 'department_id'}"/>
+                    <filter name="group_result" string="Kết luận"
+                            context="{'group_by': 'result'}"/>
+                    <filter name="group_year" string="Năm khám"
+                            context="{'group_by': 'examination_date:year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sht_hr_health_record" model="ir.actions.act_window">
+        <field name="name">Hồ sơ sức khoẻ</field>
+        <field name="res_model">sht.hr.health.record</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="sht_hr_health_record_view_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Chưa có hồ sơ khám sức khoẻ nào.
+            </p>
+            <p>Tạo hồ sơ mới để ghi lại kết quả khám sức khoẻ định kỳ cho nhân viên.</p>
+        </field>
+    </record>
+
+    <!-- Sequence -->
+    <record id="seq_sht_hr_health_record" model="ir.sequence">
+        <field name="name">Hồ sơ sức khoẻ nhân viên</field>
+        <field name="code">sht.hr.health.record</field>
+        <field name="prefix">HEALTH/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>

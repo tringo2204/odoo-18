@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add health smart button to employee form -->
+    <record id="hr_employee_view_form_health" model="ir.ui.view">
+        <field name="name">hr.employee.form.health.button</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_health_records"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-heartbeat">
+                    <field name="health_record_count" widget="statinfo"
+                           string="Lần khám"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

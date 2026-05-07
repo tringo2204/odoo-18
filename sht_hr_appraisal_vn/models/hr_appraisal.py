@@ -61,18 +61,24 @@ class HrAppraisal(models.Model):
 
     @api.onchange('sht_template_id')
     def _onchange_template(self):
-        if self.sht_template_id and not self.line_ids:
+        if self.sht_template_id:
             self._generate_lines_from_template()
 
-    def _generate_lines_from_template(self):
-        """Tạo dòng đánh giá từ mẫu."""
+    def action_apply_template(self):
+        """Áp dụng mẫu đánh giá (có thể gọi trên bản ghi đã lưu)."""
         self.ensure_one()
         if not self.sht_template_id:
             return
-        # Xóa dòng cũ
-        self.line_ids.unlink()
+        self._generate_lines_from_template()
+
+    def _generate_lines_from_template(self):
+        """Tạo dòng đánh giá từ mẫu, xoá dòng cũ trước."""
+        self.ensure_one()
+        if not self.sht_template_id:
+            return
+        self.sudo().line_ids.unlink()
         for criteria in self.sht_template_id.criteria_ids:
-            self.env['sht.hr.appraisal.line'].create({
+            self.env['sht.hr.appraisal.line'].sudo().create({
                 'appraisal_id': self.id,
                 'criteria_id': criteria.id,
                 'weight': criteria.weight,

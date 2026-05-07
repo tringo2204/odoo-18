@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools.translate import _
 
 
 class ShtHrApplicantEvaluation(models.Model):
@@ -67,3 +69,12 @@ class ShtHrEvaluationCriteria(models.Model):
     score = fields.Float(string='Điểm (1-5)')
     weight = fields.Float(string='Trọng số', default=1.0)
     note = fields.Text(string='Nhận xét')
+
+    @api.constrains('score')
+    def _check_score_range(self):
+        for rec in self:
+            if rec.score and (rec.score < 1 or rec.score > 5):
+                raise ValidationError(_(
+                    'Điểm đánh giá phải nằm trong khoảng từ 1 đến 5. '
+                    'Vui lòng nhập lại tiêu chí "%s".'
+                ) % rec.name)

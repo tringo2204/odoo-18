@@ -5,6 +5,10 @@
         <field name="model">hr.applicant</field>
         <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
         <field name="arch" type="xml">
+            <!-- #216: khi đã chọn phòng ban, chỉ hiện vị trí thuộc phòng đó -->
+            <field name="job_id" position="attributes">
+                <attribute name="domain">[('department_id', 'in', [department_id, False])]</attribute>
+            </field>
             <field name="department_id" position="after">
                 <field name="campaign_id"/>
                 <field name="headcount_plan_id"/>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu under Employees app -->
+    <menuitem id="menu_sht_hr_health_root"
+              name="Sức khoẻ nhân viên"
+              parent="hr.menu_hr_root"
+              sequence="50"
+              groups="hr.group_hr_user"/>
+
+    <menuitem id="menu_sht_hr_health_records"
+              name="Hồ sơ khám sức khoẻ"
+              parent="menu_sht_hr_health_root"
+              action="action_sht_hr_health_record"
+              sequence="10"
+              groups="hr.group_hr_user"/>
+</odoo>
