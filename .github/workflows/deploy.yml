@@ -26,7 +26,7 @@ env:
     sht_hr_contract,sht_hr_leave,sht_hr_recruitment,sht_hr_onboarding,
     hr_payroll_vietnam,hr_social_insurance_vn,hr_request_vn,
     hr_decision_vn,hr_asset_vn,sht_hr_appraisal_vn,
-    hr_kpi_okr,hr_digital_sign_vn
+    hr_kpi_okr,hr_digital_sign_vn,sht_hr_health
 
 jobs:
   deploy:
@@ -55,7 +55,7 @@ jobs:
           else
             # Auto-detect changed module directories
             CHANGED=$(git diff --name-only ${{ github.event.before || 'HEAD~1' }} HEAD | grep -oP '^[^/]+' | sort -u | tr '\n' ',' | sed 's/,$//')
-            KNOWN="sht_hr_base sht_hr_reward_discipline sht_hr_training sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding hr_payroll_vietnam hr_social_insurance_vn hr_request_vn hr_decision_vn hr_asset_vn sht_hr_appraisal_vn hr_kpi_okr hr_digital_sign_vn mfg_dashboard"
+            KNOWN="sht_hr_base sht_hr_reward_discipline sht_hr_training sht_hr_contract sht_hr_leave sht_hr_recruitment sht_hr_onboarding hr_payroll_vietnam hr_social_insurance_vn hr_request_vn hr_decision_vn hr_asset_vn sht_hr_appraisal_vn hr_kpi_okr hr_digital_sign_vn sht_hr_health mfg_dashboard"
             MODULES=""
             for dir in $(echo "$CHANGED" | tr ',' ' '); do
               if echo "$KNOWN" | grep -qw "$dir"; then
@@ -102,8 +102,21 @@ jobs:
           systemctl stop odoo18 2>/dev/null || true
           pkill -9 -f 'odoo-bin' 2>/dev/null || true
           sleep 2
+          U_MODS="" I_MODS=""
+          for mod in \$(echo "$MODULES" | tr ',' ' '); do
+            STATE=\$(psql -U odoo -d 'odoo HR' -tAc "SELECT state FROM ir_module_module WHERE name='\$mod'" 2>/dev/null | tr -d ' \n')
+            if [ "\$STATE" = "installed" ] || [ "\$STATE" = "to upgrade" ]; then
+              U_MODS="\${U_MODS:+\$U_MODS,}\$mod"
+            else
+              I_MODS="\${I_MODS:+\$I_MODS,}\$mod"
+            fi
+          done
+          echo "Upgrade: \$U_MODS | Install: \$I_MODS"
+          CMD_FLAGS=""
+          [ -n "\$U_MODS" ] && CMD_FLAGS="\$CMD_FLAGS -u \$U_MODS"
+          [ -n "\$I_MODS" ] && CMD_FLAGS="\$CMD_FLAGS -i \$I_MODS"
           /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
-            -c /opt/odoo18/odoo.conf -d 'odoo HR' -u $MODULES \
+            -c /opt/odoo18/odoo.conf -d 'odoo HR' \$CMD_FLAGS \
             --stop-after-init --no-http 2>&1 | tail -10
           echo "EXIT_HR:\$?"
           SSHEOF
@@ -118,8 +131,21 @@ jobs:
           ssh -i ~/.ssh/deploy_key ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << SSHEOF
           pkill -9 -f 'odoo-bin' 2>/dev/null || true
           sleep 2
+          U_MODS="" I_MODS=""
+          for mod in \$(echo "$MODULES" | tr ',' ' '); do
+            STATE=\$(psql -U odoo -d odoo18 -tAc "SELECT state FROM ir_module_module WHERE name='\$mod'" 2>/dev/null | tr -d ' \n')
+            if [ "\$STATE" = "installed" ] || [ "\$STATE" = "to upgrade" ]; then
+              U_MODS="\${U_MODS:+\$U_MODS,}\$mod"
+            else
+              I_MODS="\${I_MODS:+\$I_MODS,}\$mod"
+            fi
+          done
+          echo "Upgrade: \$U_MODS | Install: \$I_MODS"
+          CMD_FLAGS=""
+          [ -n "\$U_MODS" ] && CMD_FLAGS="\$CMD_FLAGS -u \$U_MODS"
+          [ -n "\$I_MODS" ] && CMD_FLAGS="\$CMD_FLAGS -i \$I_MODS"
           /opt/odoo18/.venv/bin/python /opt/odoo18/odoo-bin \
-            -c /opt/odoo18/odoo.conf -d odoo18 -u $MODULES \
+            -c /opt/odoo18/odoo.conf -d odoo18 \$CMD_FLAGS \
             --stop-after-init --no-http 2>&1 | tail -10
           echo "EXIT_O18:\$?"
           SSHEOF
