@@ -92,7 +92,15 @@ class HrVnAssetDisposal(models.Model):
             })
 
     def action_reject(self):
-        self.write({'state': 'rejected'})
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Từ chối biên bản thanh lý'),
+            'res_model': 'hr.vn.asset.disposal.reject',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_disposal_id': self.id},
+        }
 
     def action_confirm_disposal(self):
         """Finalize disposal — mark asset as disposed."""

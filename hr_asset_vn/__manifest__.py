@@ -16,6 +16,7 @@
         'views/hr_vn_asset_maintenance_views.xml',
         'views/hr_employee_views.xml',
         'views/menus.xml',
+        'wizard/hr_vn_asset_disposal_reject_views.xml',
     ],
     'installable': True,
     'application': False,

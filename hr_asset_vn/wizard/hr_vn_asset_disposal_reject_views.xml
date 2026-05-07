@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_vn_asset_disposal_reject_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.asset.disposal.reject.form</field>
+        <field name="model">hr.vn.asset.disposal.reject</field>
+        <field name="arch" type="xml">
+            <form string="Từ chối biên bản thanh lý">
+                <group>
+                    <field name="disposal_id" invisible="1"/>
+                    <field name="rejection_reason" placeholder="Nhập lý do từ chối..." required="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_reject" string="Xác nhận từ chối"
+                            type="object" class="btn-danger"/>
+                    <button string="Hủy" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
