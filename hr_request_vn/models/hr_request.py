@@ -221,13 +221,23 @@ class HrRequest(models.Model):
                 }
             }
 
-    @api.depends('date_from', 'date_to')
+    @api.depends('date_from', 'date_to', 'request_type_code')
     def _compute_duration(self):
         for rec in self:
-            if rec.date_from and rec.date_to and rec.date_to > rec.date_from:
+            if rec.date_from and rec.date_to and rec.date_to >= rec.date_from:
                 delta = rec.date_to - rec.date_from
                 rec.duration_hours = delta.total_seconds() / 3600.0
-                rec.duration_days = delta.total_seconds() / (3600.0 * HOURS_PER_DAY)
+                # #Fix Row77: LEAVE đếm calendar days inclusive
+                # (10/5 → 12/5 = 3 ngày), không phải total_hours / 8.
+                # Các loại khác (OT, BUSINESS_TRIP...) vẫn dùng cách cũ.
+                if rec.request_type_code == 'LEAVE':
+                    tz_name = rec.employee_id.tz or self.env.user.tz or 'UTC'
+                    local_tz = pytz.timezone(tz_name)
+                    d_from = rec.date_from.astimezone(local_tz).date()
+                    d_to = rec.date_to.astimezone(local_tz).date()
+                    rec.duration_days = max((d_to - d_from).days + 1, 1)
+                else:
+                    rec.duration_days = delta.total_seconds() / (3600.0 * HOURS_PER_DAY)
             else:
                 rec.duration_hours = 0.0
                 rec.duration_days = 0.0

@@ -1,6 +1,6 @@
 {
     'name': 'Bảng lương Việt Nam',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'category': 'Human Resources/Payroll',
     'summary': 'BHXH, thuế TNCN lũy tiến 7 bậc, giảm trừ gia cảnh, gross-up',
     'description': """

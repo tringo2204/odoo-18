@@ -62,23 +62,17 @@ class HrAppraisal(models.Model):
     @api.onchange('sht_template_id')
     def _onchange_template(self):
         """Auto-populate dòng đánh giá khi chọn mẫu (form chưa save).
-        Dùng .new() để tạo virtual records, đảm bảo data được giữ trong onchange
-        round-trip (Command.create + (0,0,vals) tuple đều bị strip dict trong
-        một số trường hợp với @check_company_auto model)."""
-        # Clear toàn bộ line cũ
-        self.line_ids = [(5, 0, 0)]
+        Đã thử nhiều cách: Command.create, (0,0,vals) tuple, .new() đều bị strip.
+        Trả về dict 'value' (legacy pattern) là cách Odoo serializer respect nhất."""
         if not self.sht_template_id:
-            return
-        Line = self.env['sht.hr.appraisal.line']
-        new_records = Line
-        for criteria in self.sht_template_id.criteria_ids:
-            new_records |= Line.new({
-                'criteria_id': criteria.id,
-                'weight': criteria.weight or 0.0,
-                'self_score': 0.0,
-                'manager_score': 0.0,
-            })
-        self.line_ids = new_records
+            return {'value': {'line_ids': [(5, 0, 0)]}}
+        lines = [(5, 0, 0)]
+        for c in self.sht_template_id.criteria_ids:
+            lines.append((0, 0, {
+                'criteria_id': c.id,
+                'weight': c.weight or 0.0,
+            }))
+        return {'value': {'line_ids': lines}}
 
     @api.model_create_multi
     def create(self, vals_list):
