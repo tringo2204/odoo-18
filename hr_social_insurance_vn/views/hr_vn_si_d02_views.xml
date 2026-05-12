@@ -30,7 +30,7 @@
                     <group>
                         <group>
                             <field name="month"/>
-                            <field name="year"/>
+                            <field name="year" options="{'enable_formatting': False}"/>
                             <field name="monthly_list_id"/>
                         </group>
                         <group>
@@ -74,7 +74,7 @@
                   decoration-muted="state == 'submitted'">
                 <field name="name"/>
                 <field name="month"/>
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': False}"/>
                 <field name="line_count"/>
                 <field name="state" widget="badge"
                        decoration-info="state == 'draft'"

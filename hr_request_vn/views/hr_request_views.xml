@@ -13,10 +13,8 @@
                 <field name="request_type_id"/>
                 <field name="date_from" widget="date"/>
                 <field name="date_to" widget="date"/>
-                <field name="duration_days" string="Ngày"
+                <field name="duration_days" string="Số ngày"
                        invisible="request_type_code == 'ABSENCE'"/>
-                <field name="absence_duration_hours" string="Số giờ" optional="hide"
-                       invisible="request_type_code != 'ABSENCE'"/>
                 <field name="state" widget="badge"
                        decoration-info="state == 'draft'"
                        decoration-warning="state == 'submitted'"

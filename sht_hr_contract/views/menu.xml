@@ -2,7 +2,7 @@
 <odoo>
     <menuitem
         id="sht_hr_contract_menu_contract_types"
-        name="Contract Types"
+        name="Loại hợp đồng"
         parent="hr.menu_human_resources_configuration"
         action="sht_hr_contract_type_action"
         groups="hr.group_hr_user"

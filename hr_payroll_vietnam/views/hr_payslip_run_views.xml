@@ -12,19 +12,19 @@
         </field>
     </record>
 
-    <!-- #Fix: Đổi tên action "Payslips Batches" → "Quản lý đợt trả lương" -->
+    <!-- #Fix: Đổi tên action "Payslips Batches" → "Đợt trả lương" -->
     <record id="hr_payroll.action_hr_payslip_run_tree" model="ir.actions.act_window">
-        <field name="name">Quản lý đợt trả lương</field>
+        <field name="name">Đợt trả lương</field>
     </record>
 
-    <!-- #Fix: Đổi tên list view title "Payslips Batches" → "Quản lý đợt trả lương" -->
+    <!-- #Fix: Đổi tên list view title "Payslips Batches" → "Đợt trả lương" -->
     <record id="hr_payslip_run_list_title_vn" model="ir.ui.view">
         <field name="name">hr.payslip.run.list.title.vn</field>
         <field name="model">hr.payslip.run</field>
         <field name="inherit_id" ref="hr_payroll.hr_payslip_run_tree"/>
         <field name="arch" type="xml">
             <list position="attributes">
-                <attribute name="string">Quản lý đợt trả lương</attribute>
+                <attribute name="string">Đợt trả lương</attribute>
             </list>
         </field>
     </record>

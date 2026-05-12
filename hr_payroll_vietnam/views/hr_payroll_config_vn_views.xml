@@ -83,4 +83,30 @@
             </page>
         </field>
     </record>
+
+    <!-- #Fix Row201: Dịch các tab/group trong Salary Rule + Category -->
+    <record id="view_hr_salary_rule_tabs_vn" model="ir.ui.view">
+        <field name="name">hr.salary.rule.tabs.vn</field>
+        <field name="model">hr.salary.rule</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+        <field name="arch" type="xml">
+            <page name="general" position="attributes">
+                <attribute name="string">Tổng quát</attribute>
+            </page>
+            <page name="description" position="attributes">
+                <attribute name="string">Mô tả</attribute>
+            </page>
+        </field>
+    </record>
+
+    <record id="view_hr_salary_rule_category_notes_vn" model="ir.ui.view">
+        <field name="name">hr.salary.rule.category.notes.vn</field>
+        <field name="model">hr.salary.rule.category</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_category_form"/>
+        <field name="arch" type="xml">
+            <group name="notes" position="attributes">
+                <attribute name="string">Ghi chú</attribute>
+            </group>
+        </field>
+    </record>
 </odoo>

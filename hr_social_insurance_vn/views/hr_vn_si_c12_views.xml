@@ -9,7 +9,7 @@
                 <field name="employee_id"/>
                 <field name="bhxh_number"/>
                 <field name="month"/>
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': False}"/>
                 <field name="bhxh_status"/>
                 <field name="bhxh_amount" sum="Tổng BHXH"/>
                 <field name="bhyt_amount" sum="Tổng BHYT"/>
@@ -28,7 +28,7 @@
             <search>
                 <field name="employee_id"/>
                 <field name="bhxh_number"/>
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': False}"/>
                 <group expand="0" string="Nhóm theo">
                     <filter string="Nhân viên" name="group_employee"
                             context="{'group_by': 'employee_id'}"/>

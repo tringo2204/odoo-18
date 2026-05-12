@@ -4,7 +4,7 @@
         <field name="name">sht.hr.checklist.template.list</field>
         <field name="model">sht.hr.checklist.template</field>
         <field name="arch" type="xml">
-            <list string="Checklist Templates">
+            <list string="Mẫu checklist">
                 <field name="name"/>
                 <field name="checklist_type"/>
                 <field name="is_active"/>
@@ -16,7 +16,7 @@
         <field name="name">sht.hr.checklist.template.form</field>
         <field name="model">sht.hr.checklist.template</field>
         <field name="arch" type="xml">
-            <form string="Checklist Template">
+            <form string="Mẫu checklist">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -41,7 +41,7 @@
     </record>
 
     <record id="sht_hr_onboarding_sht_hr_checklist_template_action" model="ir.actions.act_window">
-        <field name="name">Templates</field>
+        <field name="name">Mẫu checklist</field>
         <field name="res_model">sht.hr.checklist.template</field>
         <field name="view_mode">list,form</field>
     </record>

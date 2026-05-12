@@ -19,7 +19,7 @@
         sequence="20"/>
 
     <menuitem id="sht_hr_onboarding_menu_templates"
-        name="Templates"
+        name="Mẫu checklist"
         parent="hr.menu_human_resources_configuration"
         action="sht_hr_onboarding_sht_hr_checklist_template_action"
         sequence="55"

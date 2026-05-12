@@ -48,7 +48,7 @@
                   decoration-danger="state == 'draft' and gap > 0">
                 <field name="department_id" optional="show"/>
                 <field name="job_id"/>
-                <field name="year" string="Năm"/>
+                <field name="year" string="Năm" options="{'enable_formatting': False}"/>
                 <field name="month" string="Tháng"/>
                 <field name="planned_count" string="Định biên" sum="Tổng định biên"/>
                 <field name="current_count" string="Nhân sự hiện tại" sum="Tổng nhân sự"/>
@@ -103,7 +103,7 @@
                             <field name="job_id"/>
                         </group>
                         <group string="Kỳ định biên">
-                            <field name="year"/>
+                            <field name="year" options="{'enable_formatting': False}"/>
                             <field name="month"/>
                         </group>
                     </group>

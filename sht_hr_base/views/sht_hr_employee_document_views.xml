@@ -55,11 +55,9 @@
                 <field name="employee_id"/>
                 <field name="document_type_id"/>
                 <separator/>
-                <filter string="Valid" name="state_valid" domain="[('state', '=', 'valid')]"/>
-                <filter string="Expired" name="state_expired" domain="[('state', '=', 'expired')]"/>
-                <filter string="Missing" name="state_missing" domain="[('state', '=', 'missing')]"/>
-                <separator/>
-                <filter string="Expired (by date)" name="is_expired" domain="[('is_expired', '=', True)]"/>
+                <filter string="Còn hạn" name="state_valid" domain="[('state', '=', 'valid')]"/>
+                <filter string="Hết hạn" name="state_expired" domain="[('state', '=', 'expired')]"/>
+                <filter string="Thiếu" name="state_missing" domain="[('state', '=', 'missing')]"/>
                 <group expand="0" string="Group By">
                     <filter string="Document Type" name="group_document_type" context="{'group_by': 'document_type_id'}"/>
                     <filter string="Employee" name="group_employee" context="{'group_by': 'employee_id'}"/>
