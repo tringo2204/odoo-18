@@ -62,17 +62,26 @@ class HrAppraisal(models.Model):
     @api.onchange('sht_template_id')
     def _onchange_template(self):
         """Auto-populate dòng đánh giá khi chọn mẫu (form chưa save).
-        Đã thử nhiều cách: Command.create, (0,0,vals) tuple, .new() đều bị strip.
-        Trả về dict 'value' (legacy pattern) là cách Odoo serializer respect nhất."""
+        Approach: clear lines first via direct assignment, then assign new virtual
+        records WITHOUT mixing (5,0,0) with (0,0,vals) in same list — Odoo One2many
+        serializer strips dicts when commands are mixed."""
+        # Bước 1: clear all existing lines
+        self.line_ids = [(5, 0, 0)]
         if not self.sht_template_id:
-            return {'value': {'line_ids': [(5, 0, 0)]}}
-        lines = [(5, 0, 0)]
+            return
+        # Bước 2: build virtual line records explicitly (no clear command this round)
+        Line = self.env['sht.hr.appraisal.line']
+        new_lines = Line.browse()
         for c in self.sht_template_id.criteria_ids:
-            lines.append((0, 0, {
+            new_lines |= Line.new({
                 'criteria_id': c.id,
+                'category': c.category,
                 'weight': c.weight or 0.0,
-            }))
-        return {'value': {'line_ids': lines}}
+                'self_score': 0.0,
+                'manager_score': 0.0,
+            })
+        # Bước 3: assign as single command without clear
+        self.line_ids = new_lines
 
     @api.model_create_multi
     def create(self, vals_list):
