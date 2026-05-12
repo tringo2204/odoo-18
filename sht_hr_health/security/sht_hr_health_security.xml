@@ -7,7 +7,7 @@
         <field name="domain_force">[('company_id', 'in', company_ids)]</field>
     </record>
 
-    <!-- HR users see only own employees' records -->
+    <!-- Employees see only their own records -->
     <record id="sht_hr_health_user_rule" model="ir.rule">
         <field name="name">Sức khoẻ: Nhân viên — chỉ thấy hồ sơ của mình</field>
         <field name="model_id" ref="model_sht_hr_health_record"/>
@@ -17,5 +17,13 @@
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="False"/>
         <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- HR Officer/Manager see and manage all records -->
+    <record id="sht_hr_health_hr_user_rule" model="ir.rule">
+        <field name="name">Sức khoẻ: HR — thấy và quản lý tất cả</field>
+        <field name="model_id" ref="model_sht_hr_health_record"/>
+        <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
     </record>
 </odoo>
