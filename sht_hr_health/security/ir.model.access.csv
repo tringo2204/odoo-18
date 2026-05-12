@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sht_hr_health_user,sht.hr.health.record.user,model_sht_hr_health_record,base.group_user,1,0,0,0
 access_sht_hr_health_hr_user,sht.hr.health.record.hr.user,model_sht_hr_health_record,hr.group_hr_user,1,1,1,0
 access_sht_hr_health_hr_manager,sht.hr.health.record.hr.manager,model_sht_hr_health_record,hr.group_hr_manager,1,1,1,1
+access_sht_hr_health_system,sht.hr.health.record.system,model_sht_hr_health_record,base.group_system,1,1,1,1

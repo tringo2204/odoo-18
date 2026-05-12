@@ -100,7 +100,8 @@
                         <group string="Vị trí">
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="department_id"/>
-                            <field name="job_id"/>
+                            <field name="job_id"
+                                   domain="[('department_id', '=', department_id)]"/>
                         </group>
                         <group string="Kỳ định biên">
                             <field name="year" options="{'enable_formatting': False}"/>

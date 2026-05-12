@@ -14,6 +14,7 @@
         'wizard/hr_request_action_wizard_views.xml',
         'views/hr_request_views.xml',
         'views/hr_request_type_views.xml',
+        'views/planning_slot_views.xml',
         'views/portal_templates.xml',
         'views/menus.xml',
     ],

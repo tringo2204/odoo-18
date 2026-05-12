@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, Command
 
 
 class HrAppraisal(models.Model):
@@ -61,24 +61,26 @@ class HrAppraisal(models.Model):
 
     @api.onchange('sht_template_id')
     def _onchange_template(self):
+        """Auto-populate dòng đánh giá khi chọn mẫu (trong form, chưa lưu)."""
         if self.sht_template_id:
-            self._generate_lines_from_template()
+            self.line_ids = [
+                Command.clear(),
+                *[Command.create({
+                    'criteria_id': c.id,
+                    'weight': c.weight,
+                }) for c in self.sht_template_id.criteria_ids],
+            ]
+        else:
+            self.line_ids = [Command.clear()]
 
     def action_apply_template(self):
-        """Áp dụng mẫu đánh giá (có thể gọi trên bản ghi đã lưu)."""
+        """Áp dụng lại mẫu trên bản ghi đã lưu (xoá lines cũ, tạo mới từ template)."""
         self.ensure_one()
         if not self.sht_template_id:
             return
-        self._generate_lines_from_template()
-
-    def _generate_lines_from_template(self):
-        """Tạo dòng đánh giá từ mẫu, xoá dòng cũ trước."""
-        self.ensure_one()
-        if not self.sht_template_id:
-            return
-        self.sudo().line_ids.unlink()
+        self.line_ids.unlink()
         for criteria in self.sht_template_id.criteria_ids:
-            self.env['sht.hr.appraisal.line'].sudo().create({
+            self.env['sht.hr.appraisal.line'].create({
                 'appraisal_id': self.id,
                 'criteria_id': criteria.id,
                 'weight': criteria.weight,

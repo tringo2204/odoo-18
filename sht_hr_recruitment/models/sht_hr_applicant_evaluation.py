@@ -78,3 +78,17 @@ class ShtHrEvaluationCriteria(models.Model):
                     'Điểm đánh giá phải nằm trong khoảng từ 1 đến 5. '
                     'Vui lòng nhập lại tiêu chí "%s".'
                 ) % rec.name)
+
+    @api.onchange('score')
+    def _onchange_score_warning(self):
+        """Cảnh báo ngay khi user gõ điểm vượt thang 1-5, trước khi save."""
+        if self.score and (self.score < 1 or self.score > 5):
+            return {
+                'warning': {
+                    'title': _('Điểm vượt thang tham chiếu'),
+                    'message': _(
+                        'Điểm đánh giá "%s" = %s nằm ngoài thang 1-5. '
+                        'Hệ thống sẽ không ghi nhận giá trị này khi lưu.'
+                    ) % (self.name or '', self.score),
+                }
+            }
