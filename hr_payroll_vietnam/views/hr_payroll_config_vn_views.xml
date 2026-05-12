@@ -84,8 +84,7 @@
         </field>
     </record>
 
-    <!-- #Fix Row201: Dịch các tab/group trong Salary Rule + Category.
-         Đổi page 'description' → 'Ghi chú' vì page này chỉ chứa field note. -->
+    <!-- #Fix Row201: 3 tabs — Tổng quát, Mô tả (note Enterprise), Ghi chú (user_note mới) -->
     <record id="view_hr_salary_rule_tabs_vn" model="ir.ui.view">
         <field name="name">hr.salary.rule.tabs.vn</field>
         <field name="model">hr.salary.rule</field>
@@ -95,7 +94,13 @@
                 <attribute name="string">Tổng quát</attribute>
             </page>
             <page name="description" position="attributes">
-                <attribute name="string">Ghi chú</attribute>
+                <attribute name="string">Mô tả</attribute>
+            </page>
+            <page name="description" position="after">
+                <page name="vn_user_note" string="Ghi chú">
+                    <field name="user_note" nolabel="1"
+                           placeholder="Ghi chú vận hành, lưu ý áp dụng, v.v."/>
+                </page>
             </page>
         </field>
     </record>

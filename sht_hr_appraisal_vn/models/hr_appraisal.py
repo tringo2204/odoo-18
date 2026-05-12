@@ -59,26 +59,26 @@ class HrAppraisal(models.Model):
             else:
                 rec.rating = 'improve'
 
-    def _template_to_line_commands(self):
-        """Trả về list of (0, 0, vals) tuples cho mỗi criteria trong template.
-        Dùng (0, 0, vals) tuple syntax thay vì Command.create để tương thích
-        rộng nhất với cả onchange + write + create context."""
-        self.ensure_one()
-        commands = [(5, 0, 0)]  # clear all existing
-        if not self.sht_template_id:
-            return commands
-        for c in self.sht_template_id.criteria_ids:
-            commands.append((0, 0, {
-                'criteria_id': c.id,
-                'weight': c.weight,
-            }))
-        return commands
-
     @api.onchange('sht_template_id')
     def _onchange_template(self):
-        """Auto-populate dòng đánh giá khi chọn mẫu (trong form, chưa lưu)."""
-        for rec in self:
-            rec.line_ids = rec._template_to_line_commands()
+        """Auto-populate dòng đánh giá khi chọn mẫu (form chưa save).
+        Dùng .new() để tạo virtual records, đảm bảo data được giữ trong onchange
+        round-trip (Command.create + (0,0,vals) tuple đều bị strip dict trong
+        một số trường hợp với @check_company_auto model)."""
+        # Clear toàn bộ line cũ
+        self.line_ids = [(5, 0, 0)]
+        if not self.sht_template_id:
+            return
+        Line = self.env['sht.hr.appraisal.line']
+        new_records = Line
+        for criteria in self.sht_template_id.criteria_ids:
+            new_records |= Line.new({
+                'criteria_id': criteria.id,
+                'weight': criteria.weight or 0.0,
+                'self_score': 0.0,
+                'manager_score': 0.0,
+            })
+        self.line_ids = new_records
 
     @api.model_create_multi
     def create(self, vals_list):
