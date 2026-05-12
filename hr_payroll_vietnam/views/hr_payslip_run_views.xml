@@ -17,6 +17,11 @@
         <field name="name">Đợt trả lương</field>
     </record>
 
+    <!-- #Fix Row206: Đổi tên menu "Batches" → "Đợt trả lương" -->
+    <record id="hr_payroll.menu_hr_payslip_run" model="ir.ui.menu">
+        <field name="name">Đợt trả lương</field>
+    </record>
+
     <!-- #Fix: Đổi tên list view title "Payslips Batches" → "Đợt trả lương" -->
     <record id="hr_payslip_run_list_title_vn" model="ir.ui.view">
         <field name="name">hr.payslip.run.list.title.vn</field>

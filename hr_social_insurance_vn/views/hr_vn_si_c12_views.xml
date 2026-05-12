@@ -20,6 +20,34 @@
         </field>
     </record>
 
+    <!-- Form View (#Fix Row167: explicit form so year field gets enable_formatting=False) -->
+    <record id="hr_vn_si_c12_lookup_view_form" model="ir.ui.view">
+        <field name="name">hr.vn.si.c12.lookup.form</field>
+        <field name="model">hr.vn.si.c12.lookup</field>
+        <field name="arch" type="xml">
+            <form string="Tra cứu C12">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="bhxh_number"/>
+                            <field name="month"/>
+                            <field name="year" options="{'enable_formatting': False}"/>
+                            <field name="bhxh_status"/>
+                        </group>
+                        <group>
+                            <field name="bhxh_amount"/>
+                            <field name="bhyt_amount"/>
+                            <field name="bhtn_amount"/>
+                            <field name="total_amount"/>
+                            <field name="import_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <!-- Search View -->
     <record id="hr_vn_si_c12_lookup_view_search" model="ir.ui.view">
         <field name="name">hr.vn.si.c12.lookup.search</field>
@@ -45,7 +73,7 @@
     <record id="hr_vn_si_c12_lookup_action" model="ir.actions.act_window">
         <field name="name">Tra cứu C12</field>
         <field name="res_model">hr.vn.si.c12.lookup</field>
-        <field name="view_mode">list</field>
+        <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="hr_vn_si_c12_lookup_view_search"/>
     </record>
 </odoo>

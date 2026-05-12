@@ -1,4 +1,4 @@
-from odoo import api, fields, models, Command
+from odoo import api, fields, models
 
 
 class HrAppraisal(models.Model):
@@ -59,19 +59,42 @@ class HrAppraisal(models.Model):
             else:
                 rec.rating = 'improve'
 
+    def _template_to_line_commands(self):
+        """Trả về list of (0, 0, vals) tuples cho mỗi criteria trong template.
+        Dùng (0, 0, vals) tuple syntax thay vì Command.create để tương thích
+        rộng nhất với cả onchange + write + create context."""
+        self.ensure_one()
+        commands = [(5, 0, 0)]  # clear all existing
+        if not self.sht_template_id:
+            return commands
+        for c in self.sht_template_id.criteria_ids:
+            commands.append((0, 0, {
+                'criteria_id': c.id,
+                'weight': c.weight,
+            }))
+        return commands
+
     @api.onchange('sht_template_id')
     def _onchange_template(self):
         """Auto-populate dòng đánh giá khi chọn mẫu (trong form, chưa lưu)."""
-        if self.sht_template_id:
-            self.line_ids = [
-                Command.clear(),
-                *[Command.create({
+        for rec in self:
+            rec.line_ids = rec._template_to_line_commands()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Khi tạo qua RPC với sht_template_id (không qua form, không có onchange),
+        auto-generate line_ids từ template."""
+        records = super().create(vals_list)
+        for rec in records:
+            if rec.sht_template_id and not rec.line_ids:
+                lines_vals = [{
+                    'appraisal_id': rec.id,
                     'criteria_id': c.id,
                     'weight': c.weight,
-                }) for c in self.sht_template_id.criteria_ids],
-            ]
-        else:
-            self.line_ids = [Command.clear()]
+                } for c in rec.sht_template_id.criteria_ids]
+                if lines_vals:
+                    self.env['sht.hr.appraisal.line'].create(lines_vals)
+        return records
 
     def action_apply_template(self):
         """Áp dụng lại mẫu trên bản ghi đã lưu (xoá lines cũ, tạo mới từ template)."""
