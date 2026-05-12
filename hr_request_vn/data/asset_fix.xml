@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- #Fix 500: web_gantt/__manifest__.py declares
+         ('before', 'web_enterprise/static/src/**/*.variables.scss', 'web_gantt/.../*.variables.dark.scss')
+         trong bundle web.dark_mode_variables. Khi web_enterprise CHƯA cài (Community theme
+         như udoo_om_ux exclude nó), target không tồn tại → Odoo raise:
+         "Unallowed to fetch files from addon web_enterprise. Addon web_enterprise is not installed"
+         dẫn đến lỗi 500 khi mở Planning Gantt (action 298 = Schedule by Resource).
+
+         Fix: dùng ir.asset directive='remove' để bỏ entry web_gantt dark variables
+         khỏi bundle, qua đó loại bỏ luôn position constraint. Mất styling dark mode
+         cho Gantt nhưng app chạy được. -->
+    <data noupdate="1">
+        <record id="fix_remove_web_gantt_dark_variables" model="ir.asset">
+            <field name="name">[FIX 500] Remove web_gantt dark variables (web_enterprise not installed)</field>
+            <field name="bundle">web.dark_mode_variables</field>
+            <field name="directive">remove</field>
+            <field name="path">web_gantt/static/src/**/*.variables.dark.scss</field>
+        </record>
+    </data>
+</odoo>
