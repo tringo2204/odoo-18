@@ -8,7 +8,7 @@
             <search string="Bảng định biên">
                 <field name="department_id"/>
                 <field name="job_id"/>
-                <field name="year" string="Năm" filter_domain="[('year', '=', self)]"/>
+                <field name="year" string="Năm" filter_domain="[('year', '=', self)]" options="{'enable_formatting': False}"/>
                 <separator/>
                 <filter string="Năm nay" name="current_year"
                         domain="[('year', '=', context_today().year)]"/>
@@ -136,7 +136,7 @@
             <pivot string="Bảng định biên" disable_linking="0">
                 <field name="department_id" type="row"/>
                 <field name="job_id" type="row"/>
-                <field name="year" type="col"/>
+                <field name="year" type="col" options="{'enable_formatting': False}"/>
                 <field name="month" type="col"/>
                 <field name="planned_count" type="measure" string="Định biên"/>
                 <field name="current_count" type="measure" string="Nhân sự hiện tại"/>
