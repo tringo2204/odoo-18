@@ -12,6 +12,7 @@
         'data/request_types.xml',
         'data/leave_types.xml',
         'data/asset_fix.xml',
+        'data/ir_config_parameter.xml',
         'wizard/hr_request_action_wizard_views.xml',
         'views/hr_request_views.xml',
         'views/hr_request_type_views.xml',

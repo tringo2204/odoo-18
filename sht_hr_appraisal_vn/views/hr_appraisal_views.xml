@@ -14,7 +14,8 @@
                 <!-- #203: add help text so users understand appraisal_cycle_id -->
                 <field name="appraisal_cycle_id"
                        help="Kỳ đánh giá xác định khoảng thời gian thực hiện đánh giá (ví dụ: Q1/2026, Giữa năm 2026)."/>
-                <field name="sht_template_id" string="Mẫu đánh giá VN"/>
+                <field name="sht_template_id" string="Mẫu đánh giá VN"
+                       domain="['|', ('department_id', '=', False), ('department_id', '=', department_id)]"/>
                 <button name="action_apply_template" string="Áp dụng mẫu"
                         type="object" class="btn-secondary"
                         invisible="not sht_template_id"/>

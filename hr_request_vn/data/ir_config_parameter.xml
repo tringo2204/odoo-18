@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- #Fix Row79: Default = không tính T7/CN vào số ngày nghỉ.
+         Admin có thể đổi qua Settings → Technical → Parameters → System Parameters. -->
+    <record id="param_leave_count_weekends" model="ir.config_parameter">
+        <field name="key">hr_request_vn.leave_count_weekends</field>
+        <field name="value">False</field>
+    </record>
+</odoo>

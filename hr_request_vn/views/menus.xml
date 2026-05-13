@@ -6,7 +6,7 @@
               sequence="15"/>
 
     <menuitem id="menu_hr_request_my"
-              name="Đơn từ"
+              name="Đơn từ của tôi"
               parent="menu_hr_request_root"
               action="hr_request_action_my"
               sequence="10"/>

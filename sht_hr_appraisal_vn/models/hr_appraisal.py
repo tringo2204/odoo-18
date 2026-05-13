@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class HrAppraisal(models.Model):
@@ -106,3 +107,18 @@ class HrAppraisal(models.Model):
                 'criteria_id': criteria.id,
                 'weight': criteria.weight,
             })
+
+    @api.constrains('sht_template_id', 'department_id')
+    def _check_template_department(self):
+        """#Fix Row241: Mẫu có department_id thì chỉ dùng được cho NV trong phòng ban đó."""
+        for rec in self:
+            tpl = rec.sht_template_id
+            if tpl and tpl.department_id and tpl.department_id != rec.department_id:
+                raise ValidationError(_(
+                    'Mẫu đánh giá "%s" chỉ áp dụng cho phòng ban %s, '
+                    'không thể dùng cho nhân viên thuộc phòng ban %s.'
+                ) % (
+                    tpl.name,
+                    tpl.department_id.name,
+                    rec.department_id.name or '(chưa có)',
+                ))
