@@ -234,10 +234,12 @@ class HrRequest(models.Model):
                 delta = rec.date_to - rec.date_from
                 rec.duration_hours = delta.total_seconds() / 3600.0
                 if rec.request_type_code == 'LEAVE':
-                    tz_name = rec.employee_id.tz or self.env.user.tz or 'UTC'
-                    local_tz = pytz.timezone(tz_name)
-                    d_from = rec.date_from.astimezone(local_tz).date()
-                    d_to = rec.date_to.astimezone(local_tz).date()
+                    # widget="date" lưu date_from = `YYYY-MM-DD 00:00 UTC` và
+                    # date_to = `YYYY-MM-DD 17:00 UTC` (end-of-day HCM tz).
+                    # Dùng .date() trực tiếp không tz conversion để tránh
+                    # date_to bị shift sang ngày kế khi astimezone(HCM).
+                    d_from = rec.date_from.date()
+                    d_to = rec.date_to.date()
                     if count_weekends:
                         rec.duration_days = max((d_to - d_from).days + 1, 1)
                     else:
