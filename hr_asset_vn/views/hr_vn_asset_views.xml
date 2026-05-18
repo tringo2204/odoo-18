@@ -11,6 +11,11 @@
                 <field name="category_id"/>
                 <field name="purchase_value"/>
                 <field name="residual_value"/>
+                <field name="depreciation_state" widget="badge"
+                       decoration-info="depreciation_state == 'pending'"
+                       decoration-warning="depreciation_state == 'in_progress'"
+                       decoration-success="depreciation_state == 'fully_depreciated'"
+                       decoration-muted="depreciation_state == 'not_applicable'"/>
                 <field name="current_employee_id"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'available'"
@@ -70,6 +75,11 @@
                             <field name="monthly_depreciation"/>
                             <field name="accumulated_depreciation"/>
                             <field name="residual_value"/>
+                            <field name="depreciation_state" widget="badge"
+                                   decoration-info="depreciation_state == 'pending'"
+                                   decoration-warning="depreciation_state == 'in_progress'"
+                                   decoration-success="depreciation_state == 'fully_depreciated'"
+                                   decoration-muted="depreciation_state == 'not_applicable'"/>
                         </group>
                     </group>
                     <group>
@@ -135,6 +145,9 @@
                 <filter string="Sẵn có" name="available" domain="[('state', '=', 'available')]"/>
                 <filter string="Đã cấp" name="allocated" domain="[('state', '=', 'allocated')]"/>
                 <filter string="Bảo trì" name="maintenance" domain="[('state', '=', 'maintenance')]"/>
+                <separator/>
+                <filter string="Đang khấu hao" name="dep_in_progress" domain="[('depreciation_state', '=', 'in_progress')]"/>
+                <filter string="Đã hết khấu hao" name="dep_done" domain="[('depreciation_state', '=', 'fully_depreciated')]"/>
                 <separator/>
                 <group expand="0" string="Nhóm theo">
                     <filter string="Danh mục" name="group_cat" context="{'group_by': 'category_id'}"/>

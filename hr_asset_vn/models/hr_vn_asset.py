@@ -31,6 +31,12 @@ class HrVnAsset(models.Model):
     residual_value = fields.Float(
         string='Giá trị còn lại', compute='_compute_depreciation', store=True,
     )
+    depreciation_state = fields.Selection([
+        ('not_applicable', 'Không khấu hao'),
+        ('pending', 'Chưa khấu hao'),
+        ('in_progress', 'Đang khấu hao'),
+        ('fully_depreciated', 'Đã hết khấu hao'),
+    ], string='Tình trạng khấu hao', compute='_compute_depreciation', store=True)
     state = fields.Selection([
         ('available', 'Sẵn có'),
         ('allocated', 'Đã cấp phát'),
@@ -77,6 +83,14 @@ class HrVnAsset(models.Model):
                 rec.monthly_depreciation = 0
                 rec.accumulated_depreciation = 0
                 rec.residual_value = rec.purchase_value or 0
+            if not rec.purchase_value or not rec.depreciation_years:
+                rec.depreciation_state = 'not_applicable'
+            elif rec.accumulated_depreciation <= 0:
+                rec.depreciation_state = 'pending'
+            elif rec.residual_value <= 0:
+                rec.depreciation_state = 'fully_depreciated'
+            else:
+                rec.depreciation_state = 'in_progress'
 
     @api.depends('allocation_ids')
     def _compute_allocation_count(self):
