@@ -4,12 +4,12 @@ from odoo import fields, models
 
 class ShtHrRdType(models.Model):
     _name = 'sht.hr.rd.type'
-    _description = 'Reward & Discipline Type'
+    _description = 'Loại Quyết định Khen thưởng/Kỷ luật'
 
     name = fields.Char(required=True)
     code = fields.Char()
     category = fields.Selection(
-        [('reward', 'Reward'), ('discipline', 'Discipline')],
+        [('reward', 'Khen thưởng'), ('discipline', 'Kỷ luật')],
         required=True,
     )
     description = fields.Text()

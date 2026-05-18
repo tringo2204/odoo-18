@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'SHT HR Reward & Discipline',
+    'name': 'SHT HR Quyết định (Khen thưởng & Kỷ luật)',
     'version': '18.0.1.0.0',
     'category': 'Human Resources',
-    'summary': 'Employee Reward and Discipline Management',
-    'description': 'Manage employee rewards (khen thưởng) and disciplinary actions (kỷ luật) with decision tracking.',
+    'summary': 'Quản lý Quyết định Khen thưởng & Kỷ luật',
+    'description': 'Quản lý quyết định khen thưởng và kỷ luật nhân viên.',
     'author': 'SHT',
     'depends': ['hr'],
     'data': [
