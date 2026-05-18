@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="seq_sht_hr_rd" model="ir.sequence">
-            <field name="name">Reward &amp; Discipline</field>
+            <field name="name">Quyết định Khen thưởng/Kỷ luật</field>
             <field name="code">sht.hr.rd</field>
             <field name="prefix">RD</field>
             <field name="padding">4</field>

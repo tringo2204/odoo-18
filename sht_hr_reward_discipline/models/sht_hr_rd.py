@@ -4,7 +4,7 @@ from odoo import api, fields, models
 
 class ShtHrRd(models.Model):
     _name = 'sht.hr.rd'
-    _description = 'Reward & Discipline Record'
+    _description = 'Quyết định Khen thưởng/Kỷ luật'
     _order = 'date desc, id desc'
     _inherit = ['mail.thread']
 
@@ -44,9 +44,9 @@ class ShtHrRd(models.Model):
             self.category = self.rd_type_id.category
 
     date = fields.Date(required=True, default=fields.Date.today, tracking=True)
-    decision_number = fields.Char(string='Decision No.')
-    decision_date = fields.Date(string='Decision Date')
-    amount = fields.Float(string='Amount (VND)')
+    decision_number = fields.Char(string='Số quyết định')
+    decision_date = fields.Date(string='Ngày quyết định')
+    amount = fields.Float(string='Giá trị (VND)')
     reason = fields.Text(required=True)
     description = fields.Html()
     state = fields.Selection(
