@@ -300,14 +300,13 @@ class HrPayslip(models.Model):
             return self._night_overlap_hours(co - timedelta(hours=ot), co)
 
         start_bounds = self._vn_day_schedule_bounds(calendar, ci.date())
-        if ci.date() != co.date():
-            # Cross-midnight shift: use the check-in day's schedule for both
-            # bounds. Fetching end_bounds from co.date() (the next day) puts
-            # sched_end far in the future, collapsing suffix to 0 and leaving
-            # the OT night hours wrongly inside the night premium (double pay).
-            end_bounds = start_bounds
-        else:
-            end_bounds = self._vn_day_schedule_bounds(calendar, co.date())
+        # Use co.date()'s own schedule when it has one (genuinely-scheduled
+        # cross-midnight shifts, e.g. a night shift Mon 22:00–Tue 06:00), and
+        # only fall back to the check-in day's schedule when co.date() has no
+        # scheduled line (pure OT day like Sunday). Fetching end_bounds from a
+        # day with no schedule would otherwise leave sched_end unset and the OT
+        # night hours wrongly inside the night premium (double pay).
+        end_bounds = self._vn_day_schedule_bounds(calendar, co.date()) or start_bounds
         if not start_bounds and not end_bounds:
             return self._night_overlap_hours(ci, co)
 
