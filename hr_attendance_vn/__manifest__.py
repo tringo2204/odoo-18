@@ -7,6 +7,7 @@
     'depends': ['hr_attendance', 'hr_payroll'],
     'data': [
         'security/ir.model.access.csv',
+        'data/work_entry_types.xml',
         'views/hr_attendance_vn_views.xml',
     ],
     'installable': True,

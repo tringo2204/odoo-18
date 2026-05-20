@@ -16,6 +16,12 @@
         <field name="country_id" ref="base.vn"/>
     </record>
 
+    <!-- Salary rule category for OT pay (#253) -->
+    <record id="vn_cat_ot" model="hr.salary.rule.category">
+        <field name="name">Tăng ca (OT)</field>
+        <field name="code">VN_OT</field>
+    </record>
+
     <!-- ============================================================ -->
     <!-- SALARY RULES (all configurable via hr.rule.parameter)        -->
     <!-- ============================================================ -->
@@ -97,6 +103,118 @@ result = payslip.paid_amount
         <field name="appears_on_payslip">True</field>
     </record>
 
+    <!-- ============================================================ -->
+    <!-- 5c. TĂNG CA (OT) — #253                                      -->
+    <!-- Giờ OT phân loại theo work entry type (hr_attendance_vn),     -->
+    <!-- tiền = giờ × lương giờ × tỷ lệ %. Thuộc nhóm CÓ tính thuế     -->
+    <!-- TNCN (gộp vào GROSS) nhưng KHÔNG tính BHXH (BHXH dựa trên      -->
+    <!-- insurance_salary nên OT tự động bị loại).                     -->
+    <!-- ============================================================ -->
+    <record id="vn_rule_ot_weekday" model="hr.salary.rule">
+        <field name="name">Tăng ca ngày thường (150%)</field>
+        <field name="code">OT_WEEKDAY</field>
+        <field name="sequence">60</field>
+        <field name="category_id" ref="vn_cat_ot"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+wd = worked_days.dict.get('OT_WEEKDAY')
+result = bool(wd and wd.number_of_hours > 0)
+        </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+wd = worked_days.dict.get('OT_WEEKDAY')
+hours = wd.number_of_hours if wd else 0.0
+rate = payslip._rule_parameter('vn_ot_rate_weekday')
+result = round(hours * payslip._vn_ot_hourly_rate() * rate / 100.0)
+        </field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
+    <record id="vn_rule_ot_weekend" model="hr.salary.rule">
+        <field name="name">Tăng ca cuối tuần/CN (200%)</field>
+        <field name="code">OT_WEEKEND</field>
+        <field name="sequence">61</field>
+        <field name="category_id" ref="vn_cat_ot"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+wd = worked_days.dict.get('OT_WEEKEND')
+result = bool(wd and wd.number_of_hours > 0)
+        </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+wd = worked_days.dict.get('OT_WEEKEND')
+hours = wd.number_of_hours if wd else 0.0
+rate = payslip._rule_parameter('vn_ot_rate_weekend')
+result = round(hours * payslip._vn_ot_hourly_rate() * rate / 100.0)
+        </field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
+    <record id="vn_rule_ot_holiday" model="hr.salary.rule">
+        <field name="name">Tăng ca ngày lễ (300%)</field>
+        <field name="code">OT_HOLIDAY</field>
+        <field name="sequence">62</field>
+        <field name="category_id" ref="vn_cat_ot"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+wd = worked_days.dict.get('OT_HOLIDAY')
+result = bool(wd and wd.number_of_hours > 0)
+        </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+wd = worked_days.dict.get('OT_HOLIDAY')
+hours = wd.number_of_hours if wd else 0.0
+rate = payslip._rule_parameter('vn_ot_rate_holiday')
+result = round(hours * payslip._vn_ot_hourly_rate() * rate / 100.0)
+        </field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
+    <record id="vn_rule_ot_night_weekend" model="hr.salary.rule">
+        <field name="name">Tăng ca đêm CN/cuối tuần (270%)</field>
+        <field name="code">OT_NIGHT_WEEKEND</field>
+        <field name="sequence">63</field>
+        <field name="category_id" ref="vn_cat_ot"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+wd = worked_days.dict.get('OT_NIGHT_WEEKEND')
+result = bool(wd and wd.number_of_hours > 0)
+        </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+wd = worked_days.dict.get('OT_NIGHT_WEEKEND')
+hours = wd.number_of_hours if wd else 0.0
+rate = payslip._rule_parameter('vn_ot_rate_night_weekend')
+result = round(hours * payslip._vn_ot_hourly_rate() * rate / 100.0)
+        </field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
+    <record id="vn_rule_ot_night_holiday" model="hr.salary.rule">
+        <field name="name">Tăng ca đêm ngày lễ/tết (390%)</field>
+        <field name="code">OT_NIGHT_HOLIDAY</field>
+        <field name="sequence">64</field>
+        <field name="category_id" ref="vn_cat_ot"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+wd = worked_days.dict.get('OT_NIGHT_HOLIDAY')
+result = bool(wd and wd.number_of_hours > 0)
+        </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+wd = worked_days.dict.get('OT_NIGHT_HOLIDAY')
+hours = wd.number_of_hours if wd else 0.0
+rate = payslip._rule_parameter('vn_ot_rate_night_holiday')
+result = round(hours * payslip._vn_ot_hourly_rate() * rate / 100.0)
+        </field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
     <!-- 6. GROSS -->
     <record id="vn_rule_gross" model="hr.salary.rule">
         <field name="name">GROSS (Tổng thu nhập)</field>
@@ -107,7 +225,7 @@ result = payslip.paid_amount
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = categories['BASIC'] + categories['ALW']
+result = categories['BASIC'] + categories['ALW'] + categories['VN_OT']
         </field>
     </record>
 
