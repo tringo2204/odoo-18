@@ -25,6 +25,26 @@ class HrPayslip(models.Model):
         self._inject_rd_inputs()
         return super().compute_sheet()
 
+    def _vn_ot_hourly_rate(self):
+        """Lương giờ dùng làm gốc tính tiền tăng ca OT (#253).
+
+        lương_giờ = (wage + phụ cấp tính BHXH) / (26 × 8)
+
+        "Phụ cấp tính BHXH" được lấy là tổng phụ cấp chịu thuế (chức vụ,
+        trách nhiệm, thâm niên, khác chịu thuế) — đã gộp sẵn trong
+        contract.total_taxable_allowance. Số giờ chuẩn/tháng (26×8 = 208)
+        có thể cấu hình qua rule parameter ``vn_ot_standard_monthly_hours``.
+        """
+        self.ensure_one()
+        contract = self.contract_id
+        if not contract:
+            return 0.0
+        monthly_base = (contract.wage or 0.0) + (contract.total_taxable_allowance or 0.0)
+        std_hours = self._rule_parameter('vn_ot_standard_monthly_hours') or (26 * 8)
+        if not std_hours:
+            return 0.0
+        return monthly_base / std_hours
+
     def _inject_rd_inputs(self):
         """Create hr.payslip.input records for each confirmed sht.hr.rd in the period."""
         RewardType = self.env['hr.payslip.input.type'].sudo()

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ============================================================ -->
+    <!-- #253 — Loại công tăng ca (OT) theo từng loại                 -->
+    <!-- Salary rules trong hr_payroll_vietnam đọc theo code dưới đây -->
+    <!-- ============================================================ -->
+    <record id="work_entry_type_ot_weekday" model="hr.work.entry.type">
+        <field name="name">Tăng ca ngày thường</field>
+        <field name="code">OT_WEEKDAY</field>
+        <field name="color">4</field>
+        <field name="is_leave">False</field>
+    </record>
+
+    <record id="work_entry_type_ot_weekend" model="hr.work.entry.type">
+        <field name="name">Tăng ca cuối tuần</field>
+        <field name="code">OT_WEEKEND</field>
+        <field name="color">4</field>
+        <field name="is_leave">False</field>
+    </record>
+
+    <record id="work_entry_type_ot_holiday" model="hr.work.entry.type">
+        <field name="name">Tăng ca ngày lễ</field>
+        <field name="code">OT_HOLIDAY</field>
+        <field name="color">4</field>
+        <field name="is_leave">False</field>
+    </record>
+
+    <record id="work_entry_type_ot_night_weekend" model="hr.work.entry.type">
+        <field name="name">Tăng ca đêm cuối tuần</field>
+        <field name="code">OT_NIGHT_WEEKEND</field>
+        <field name="color">4</field>
+        <field name="is_leave">False</field>
+    </record>
+
+    <record id="work_entry_type_ot_night_holiday" model="hr.work.entry.type">
+        <field name="name">Tăng ca đêm ngày lễ/tết</field>
+        <field name="code">OT_NIGHT_HOLIDAY</field>
+        <field name="color">4</field>
+        <field name="is_leave">False</field>
+    </record>
+
+</odoo>

@@ -160,4 +160,77 @@
         <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
     </record>
 
+    <!-- ============================================================ -->
+    <!-- Tăng ca OT — tỷ lệ % và số giờ chuẩn/tháng (#253)            -->
+    <!-- ============================================================ -->
+    <record id="vn_param_ot_standard_monthly_hours" model="hr.rule.parameter">
+        <field name="name">VN: Số giờ chuẩn/tháng (gốc tính lương giờ OT)</field>
+        <field name="code">vn_ot_standard_monthly_hours</field>
+        <field name="country_id" ref="base.vn"/>
+        <field name="description"><![CDATA[
+            <p>Mẫu số quy đổi lương tháng → lương giờ cho tính tăng ca.</p>
+            <p>Mặc định 26 ngày × 8 giờ = 208 giờ/tháng.</p>
+        ]]></field>
+    </record>
+    <record id="vn_param_ot_standard_monthly_hours_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">208</field>
+        <field name="rule_parameter_id" ref="vn_param_ot_standard_monthly_hours"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_ot_rate_weekday" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ OT ngày thường (%)</field>
+        <field name="code">vn_ot_rate_weekday</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_ot_rate_weekday_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">150</field>
+        <field name="rule_parameter_id" ref="vn_param_ot_rate_weekday"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_ot_rate_weekend" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ OT cuối tuần/CN (%)</field>
+        <field name="code">vn_ot_rate_weekend</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_ot_rate_weekend_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">200</field>
+        <field name="rule_parameter_id" ref="vn_param_ot_rate_weekend"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_ot_rate_holiday" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ OT ngày lễ (%)</field>
+        <field name="code">vn_ot_rate_holiday</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_ot_rate_holiday_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">300</field>
+        <field name="rule_parameter_id" ref="vn_param_ot_rate_holiday"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_ot_rate_night_weekend" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ OT đêm CN/cuối tuần (%)</field>
+        <field name="code">vn_ot_rate_night_weekend</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_ot_rate_night_weekend_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">270</field>
+        <field name="rule_parameter_id" ref="vn_param_ot_rate_night_weekend"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
+    <record id="vn_param_ot_rate_night_holiday" model="hr.rule.parameter">
+        <field name="name">VN: Tỷ lệ OT đêm ngày lễ/tết (%)</field>
+        <field name="code">vn_ot_rate_night_holiday</field>
+        <field name="country_id" ref="base.vn"/>
+    </record>
+    <record id="vn_param_ot_rate_night_holiday_2024" model="hr.rule.parameter.value">
+        <field name="parameter_value">390</field>
+        <field name="rule_parameter_id" ref="vn_param_ot_rate_night_holiday"/>
+        <field name="date_from" eval="datetime(2024, 1, 1).date()"/>
+    </record>
+
 </odoo>
