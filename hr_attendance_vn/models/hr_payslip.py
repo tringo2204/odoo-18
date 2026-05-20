@@ -290,25 +290,58 @@ class HrPayslip(models.Model):
         night premium is removed from the correct end(s) of the shift instead of
         blindly from the tail.
 
+        For attendance that crosses midnight (``ci.date() != co.date()``) the
+        shift spans two days, each with its own schedule. A single
+        ``[sched_start, sched_end]`` span built from two different days' bounds
+        is wrong — for a day-shift worker (Mon08-17) doing OT Mon20:00→Tue02:00
+        it yields ``sched_start=Mon08, sched_end=Tue17``, enclosing the whole
+        attendance so no OT-night is found and the night premium double-pays.
+        Instead we split at midnight and compute each day-segment's OT-night
+        independently against that day's own schedule bounds.
+
         Fallbacks:
           - no usable calendar (or a two-week calendar we don't unpack): keep
             the legacy tail clamp ``[co - ot, co]``;
-          - calendar with no scheduled line on the relevant day(s): the whole
-            shift is OT, so every night hour is OT night.
+          - calendar with no scheduled line on a relevant day: that day's
+            segment is entirely OT, so every night hour in it is OT night.
         """
         if not calendar or calendar.two_weeks_calendar:
             return self._night_overlap_hours(co - timedelta(hours=ot), co)
 
-        start_bounds = self._vn_day_schedule_bounds(calendar, ci.date())
-        end_bounds = self._vn_day_schedule_bounds(calendar, co.date())
-        if not start_bounds and not end_bounds:
-            return self._night_overlap_hours(ci, co)
+        if ci.date() == co.date():
+            # Same-day: single-span logic against the day's own schedule.
+            bounds = self._vn_day_schedule_bounds(calendar, ci.date())
+            if not bounds:
+                return self._night_overlap_hours(ci, co)
+            sched_start, sched_end = bounds
+            prefix = self._night_overlap_hours(ci, min(co, sched_start))
+            suffix = self._night_overlap_hours(max(ci, sched_end), co)
+            # Clamp to the actual OT so schedule-geometry divergence from
+            # overtime_hours can never over-subtract from the night premium.
+            return min(prefix + suffix, ot)
 
-        sched_start = (start_bounds or end_bounds)[0]
-        sched_end = (end_bounds or start_bounds)[1]
-        prefix = self._night_overlap_hours(ci, min(co, sched_start))
-        suffix = self._night_overlap_hours(max(ci, sched_end), co)
-        return prefix + suffix
+        # Cross-midnight: split at midnight, compute each day independently.
+        midnight = datetime.combine(co.date(), time.min)
+
+        # Check-in day segment [ci, midnight)
+        ci_bounds = self._vn_day_schedule_bounds(calendar, ci.date())
+        if ci_bounds:
+            cs, ce = ci_bounds
+            ci_ot = (self._night_overlap_hours(ci, min(midnight, cs)) +
+                     self._night_overlap_hours(max(ci, ce), midnight))
+        else:
+            ci_ot = self._night_overlap_hours(ci, midnight)
+
+        # Check-out day segment [midnight, co]
+        co_bounds = self._vn_day_schedule_bounds(calendar, co.date())
+        if co_bounds:
+            cs, ce = co_bounds
+            co_ot = (self._night_overlap_hours(midnight, min(co, cs)) +
+                     self._night_overlap_hours(max(midnight, ce), co))
+        else:
+            co_ot = self._night_overlap_hours(midnight, co)
+
+        return min(ci_ot + co_ot, ot)
 
     @staticmethod
     def _vn_day_schedule_bounds(calendar, day):
