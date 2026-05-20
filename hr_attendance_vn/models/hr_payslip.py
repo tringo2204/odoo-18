@@ -103,23 +103,24 @@ class HrPayslip(models.Model):
 
         Drives the NIGHT_SHIFT allowance rule. OT hours are excluded here so the
         night premium does not stack on top of the OT_NIGHT_* rules.
+
+        ``number_of_days`` / ``number_of_hours`` are intentionally 0: these
+        regular night hours are already part of the base (WORK100) worked-day
+        line, so counting them here too would double them in the payslip's
+        worked-time totals. This line only surfaces the night-shift entry; the
+        30% premium is computed by the NIGHT_SHIFT salary rule, which reads the
+        hours independently via ``_compute_night_shift_hours()``.
         """
         self.ensure_one()
         hours = self._compute_night_shift_hours()
         if hours <= 0:
             return None
         we_type = self._vn_ot_work_entry_type('NIGHT_SHIFT', 'Giờ làm ca đêm (22:00–06:00)')
-        contract = self.contract_id
-        hours_per_day = (
-            contract.resource_calendar_id.hours_per_day
-            if contract and contract.resource_calendar_id
-            else 8.0
-        ) or 8.0
         return ('NIGHT_SHIFT', {
             'sequence': 110,
             'work_entry_type_id': we_type.id,
-            'number_of_days': round(hours / hours_per_day, 4),
-            'number_of_hours': round(hours, 4),
+            'number_of_days': 0.0,
+            'number_of_hours': 0.0,
         })
 
     def _vn_ot_worked_day_vals(self):
@@ -225,10 +226,16 @@ class HrPayslip(models.Model):
         """Sum regular (non-OT) hours worked inside the night window 22:00–06:00.
 
         For each attendance we take the night-window overlap of the whole shift,
-        then subtract the night-window overlap of its OT tail (the last
-        ``overtime_hours`` of the shift). What remains is the regular night
-        work that earns the night-shift allowance — OT night hours are paid via
-        the dedicated OT_NIGHT_* rules and are deliberately not double-counted.
+        then subtract the night-window overlap of its OT portion. What remains is
+        the regular night work that earns the night-shift allowance — OT night
+        hours are paid via the dedicated OT_NIGHT_* rules and are deliberately
+        not double-counted.
+
+        OT is located from the employee's resource calendar rather than assumed
+        to be the shift tail: hours before the scheduled start (early check-in)
+        and after the scheduled end (late check-out) are both treated as OT. The
+        old tail-only assumption wrongly stripped legitimate night premium for
+        early check-in OT (e.g. arriving 04:00 for an 06:00 day shift).
         """
         self.ensure_one()
         if not (self.employee_id and self.date_from and self.date_to):
@@ -257,6 +264,11 @@ class HrPayslip(models.Model):
             return 0.0
         attendances.flush_recordset(['overtime_hours'])
 
+        calendar = (
+            (self.contract_id.resource_calendar_id if self.contract_id else False)
+            or self.employee_id.resource_calendar_id
+        )
+
         total = 0.0
         for att in attendances:
             ci = pytz.utc.localize(att.check_in).astimezone(local_tz).replace(tzinfo=None)
@@ -264,9 +276,58 @@ class HrPayslip(models.Model):
             night = self._night_overlap_hours(ci, co)
             ot = att.overtime_hours or 0.0
             if ot > 0:
-                night -= self._night_overlap_hours(co - timedelta(hours=ot), co)
+                night -= self._vn_ot_night_overlap(calendar, ci, co, ot)
             total += max(night, 0.0)
         return total
+
+    def _vn_ot_night_overlap(self, calendar, ci, co, ot):
+        """Night-window hours that fall inside the OT (out-of-schedule) portion
+        of the attendance ``[ci, co]`` (naive local datetimes).
+
+        OT is located from the resource calendar: the part of the shift before
+        the scheduled start (prefix / early check-in) and after the scheduled
+        end (suffix / late check-out). Their night overlaps are summed so the
+        night premium is removed from the correct end(s) of the shift instead of
+        blindly from the tail.
+
+        Fallbacks:
+          - no usable calendar (or a two-week calendar we don't unpack): keep
+            the legacy tail clamp ``[co - ot, co]``;
+          - calendar with no scheduled line on the relevant day(s): the whole
+            shift is OT, so every night hour is OT night.
+        """
+        if not calendar or calendar.two_weeks_calendar:
+            return self._night_overlap_hours(co - timedelta(hours=ot), co)
+
+        start_bounds = self._vn_day_schedule_bounds(calendar, ci.date())
+        end_bounds = self._vn_day_schedule_bounds(calendar, co.date())
+        if not start_bounds and not end_bounds:
+            return self._night_overlap_hours(ci, co)
+
+        sched_start = (start_bounds or end_bounds)[0]
+        sched_end = (end_bounds or start_bounds)[1]
+        prefix = self._night_overlap_hours(ci, min(co, sched_start))
+        suffix = self._night_overlap_hours(max(ci, sched_end), co)
+        return prefix + suffix
+
+    @staticmethod
+    def _vn_day_schedule_bounds(calendar, day):
+        """First scheduled start / last scheduled end (naive local datetimes)
+        for ``day`` on ``calendar``, or None when the day has no scheduled work.
+
+        Odoo's ``dayofweek`` ('0'=Monday) matches ``date.weekday()``.
+        """
+        dow = str(day.weekday())
+        lines = calendar.attendance_ids.filtered(
+            lambda a: a.dayofweek == dow and not a.display_type
+        )
+        if not lines:
+            return None
+        base = datetime.combine(day, time.min)
+        return (
+            base + timedelta(hours=min(lines.mapped('hour_from'))),
+            base + timedelta(hours=max(lines.mapped('hour_to'))),
+        )
 
     @staticmethod
     def _night_overlap_hours(start, end):
