@@ -57,7 +57,7 @@ class HrPayslip(models.Model):
             existing = set(slip.worked_days_line_ids.mapped('work_entry_type_id.code'))
             cmds = [
                 (0, 0, vals)
-                for code, vals in slip._vn_ot_worked_day_vals()
+                for code, vals in slip._vn_extra_worked_day_vals()
                 if code not in existing
             ]
             if cmds:
@@ -74,7 +74,7 @@ class HrPayslip(models.Model):
             return res
 
         existing = {l.get('work_entry_type_id') for l in res}
-        for code, vals in self._vn_ot_worked_day_vals():
+        for code, vals in self._vn_extra_worked_day_vals():
             if vals['work_entry_type_id'] in existing:
                 continue
             res.append(vals)
@@ -83,6 +83,44 @@ class HrPayslip(models.Model):
     # ──────────────────────────────────────────────────────────────────
     # OT helpers
     # ──────────────────────────────────────────────────────────────────
+
+    def _vn_extra_worked_day_vals(self):
+        """All VN-specific extra worked-day lines: OT buckets (#253) + night shift.
+
+        Returns [(code, worked_day_line_vals), ...]. The night-shift line
+        (regular night hours, code NIGHT_SHIFT) drives the night allowance
+        salary rule in hr_payroll_vietnam.
+        """
+        self.ensure_one()
+        vals = list(self._vn_ot_worked_day_vals())
+        night = self._vn_night_shift_worked_day_val()
+        if night:
+            vals.append(night)
+        return vals
+
+    def _vn_night_shift_worked_day_val(self):
+        """Worked-day line for regular (non-OT) hours worked in 22:00–06:00.
+
+        Drives the NIGHT_SHIFT allowance rule. OT hours are excluded here so the
+        night premium does not stack on top of the OT_NIGHT_* rules.
+        """
+        self.ensure_one()
+        hours = self._compute_night_shift_hours()
+        if hours <= 0:
+            return None
+        we_type = self._vn_ot_work_entry_type('NIGHT_SHIFT', 'Giờ làm ca đêm (22:00–06:00)')
+        contract = self.contract_id
+        hours_per_day = (
+            contract.resource_calendar_id.hours_per_day
+            if contract and contract.resource_calendar_id
+            else 8.0
+        ) or 8.0
+        return ('NIGHT_SHIFT', {
+            'sequence': 110,
+            'work_entry_type_id': we_type.id,
+            'number_of_days': round(hours / hours_per_day, 4),
+            'number_of_hours': round(hours, 4),
+        })
 
     def _vn_ot_worked_day_vals(self):
         """Return [(code, worked_day_line_vals), ...] for each non-zero OT bucket."""
@@ -182,6 +220,72 @@ class HrPayslip(models.Model):
             buckets[key] += ot
 
         return buckets
+
+    def _compute_night_shift_hours(self):
+        """Sum regular (non-OT) hours worked inside the night window 22:00–06:00.
+
+        For each attendance we take the night-window overlap of the whole shift,
+        then subtract the night-window overlap of its OT tail (the last
+        ``overtime_hours`` of the shift). What remains is the regular night
+        work that earns the night-shift allowance — OT night hours are paid via
+        the dedicated OT_NIGHT_* rules and are deliberately not double-counted.
+        """
+        self.ensure_one()
+        if not (self.employee_id and self.date_from and self.date_to):
+            return 0.0
+
+        tz_name = (
+            (self.contract_id.resource_calendar_id.tz if self.contract_id else None)
+            or self.employee_id.resource_calendar_id.tz
+            or self.env.user.tz
+            or 'UTC'
+        )
+        local_tz = pytz.timezone(tz_name)
+
+        dt_from = datetime.combine(self.date_from, time.min)
+        dt_to = datetime.combine(self.date_to, time.max.replace(microsecond=0))
+        dt_from_utc = local_tz.localize(dt_from).astimezone(pytz.utc).replace(tzinfo=None)
+        dt_to_utc = local_tz.localize(dt_to).astimezone(pytz.utc).replace(tzinfo=None)
+
+        attendances = self.env['hr.attendance'].search([
+            ('employee_id', '=', self.employee_id.id),
+            ('check_in', '>=', dt_from_utc),
+            ('check_in', '<=', dt_to_utc),
+            ('check_out', '!=', False),
+        ])
+        if not attendances:
+            return 0.0
+        attendances.flush_recordset(['overtime_hours'])
+
+        total = 0.0
+        for att in attendances:
+            ci = pytz.utc.localize(att.check_in).astimezone(local_tz).replace(tzinfo=None)
+            co = pytz.utc.localize(att.check_out).astimezone(local_tz).replace(tzinfo=None)
+            night = self._night_overlap_hours(ci, co)
+            ot = att.overtime_hours or 0.0
+            if ot > 0:
+                night -= self._night_overlap_hours(co - timedelta(hours=ot), co)
+            total += max(night, 0.0)
+        return total
+
+    @staticmethod
+    def _night_overlap_hours(start, end):
+        """Hours of the [start, end] interval (naive local datetimes) that fall
+        within the nightly window 22:00 → 06:00."""
+        if end <= start:
+            return 0.0
+        total = 0.0
+        day = start.date() - timedelta(days=1)
+        last = end.date()
+        while day <= last:
+            win_start = datetime.combine(day, time(_NIGHT_START, 0))
+            win_end = datetime.combine(day + timedelta(days=1), time(_NIGHT_END, 0))
+            lo = max(start, win_start)
+            hi = min(end, win_end)
+            if hi > lo:
+                total += (hi - lo).total_seconds() / 3600.0
+            day += timedelta(days=1)
+        return total
 
     def _vn_public_holiday_dates(self):
         """Return a set of date() that fall on a VN public holiday in the period.
