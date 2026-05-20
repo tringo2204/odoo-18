@@ -215,6 +215,37 @@ result = round(hours * payslip._vn_ot_hourly_rate() * rate / 100.0)
         <field name="appears_on_payslip">True</field>
     </record>
 
+    <!-- ============================================================ -->
+    <!-- 5d. PHỤ CẤP CA ĐÊM — phụ trội 30% cho giờ làm ban đêm        -->
+    <!-- (22:00–06:00). Tính độc lập với OT: giờ NIGHT_SHIFT là phần   -->
+    <!-- giờ đêm KHÔNG phải tăng ca (OT đêm trả qua OT_NIGHT_*).       -->
+    <!-- Tiền = giờ đêm × lương giờ × tỷ lệ (contract.ot_rate_night_extra,-->
+    <!-- mặc định 30%). Thuộc nhóm phụ cấp chịu thuế (gộp GROSS, có     -->
+    <!-- thuế TNCN) nhưng KHÔNG tính BHXH (BHXH dựa trên insurance_salary).-->
+    <!-- ============================================================ -->
+    <record id="vn_rule_night_shift" model="hr.salary.rule">
+        <field name="name">Phụ cấp ca đêm (30%)</field>
+        <field name="code">NIGHT_SHIFT</field>
+        <field name="sequence">65</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="struct_id" ref="structure_vn_payroll"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">
+# Night hours come from the payslip helper (hr_attendance_vn), not the
+# NIGHT_SHIFT worked-day line: that line carries 0 hours to avoid
+# double-counting against WORK100. Guard the call so payroll still works when
+# hr_attendance_vn is not installed (soft dependency, as before).
+result = hasattr(payslip, '_compute_night_shift_hours') and payslip._compute_night_shift_hours() > 0
+        </field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+hours = payslip._compute_night_shift_hours() if hasattr(payslip, '_compute_night_shift_hours') else 0.0
+rate = contract.ot_rate_night_extra or 0.0
+result = round(hours * payslip._vn_ot_hourly_rate() * rate / 100.0)
+        </field>
+        <field name="appears_on_payslip">True</field>
+    </record>
+
     <!-- 6. GROSS -->
     <record id="vn_rule_gross" model="hr.salary.rule">
         <field name="name">GROSS (Tổng thu nhập)</field>
