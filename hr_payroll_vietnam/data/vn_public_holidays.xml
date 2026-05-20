@@ -105,4 +105,63 @@
         <field name="time_type">leave</field>
     </record>
 
+    <!-- ============================================================ -->
+    <!-- NGHỈ LỄ VIỆT NAM 2026                                       -->
+    <!-- ============================================================ -->
+
+    <record id="holiday_2026_tet_duong" model="resource.calendar.leaves">
+        <field name="name">Tết Dương lịch 2026</field>
+        <field name="date_from">2026-01-01 00:00:00</field>
+        <field name="date_to">2026-01-01 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2026_tet_nguyen_dan" model="resource.calendar.leaves">
+        <field name="name">Tết Nguyên đán 2026</field>
+        <field name="date_from">2026-01-26 00:00:00</field>
+        <field name="date_to">2026-02-01 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2026_hung_vuong" model="resource.calendar.leaves">
+        <field name="name">Giỗ Tổ Hùng Vương 2026</field>
+        <field name="date_from">2026-04-16 00:00:00</field>
+        <field name="date_to">2026-04-16 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2026_30_4" model="resource.calendar.leaves">
+        <field name="name">Ngày Giải phóng miền Nam 2026</field>
+        <field name="date_from">2026-04-30 00:00:00</field>
+        <field name="date_to">2026-04-30 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2026_1_5" model="resource.calendar.leaves">
+        <field name="name">Ngày Quốc tế Lao động 2026</field>
+        <field name="date_from">2026-05-01 00:00:00</field>
+        <field name="date_to">2026-05-01 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <record id="holiday_2026_quoc_khanh" model="resource.calendar.leaves">
+        <field name="name">Quốc khánh 2026</field>
+        <field name="date_from">2026-09-02 00:00:00</field>
+        <field name="date_to">2026-09-03 23:59:59</field>
+        <field name="resource_id" eval="False"/>
+        <field name="time_type">leave</field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ⚠️ NHẮC NHỞ: Cập nhật danh sách ngày lễ HÀNG NĂM.           -->
+    <!-- Ngày Tết Âm lịch & Giỗ Tổ Hùng Vương thay đổi theo lịch âm; -->
+    <!-- thêm block năm mới trước khi sang năm để OT ngày lễ tính    -->
+    <!-- đúng rate. Tham chiếu lịch nghỉ lễ chính thức của Nhà nước. -->
+    <!-- ============================================================ -->
+
 </odoo>
