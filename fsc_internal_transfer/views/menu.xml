@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_transfer_discrepancy"
+              name="Transfer Discrepancies"
+              parent="fsc_warehouse_pda.menu_fsc_warehouse"
+              action="fsc_transfer_discrepancy_action"
+              sequence="20"/>
+
+</odoo>

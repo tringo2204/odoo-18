@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_production_view_form_kitchen" model="ir.ui.view">
+        <field name="name">mrp.production.form.kitchen</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="FSC Kitchen" name="fsc_kitchen"
+                      invisible="not fsc_is_cooking">
+                    <group>
+                        <field name="fsc_is_cooking" invisible="1"/>
+                        <field name="fsc_cooking_batch_id" readonly="1"/>
+                    </group>
+                    <field name="fsc_cooking_batch_ids" readonly="1">
+                        <list decoration-warning="shortage_flag==True"
+                              decoration-muted="state in ('done','cancel')">
+                            <field name="name"/>
+                            <field name="cooking_date"/>
+                            <field name="kitchen_location_id"/>
+                            <field name="expected_meal_qty"/>
+                            <field name="actual_meal_qty"/>
+                            <field name="meal_yield_pct"/>
+                            <field name="shortage_flag"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

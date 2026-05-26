@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_make_buy_decision"
+              name="Make-vs-Buy Decisions"
+              parent="fsc_demand_consolidation.menu_fsc_operations"
+              action="fsc_make_buy_decision_action"
+              sequence="20"/>
+
+</odoo>

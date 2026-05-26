@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_bom_view_form_fsc" model="ir.ui.view">
+        <field name="name">mrp.bom.form.fsc</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="FSC" name="fsc_bom">
+                    <group>
+                        <group string="Yield">
+                            <field name="fsc_expected_yield"/>
+                            <field name="fsc_expected_loss"/>
+                        </group>
+                        <group string="Processing">
+                            <field name="fsc_processing_time"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

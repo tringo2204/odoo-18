@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_master_root"
+              name="Master Data"
+              parent="fsc_audit_log.menu_fsc_root"
+              sequence="10"/>
+
+    <menuitem id="menu_fsc_vendor_price_log"
+              name="Vendor Price Log"
+              parent="menu_fsc_master_root"
+              action="fsc_vendor_price_log_action"
+              sequence="10"/>
+
+</odoo>

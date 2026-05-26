@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fsc_receipt_deviation_view_list" model="ir.ui.view">
+        <field name="name">fsc.receipt.deviation.list</field>
+        <field name="model">fsc.receipt.deviation</field>
+        <field name="arch" type="xml">
+            <list string="Receipt Deviations"
+                  decoration-danger="deviation_type in ('wrong_lot','qc_fail','damage')"
+                  decoration-warning="deviation_type=='short'">
+                <field name="create_date"/>
+                <field name="picking_id"/>
+                <field name="product_id"/>
+                <field name="expected_qty"/>
+                <field name="actual_qty"/>
+                <field name="deviation_qty"/>
+                <field name="deviation_pct"/>
+                <field name="deviation_type"/>
+                <field name="state"/>
+                <field name="reviewer_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="fsc_receipt_deviation_view_form" model="ir.ui.view">
+        <field name="name">fsc.receipt.deviation.form</field>
+        <field name="model">fsc.receipt.deviation</field>
+        <field name="arch" type="xml">
+            <form string="Receipt Deviation">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="open,accepted,rejected"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="picking_id"/>
+                            <field name="move_line_id"/>
+                            <field name="product_id"/>
+                            <field name="deviation_type"/>
+                        </group>
+                        <group>
+                            <field name="expected_qty"/>
+                            <field name="actual_qty"/>
+                            <field name="deviation_qty"/>
+                            <field name="deviation_pct"/>
+                            <field name="reviewer_id"/>
+                        </group>
+                    </group>
+                    <group string="Reason">
+                        <field name="reason" nolabel="1"/>
+                    </group>
+                    <group string="Photo">
+                        <field name="photo" widget="image" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="fsc_receipt_deviation_action" model="ir.actions.act_window">
+        <field name="name">Receipt Deviations</field>
+        <field name="res_model">fsc.receipt.deviation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

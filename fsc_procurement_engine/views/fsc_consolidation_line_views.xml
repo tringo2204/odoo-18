@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fsc_consolidation_line_view_form_engine" model="ir.ui.view">
+        <field name="name">fsc.consolidation.line.form.engine</field>
+        <field name="model">fsc.consolidation.line</field>
+        <field name="inherit_id" ref="fsc_demand_consolidation.fsc_consolidation_line_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_lock']" position="after">
+                <button name="action_generate_procurement" type="object"
+                        string="Generate RFQ / MO" class="btn-primary"
+                        invisible="state != 'open'"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Make-vs-Buy Decisions">
+                    <field name="decision_ids" readonly="1">
+                        <list>
+                            <field name="create_date"/>
+                            <field name="decision"/>
+                            <field name="capacity_available"/>
+                            <field name="cost_make"/>
+                            <field name="cost_buy"/>
+                            <field name="chosen_vendor_id"/>
+                            <field name="decision_reason"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

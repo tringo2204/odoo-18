@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_cooking_batch"
+              name="Cooking Batches"
+              parent="fsc_demand_consolidation.menu_fsc_operations"
+              action="fsc_cooking_batch_action"
+              sequence="40"/>
+
+</odoo>

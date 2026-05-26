@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_warehouse"
+              name="Warehouse"
+              parent="fsc_audit_log.menu_fsc_root"
+              sequence="30"/>
+
+    <menuitem id="menu_fsc_receipt_deviation"
+              name="Receipt Deviations"
+              parent="menu_fsc_warehouse"
+              action="fsc_receipt_deviation_action"
+              sequence="10"/>
+
+</odoo>

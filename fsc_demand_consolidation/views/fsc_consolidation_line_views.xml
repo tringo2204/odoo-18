@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fsc_consolidation_line_view_list" model="ir.ui.view">
+        <field name="name">fsc.consolidation.line.list</field>
+        <field name="model">fsc.consolidation.line</field>
+        <field name="arch" type="xml">
+            <list string="Consolidation Lines"
+                  decoration-warning="urgency=='urgent'"
+                  decoration-info="state=='open'"
+                  decoration-muted="state in ('done','cancel')">
+                <field name="name"/>
+                <field name="required_date"/>
+                <field name="product_id"/>
+                <field name="total_qty"/>
+                <field name="uom_id"/>
+                <field name="origin" optional="show"/>
+                <field name="urgency"/>
+                <field name="state"/>
+                <field name="company_id" optional="hide" groups="base.group_multi_company"/>
+                <field name="purchase_order_id" optional="hide"/>
+                <field name="production_id" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="fsc_consolidation_line_view_form" model="ir.ui.view">
+        <field name="name">fsc.consolidation.line.form</field>
+        <field name="model">fsc.consolidation.line</field>
+        <field name="arch" type="xml">
+            <form string="Consolidation Line">
+                <header>
+                    <button name="action_open" type="object" string="Mark Open"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_lock" type="object" string="Lock"
+                            class="btn-primary" invisible="state != 'open'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ('done','cancel')"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,open,locked,rfq_created,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="product_id"/>
+                            <field name="total_qty"/>
+                            <field name="uom_id"/>
+                        </group>
+                        <group>
+                            <field name="required_date"/>
+                            <field name="urgency"/>
+                            <field name="origin"/>
+                            <field name="purchase_order_id"/>
+                            <field name="production_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Source Demand">
+                            <field name="demand_move_ids" readonly="1">
+                                <list>
+                                    <field name="reference"/>
+                                    <field name="product_id"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="location_id"/>
+                                    <field name="location_dest_id"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Source Locations">
+                            <field name="source_location_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="fsc_consolidation_line_view_search" model="ir.ui.view">
+        <field name="name">fsc.consolidation.line.search</field>
+        <field name="model">fsc.consolidation.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="required_date"/>
+                <field name="origin"/>
+                <filter name="filter_urgent" string="Urgent" domain="[('urgency','=','urgent')]"/>
+                <filter name="filter_draft" string="Accumulating" domain="[('state','=','draft')]"/>
+                <filter name="filter_open" string="Open" domain="[('state','=','open')]"/>
+                <filter name="filter_locked" string="Locked" domain="[('state','=','locked')]"/>
+                <filter name="filter_active" string="Active" domain="[('state','in',['draft','open','locked'])]"/>
+                <separator/>
+                <filter name="filter_today" string="Required Today"
+                        domain="[('required_date','&gt;=', context_today().strftime('%Y-%m-%d 00:00:00')),
+                                 ('required_date','&lt;', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d 00:00:00'))]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="State" context="{'group_by':'state'}"/>
+                    <filter name="group_product" string="Product" context="{'group_by':'product_id'}"/>
+                    <filter name="group_date" string="Required Date" context="{'group_by':'required_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="fsc_consolidation_line_action" model="ir.actions.act_window">
+        <field name="name">Demand Consolidation</field>
+        <field name="res_model">fsc.consolidation.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_active': 1}</field>
+    </record>
+
+</odoo>

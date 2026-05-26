@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_root"
+              name="Food Supply Chain"
+              sequence="60"
+              web_icon="fsc_audit_log,static/description/icon.png"/>
+
+    <menuitem id="menu_fsc_config_root"
+              name="Configuration"
+              parent="menu_fsc_root"
+              sequence="100"/>
+
+    <menuitem id="menu_fsc_audit_log"
+              name="Audit Log"
+              parent="menu_fsc_config_root"
+              action="fsc_audit_log_action"
+              sequence="90"/>
+
+</odoo>

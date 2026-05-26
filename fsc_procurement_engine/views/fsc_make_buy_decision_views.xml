@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fsc_make_buy_decision_view_list" model="ir.ui.view">
+        <field name="name">fsc.make.buy.decision.list</field>
+        <field name="model">fsc.make.buy.decision</field>
+        <field name="arch" type="xml">
+            <list string="Make-vs-Buy Decisions">
+                <field name="create_date"/>
+                <field name="consolidation_line_id"/>
+                <field name="product_id"/>
+                <field name="qty"/>
+                <field name="cost_make"/>
+                <field name="cost_buy"/>
+                <field name="capacity_available"/>
+                <field name="decision"/>
+                <field name="chosen_vendor_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="fsc_make_buy_decision_view_form" model="ir.ui.view">
+        <field name="name">fsc.make.buy.decision.form</field>
+        <field name="model">fsc.make.buy.decision</field>
+        <field name="arch" type="xml">
+            <form string="Make-vs-Buy Decision">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="consolidation_line_id"/>
+                            <field name="product_id"/>
+                            <field name="qty"/>
+                            <field name="capacity_available"/>
+                        </group>
+                        <group>
+                            <field name="cost_make"/>
+                            <field name="cost_buy"/>
+                            <field name="decision"/>
+                            <field name="chosen_vendor_id"/>
+                        </group>
+                    </group>
+                    <group string="Decision Reason">
+                        <field name="decision_reason" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="fsc_make_buy_decision_action" model="ir.actions.act_window">
+        <field name="name">Make-vs-Buy Decisions</field>
+        <field name="res_model">fsc.make.buy.decision</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

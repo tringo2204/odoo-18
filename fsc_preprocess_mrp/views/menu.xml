@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_preprocess_loss"
+              name="Preprocess Loss"
+              parent="fsc_demand_consolidation.menu_fsc_operations"
+              action="fsc_loss_record_action"
+              sequence="30"/>
+
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_picking_view_form_fsc" model="ir.ui.view">
+        <field name="name">stock.picking.form.fsc</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_validate']" position="before">
+                <button name="action_fsc_warehouse_confirm" type="object"
+                        string="Confirm Dispatch (WH)" class="btn-primary"
+                        invisible="not fsc_dual_confirm_required or fsc_warehouse_confirmed or state not in ('assigned','confirmed')"/>
+                <button name="action_fsc_kitchen_confirm" type="object"
+                        string="Confirm Receipt (Kitchen)" class="btn-primary"
+                        invisible="not fsc_dual_confirm_required or not fsc_warehouse_confirmed or fsc_kitchen_confirmed or state not in ('assigned','confirmed')"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_open_fsc_discrepancies" type="object"
+                        class="oe_stat_button" icon="fa-warning"
+                        invisible="fsc_discrepancy_count == 0">
+                    <field name="fsc_discrepancy_count" widget="statinfo"
+                           string="Discrepancies"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='date_done']" position="after">
+                <field name="fsc_dual_confirm_required" invisible="not fsc_dual_confirm_required"/>
+                <field name="fsc_warehouse_confirmed" invisible="not fsc_dual_confirm_required"
+                       readonly="1"/>
+                <field name="fsc_warehouse_confirmed_by" invisible="not fsc_warehouse_confirmed"
+                       readonly="1"/>
+                <field name="fsc_warehouse_confirmed_at" invisible="not fsc_warehouse_confirmed"
+                       readonly="1"/>
+                <field name="fsc_kitchen_confirmed" invisible="not fsc_dual_confirm_required"
+                       readonly="1"/>
+                <field name="fsc_kitchen_confirmed_by" invisible="not fsc_kitchen_confirmed"
+                       readonly="1"/>
+                <field name="fsc_kitchen_confirmed_at" invisible="not fsc_kitchen_confirmed"
+                       readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

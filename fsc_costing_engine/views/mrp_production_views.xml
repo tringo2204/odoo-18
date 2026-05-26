@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_production_view_form_costing" model="ir.ui.view">
+        <field name="name">mrp.production.form.costing</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="FSC Cost" name="fsc_cost"
+                      invisible="not fsc_meal_cost_ids">
+                    <field name="fsc_meal_cost_ids" readonly="1">
+                        <list decoration-warning="variance_pct&gt;5"
+                              decoration-danger="variance_pct&gt;15">
+                            <field name="meal_qty"/>
+                            <field name="planned_cost_total"/>
+                            <field name="actual_cost_total"/>
+                            <field name="cost_per_meal_planned"/>
+                            <field name="cost_per_meal_actual"/>
+                            <field name="variance"/>
+                            <field name="variance_pct"/>
+                            <field name="fsc_auto" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

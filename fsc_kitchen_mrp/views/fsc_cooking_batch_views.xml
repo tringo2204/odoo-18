@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fsc_cooking_batch_view_list" model="ir.ui.view">
+        <field name="name">fsc.cooking.batch.list</field>
+        <field name="model">fsc.cooking.batch</field>
+        <field name="arch" type="xml">
+            <list string="Cooking Batches"
+                  decoration-warning="shortage_flag==True"
+                  decoration-muted="state in ('done','cancel')">
+                <field name="name"/>
+                <field name="cooking_date"/>
+                <field name="kitchen_location_id"/>
+                <field name="meal_product_id"/>
+                <field name="expected_meal_qty"/>
+                <field name="actual_meal_qty"/>
+                <field name="meal_yield_pct"/>
+                <field name="shortage_flag"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="fsc_cooking_batch_view_form" model="ir.ui.view">
+        <field name="name">fsc.cooking.batch.form</field>
+        <field name="model">fsc.cooking.batch</field>
+        <field name="arch" type="xml">
+            <form string="Cooking Batch">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="planned,cooking,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="production_id"/>
+                            <field name="kitchen_location_id"/>
+                            <field name="meal_product_id"/>
+                            <field name="cooking_date"/>
+                        </group>
+                        <group>
+                            <field name="expected_meal_qty"/>
+                            <field name="actual_meal_qty"/>
+                            <field name="meal_yield_pct"/>
+                            <field name="shortage_flag"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="fsc_cooking_batch_action" model="ir.actions.act_window">
+        <field name="name">Cooking Batches</field>
+        <field name="res_model">fsc.cooking.batch</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

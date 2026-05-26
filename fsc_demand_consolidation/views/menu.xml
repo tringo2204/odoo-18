@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_operations"
+              name="Operations"
+              parent="fsc_audit_log.menu_fsc_root"
+              sequence="20"/>
+
+    <menuitem id="menu_fsc_consolidation"
+              name="Demand Consolidation"
+              parent="menu_fsc_operations"
+              action="fsc_consolidation_line_action"
+              sequence="10"/>
+
+</odoo>

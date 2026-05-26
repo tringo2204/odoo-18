@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_view_form_fsc" model="ir.ui.view">
+        <field name="name">res.partner.form.fsc</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="FSC Vendor" name="fsc_vendor" invisible="not supplier_rank">
+                    <group>
+                        <group string="Performance">
+                            <field name="fsc_on_time_rate"/>
+                            <field name="fsc_defect_rate"/>
+                            <field name="fsc_rating_score"/>
+                        </group>
+                    </group>
+                    <separator string="Price History"/>
+                    <field name="fsc_price_log_ids" readonly="1">
+                        <list>
+                            <field name="log_date"/>
+                            <field name="product_id"/>
+                            <field name="price_unit"/>
+                            <field name="currency_id" optional="hide"/>
+                            <field name="uom_id"/>
+                            <field name="source"/>
+                            <field name="source_ref" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fsc_vendor_price_log_purchase_user,fsc.vendor.price.log purchase user,model_fsc_vendor_price_log,purchase.group_purchase_user,1,0,0,0
+access_fsc_vendor_price_log_purchase_manager,fsc.vendor.price.log purchase manager,model_fsc_vendor_price_log,purchase.group_purchase_manager,1,1,1,1

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fsc_loss_record_view_list" model="ir.ui.view">
+        <field name="name">fsc.loss.record.list</field>
+        <field name="model">fsc.loss.record</field>
+        <field name="arch" type="xml">
+            <list string="Preprocess Loss"
+                  decoration-danger="over_threshold==True">
+                <field name="create_date"/>
+                <field name="production_id"/>
+                <field name="product_id"/>
+                <field name="stage"/>
+                <field name="input_qty"/>
+                <field name="output_qty"/>
+                <field name="loss_qty"/>
+                <field name="loss_pct"/>
+                <field name="threshold_pct"/>
+                <field name="over_threshold"/>
+                <field name="alerted" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="fsc_loss_record_view_form" model="ir.ui.view">
+        <field name="name">fsc.loss.record.form</field>
+        <field name="model">fsc.loss.record</field>
+        <field name="arch" type="xml">
+            <form string="Preprocess Loss">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="production_id"/>
+                            <field name="product_id"/>
+                            <field name="stage"/>
+                        </group>
+                        <group>
+                            <field name="input_qty"/>
+                            <field name="output_qty"/>
+                            <field name="loss_qty"/>
+                            <field name="loss_pct"/>
+                            <field name="threshold_pct"/>
+                            <field name="over_threshold"/>
+                            <field name="alerted"/>
+                        </group>
+                    </group>
+                    <group string="Note">
+                        <field name="note" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="fsc_loss_record_action" model="ir.actions.act_window">
+        <field name="name">Preprocess Loss</field>
+        <field name="res_model">fsc.loss.record</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

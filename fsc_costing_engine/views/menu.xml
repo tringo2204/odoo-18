@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_fsc_costing"
+              name="Costing"
+              parent="fsc_audit_log.menu_fsc_root"
+              sequence="40"/>
+
+    <menuitem id="menu_fsc_meal_cost"
+              name="Meal Cost"
+              parent="menu_fsc_costing"
+              action="fsc_meal_cost_action"
+              sequence="10"/>
+
+</odoo>

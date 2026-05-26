@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fsc_audit_log_user,fsc.audit.log user read,model_fsc_audit_log,base.group_user,1,0,0,0
+access_fsc_audit_log_system,fsc.audit.log system,model_fsc_audit_log,base.group_system,1,1,1,0

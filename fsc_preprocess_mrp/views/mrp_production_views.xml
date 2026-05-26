@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_production_view_form_fsc" model="ir.ui.view">
+        <field name="name">mrp.production.form.fsc</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="FSC Loss" name="fsc_loss"
+                      invisible="not fsc_loss_record_ids">
+                    <group>
+                        <field name="fsc_total_loss_pct" widget="percentage"/>
+                    </group>
+                    <field name="fsc_loss_record_ids">
+                        <list decoration-danger="over_threshold==True">
+                            <field name="stage"/>
+                            <field name="input_qty"/>
+                            <field name="output_qty"/>
+                            <field name="loss_qty"/>
+                            <field name="loss_pct"/>
+                            <field name="threshold_pct"/>
+                            <field name="over_threshold"/>
+                            <field name="alerted"/>
+                            <field name="fsc_auto" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
