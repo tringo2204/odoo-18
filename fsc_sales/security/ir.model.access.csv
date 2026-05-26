@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_catering_meal_shift_user,catering.meal.shift user,model_catering_meal_shift,base.group_user,1,0,0,0
+access_catering_meal_shift_manager,catering.meal.shift manager,model_catering_meal_shift,group_planning_manager,1,1,1,1
+access_catering_site_planning_user,catering.site planning user,model_catering_site,group_planning_user,1,1,1,0
+access_catering_site_planning_manager,catering.site planning manager,model_catering_site,group_planning_manager,1,1,1,1
+access_catering_customer_recipe_recipe_viewer,catering.customer.recipe viewer,model_catering_customer_recipe,group_recipe_viewer,1,0,0,0
+access_catering_customer_recipe_planning_manager,catering.customer.recipe planning manager,model_catering_customer_recipe,group_planning_manager,1,1,1,1
+access_catering_customer_recipe_line_recipe_viewer,catering.customer.recipe.line viewer,model_catering_customer_recipe_line,group_recipe_viewer,1,0,0,0
+access_catering_customer_recipe_line_planning_manager,catering.customer.recipe.line manager,model_catering_customer_recipe_line,group_planning_manager,1,1,1,1
+access_catering_menu_plan_planning_user,catering.menu.plan planning user,model_catering_menu_plan,group_planning_user,1,1,1,0
+access_catering_menu_plan_planning_manager,catering.menu.plan planning manager,model_catering_menu_plan,group_planning_manager,1,1,1,1
+access_catering_menu_plan_line_planning_user,catering.menu.plan.line planning user,model_catering_menu_plan_line,group_planning_user,1,1,1,1
+access_catering_menu_plan_line_planning_manager,catering.menu.plan.line planning manager,model_catering_menu_plan_line,group_planning_manager,1,1,1,1

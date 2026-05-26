@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="module_category_fsc_sales" model="ir.module.category">
+        <field name="name">FSC Sales Planning</field>
+        <field name="sequence">85</field>
+    </record>
+
+    <record id="group_planning_user" model="res.groups">
+        <field name="name">Planning Staff</field>
+        <field name="category_id" ref="module_category_fsc_sales"/>
+        <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="comment">Can create menu plans, customer recipes, draft SOs.</field>
+    </record>
+
+    <record id="group_planning_manager" model="res.groups">
+        <field name="name">Planning Manager</field>
+        <field name="category_id" ref="module_category_fsc_sales"/>
+        <field name="implied_ids" eval="[(4, ref('group_planning_user'))]"/>
+        <field name="comment">Can approve menu plans, BOM, recipe overrides. Can see costs.</field>
+    </record>
+
+    <record id="group_recipe_viewer" model="res.groups">
+        <field name="name">Recipe Viewer</field>
+        <field name="category_id" ref="module_category_fsc_sales"/>
+        <field name="comment">Can view master BOM details and customer recipes.</field>
+    </record>
+
+</odoo>

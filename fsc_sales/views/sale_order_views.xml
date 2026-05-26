@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_fsc" model="ir.ui.view">
+        <field name="name">sale.order.form.fsc</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="fsc_meal_date"/>
+                <field name="fsc_site_id"/>
+                <field name="fsc_menu_plan_id" readonly="1" invisible="not fsc_menu_plan_id"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="after">
+                <field name="fsc_shift_id" optional="show"/>
+                <field name="fsc_planned_qty" optional="hide"/>
+                <field name="fsc_actual_qty" optional="hide"/>
+                <field name="fsc_variance_qty" optional="hide"/>
+                <field name="fsc_variance_pct" optional="hide"/>
+                <field name="fsc_customer_recipe_id" optional="hide"/>
+                <field name="fsc_variance_reason" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="inside">
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_form_fsc_totals" model="ir.ui.view">
+        <field name="name">sale.order.form.fsc.totals</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='sale_total']" position="before">
+                <group string="FSC Meal Totals" invisible="not fsc_meal_date">
+                    <field name="fsc_total_planned"/>
+                    <field name="fsc_total_actual"/>
+                    <field name="fsc_total_variance"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="catering_site_view_list" model="ir.ui.view">
+        <field name="name">catering.site.list</field>
+        <field name="model">catering.site</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="warehouse_id" optional="hide"/>
+                <field name="location_id" optional="show"/>
+                <field name="site_manager_id" optional="show"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="catering_site_view_form" model="ir.ui.view">
+        <field name="name">catering.site.form</field>
+        <field name="model">catering.site</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. Bep Cty May ABC"/></h1>
+                        <field name="code" placeholder="KITCHEN-ABC" class="oe_inline"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="site_manager_id"/>
+                            <field name="default_delivery_time" widget="float_time"/>
+                        </group>
+                        <group>
+                            <field name="warehouse_id"/>
+                            <field name="location_id"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Meal Shifts">
+                            <field name="meal_shift_ids" widget="many2many_tags"/>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="catering_site_action" model="ir.actions.act_window">
+        <field name="name">Sites / Kitchens</field>
+        <field name="res_model">catering.site</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

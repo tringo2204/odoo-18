@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_view_form_fsc_sales" model="ir.ui.view">
+        <field name="name">res.partner.form.fsc.sales</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="FSC Catering" name="fsc_catering"
+                      invisible="not customer_rank">
+                    <group>
+                        <group string="Sales Defaults">
+                            <field name="fsc_default_site_id"/>
+                            <field name="fsc_default_shift_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Variance Policy">
+                            <field name="fsc_allowed_variance_qty"/>
+                            <field name="fsc_allowed_variance_pct"/>
+                        </group>
+                    </group>
+                    <separator string="Sites"/>
+                    <field name="fsc_site_ids">
+                        <list>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="warehouse_id"/>
+                            <field name="location_id"/>
+                            <field name="site_manager_id"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
