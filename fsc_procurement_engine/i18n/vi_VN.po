@@ -1,0 +1,182 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* fsc_procurement_engine
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-26 12:31+0000\n"
+"PO-Revision-Date: 2026-05-26 12:31+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese (vi_VN)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi_VN\n"
+"Plural-Forms: \n"
+
+#. module: fsc_procurement_engine
+#. odoo-python
+#: code:addons/fsc_procurement_engine/models/fsc_consolidation_line.py:0
+msgid "Buy cheaper or make cost not yet available (make=%.2f buy=%.2f)"
+msgstr "Mua rẻ hơn hoặc chưa có chi phí sản xuất (sx=%.2f mua=%.2f)"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__chosen_vendor_id
+msgid "Chosen Vendor"
+msgstr "NCC đã chọn"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__consolidation_line_id
+msgid "Consolidation Line"
+msgstr "Dòng gộp nhu cầu"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__create_date
+msgid "Created on"
+msgstr "Ngày tạo"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__decision
+msgid "Decision"
+msgstr "Quyết định"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__decision_reason
+#: model_terms:ir.ui.view,arch_db:fsc_procurement_engine.fsc_make_buy_decision_view_form
+msgid "Decision Reason"
+msgstr "Lý do quyết định"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__cost_buy
+msgid "Estimated Buy Cost"
+msgstr "Chi phí mua dự kiến"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__cost_make
+msgid "Estimated Make Cost"
+msgstr "Chi phí sản xuất dự kiến"
+
+#. module: fsc_procurement_engine
+#: model:ir.model,name:fsc_procurement_engine.model_fsc_consolidation_line
+msgid "FSC Demand Consolidation Line"
+msgstr "Dòng gộp nhu cầu FSC"
+
+#. module: fsc_procurement_engine
+#: model:ir.model,name:fsc_procurement_engine.model_fsc_make_buy_decision
+msgid "FSC Make-vs-Buy Decision"
+msgstr "Quyết định Sx/Mua FSC"
+
+#. module: fsc_procurement_engine
+#: model:ir.actions.server,name:fsc_procurement_engine.cron_fsc_process_open_lines_ir_actions_server
+msgid "FSC: Process Open Consolidation Lines"
+msgstr "FSC: Xử lý các dòng gộp đã mở"
+
+#. module: fsc_procurement_engine
+#: model_terms:ir.ui.view,arch_db:fsc_procurement_engine.fsc_consolidation_line_view_form_engine
+msgid "Generate RFQ / MO"
+msgstr "Tạo Yêu cầu báo giá / Lệnh sản xuất"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__id
+msgid "ID"
+msgstr ""
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__capacity_available
+msgid "Internal Capacity Available"
+msgstr "Năng lực sản xuất nội bộ"
+
+#. module: fsc_procurement_engine
+#. odoo-python
+#: code:addons/fsc_procurement_engine/models/fsc_consolidation_line.py:0
+msgid "Internal capacity available, make %.2f < buy %.2f"
+msgstr "Có năng lực sx, chi phí sx %.2f < mua %.2f"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật bởi"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lúc"
+
+#. module: fsc_procurement_engine
+#: model_terms:ir.ui.view,arch_db:fsc_procurement_engine.fsc_make_buy_decision_view_form
+msgid "Make-vs-Buy Decision"
+msgstr "Quyết định Sản xuất / Mua"
+
+#. module: fsc_procurement_engine
+#: model:ir.actions.act_window,name:fsc_procurement_engine.fsc_make_buy_decision_action
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_consolidation_line__decision_ids
+#: model:ir.ui.menu,name:fsc_procurement_engine.menu_fsc_make_buy_decision
+#: model_terms:ir.ui.view,arch_db:fsc_procurement_engine.fsc_consolidation_line_view_form_engine
+#: model_terms:ir.ui.view,arch_db:fsc_procurement_engine.fsc_make_buy_decision_view_list
+msgid "Make-vs-Buy Decisions"
+msgstr "Quyết định Sản xuất / Mua"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields.selection,name:fsc_procurement_engine.selection__fsc_make_buy_decision__decision__make
+msgid "Manufacture"
+msgstr "Sản xuất"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields.selection,name:fsc_procurement_engine.selection__fsc_make_buy_decision__decision__mixed
+msgid "Mixed"
+msgstr "Hỗn hợp"
+
+#. module: fsc_procurement_engine
+#. odoo-python
+#: code:addons/fsc_procurement_engine/models/fsc_consolidation_line.py:0
+msgid ""
+"No BOM found for %s; cannot create a manufacturing order. Either configure a"
+" BOM or set the product to buy-only."
+msgstr ""
+
+#. module: fsc_procurement_engine
+#. odoo-python
+#: code:addons/fsc_procurement_engine/models/fsc_consolidation_line.py:0
+msgid "No internal capacity available"
+msgstr "Không còn năng lực sản xuất nội bộ"
+
+#. module: fsc_procurement_engine
+#. odoo-python
+#: code:addons/fsc_procurement_engine/models/fsc_consolidation_line.py:0
+msgid ""
+"No vendor configured for product %s. Add a vendor on the product form before"
+" generating the RFQ."
+msgstr ""
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__product_id
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: fsc_procurement_engine
+#. odoo-python
+#: code:addons/fsc_procurement_engine/models/fsc_consolidation_line.py:0
+msgid "Product is not flagged as internal supplier"
+msgstr "Sản phẩm chưa được đánh dấu là NCC nội bộ"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields.selection,name:fsc_procurement_engine.selection__fsc_make_buy_decision__decision__buy
+msgid "Purchase"
+msgstr "Mua hàng"
+
+#. module: fsc_procurement_engine
+#: model:ir.model.fields,field_description:fsc_procurement_engine.field_fsc_make_buy_decision__qty
+msgid "Required Qty"
+msgstr "SL cần"

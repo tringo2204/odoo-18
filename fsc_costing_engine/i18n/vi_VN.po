@@ -1,0 +1,156 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* fsc_costing_engine
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-26 12:31+0000\n"
+"PO-Revision-Date: 2026-05-26 12:31+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese (vi_VN)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi_VN\n"
+"Plural-Forms: \n"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__actual_cost_total
+msgid "Actual Cost (Total)"
+msgstr "Chi phí thực (Tổng)"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__cost_per_meal_actual
+msgid "Actual Cost / Meal"
+msgstr "Chi phí thực / Suất"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__fsc_auto
+msgid "Auto-recorded"
+msgstr "Tự ghi nhận"
+
+#. module: fsc_costing_engine
+#: model_terms:ir.ui.view,arch_db:fsc_costing_engine.fsc_meal_cost_view_form
+msgid "Cost Breakdown"
+msgstr "Chi tiết chi phí"
+
+#. module: fsc_costing_engine
+#: model:ir.ui.menu,name:fsc_costing_engine.menu_fsc_costing
+msgid "Costing"
+msgstr "Chi phí"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__create_date
+msgid "Created on"
+msgstr "Ngày tạo"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__currency_id
+msgid "Currency"
+msgstr "Tiền tệ"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: fsc_costing_engine
+#: model_terms:ir.ui.view,arch_db:fsc_costing_engine.mrp_production_view_form_costing
+msgid "FSC Cost"
+msgstr "Chi phí FSC"
+
+#. module: fsc_costing_engine
+#: model:ir.model,name:fsc_costing_engine.model_fsc_meal_cost
+msgid "FSC Meal Cost"
+msgstr "Chi phí suất ăn FSC"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_mrp_production__fsc_meal_cost_ids
+msgid "FSC Meal Cost Records"
+msgstr "Bản ghi chi phí suất ăn FSC"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__id
+msgid "ID"
+msgstr ""
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__labor_cost
+msgid "Labor Cost"
+msgstr "Chi phí nhân công"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật bởi"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lúc"
+
+#. module: fsc_costing_engine
+#: model:ir.model,name:fsc_costing_engine.model_mrp_production
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__production_id
+msgid "Manufacturing Order"
+msgstr "Lệnh sản xuất"
+
+#. module: fsc_costing_engine
+#: model:ir.actions.act_window,name:fsc_costing_engine.fsc_meal_cost_action
+#: model:ir.ui.menu,name:fsc_costing_engine.menu_fsc_meal_cost
+#: model_terms:ir.ui.view,arch_db:fsc_costing_engine.fsc_meal_cost_view_form
+#: model_terms:ir.ui.view,arch_db:fsc_costing_engine.fsc_meal_cost_view_list
+msgid "Meal Cost"
+msgstr "Chi phí suất ăn"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__meal_product_id
+msgid "Meal Product"
+msgstr "Sản phẩm suất ăn"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__meal_qty
+msgid "Meals Produced"
+msgstr "Số suất đã làm"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__overhead_cost
+msgid "Overhead Cost"
+msgstr "Chi phí gián tiếp"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__planned_cost_total
+msgid "Planned Cost (Total)"
+msgstr "Chi phí kế hoạch (Tổng)"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__cost_per_meal_planned
+msgid "Planned Cost / Meal"
+msgstr "Chi phí KH / Suất"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__raw_cost
+msgid "Raw Material Cost"
+msgstr "Chi phí NVL"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,help:fsc_costing_engine.field_fsc_meal_cost__fsc_auto
+msgid "True when this record was created automatically on MO done."
+msgstr "True khi bản ghi được tạo tự động lúc LSX hoàn thành."
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__variance
+msgid "Variance"
+msgstr "Chênh lệch"
+
+#. module: fsc_costing_engine
+#: model:ir.model.fields,field_description:fsc_costing_engine.field_fsc_meal_cost__variance_pct
+msgid "Variance (%)"
+msgstr "Chênh lệch (%)"

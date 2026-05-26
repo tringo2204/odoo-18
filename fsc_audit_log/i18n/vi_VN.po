@@ -1,0 +1,152 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* fsc_audit_log
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-26 12:31+0000\n"
+"PO-Revision-Date: 2026-05-26 12:31+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese (vi_VN)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi_VN\n"
+"Plural-Forms: \n"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__action
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_search
+msgid "Action"
+msgstr "Hành động"
+
+#. module: fsc_audit_log
+#: model:ir.ui.menu,name:fsc_audit_log.menu_fsc_audit_log
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_form
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_list
+msgid "Audit Log"
+msgstr "Nhật ký kiểm toán"
+
+#. module: fsc_audit_log
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_form
+msgid "Change"
+msgstr "Thay đổi"
+
+#. module: fsc_audit_log
+#: model:ir.ui.menu,name:fsc_audit_log.menu_fsc_config_root
+msgid "Configuration"
+msgstr "Cấu hình"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields.selection,name:fsc_audit_log.selection__fsc_audit_log__action__create
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_search
+msgid "Create"
+msgstr "Tạo"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__create_date
+msgid "Created on"
+msgstr "Ngày tạo"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: fsc_audit_log
+#: model:ir.actions.act_window,name:fsc_audit_log.fsc_audit_log_action
+#: model:ir.model,name:fsc_audit_log.model_fsc_audit_log
+msgid "FSC Audit Log"
+msgstr "Nhật ký kiểm toán FSC"
+
+#. module: fsc_audit_log
+#: model:ir.model,name:fsc_audit_log.model_fsc_audit_mixin
+msgid "FSC Audit Mixin"
+msgstr "Mixin kiểm toán FSC"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__field_name
+msgid "Field"
+msgstr "Trường"
+
+#. module: fsc_audit_log
+#: model:ir.ui.menu,name:fsc_audit_log.menu_fsc_root
+msgid "Food Supply Chain"
+msgstr "Chuỗi cung ứng thực phẩm"
+
+#. module: fsc_audit_log
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_search
+msgid "Group By"
+msgstr "Nhóm theo"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__id
+msgid "ID"
+msgstr ""
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật bởi"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lúc"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__model_name
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_search
+msgid "Model"
+msgstr "Model"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__new_value
+msgid "New Value"
+msgstr "Giá trị mới"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__old_value
+msgid "Old Value"
+msgstr "Giá trị cũ"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__reason
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_form
+msgid "Reason"
+msgstr "Lý do"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__res_ref
+msgid "Record"
+msgstr "Bản ghi"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__res_id
+msgid "Record ID"
+msgstr "ID bản ghi"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields.selection,name:fsc_audit_log.selection__fsc_audit_log__action__unlink
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_search
+msgid "Unlink"
+msgstr "Xóa"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields,field_description:fsc_audit_log.field_fsc_audit_log__user_id
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_search
+msgid "User"
+msgstr "Người dùng"
+
+#. module: fsc_audit_log
+#: model:ir.model.fields.selection,name:fsc_audit_log.selection__fsc_audit_log__action__write
+#: model_terms:ir.ui.view,arch_db:fsc_audit_log.fsc_audit_log_view_search
+msgid "Write"
+msgstr "Ghi"

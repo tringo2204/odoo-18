@@ -1,0 +1,488 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* fsc_master_data
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-26 12:31+0000\n"
+"PO-Revision-Date: 2026-05-26 12:31+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese (vi_VN)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi_VN\n"
+"Plural-Forms: \n"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "<span class=\"text-muted ms-1\">%</span>"
+msgstr ""
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "<span class=\"text-muted ms-1\">minutes</span>"
+msgstr ""
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_mrp_bom__fsc_expected_loss
+msgid "Acceptable loss percentage during processing."
+msgstr "Tỷ lệ hao hụt chấp nhận được khi chế biến."
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_product_product__fsc_loss_threshold
+#: model:ir.model.fields,help:fsc_master_data.field_product_template__fsc_loss_threshold
+msgid "Alert when actual loss exceeds this percentage."
+msgstr "Cảnh báo khi hao hụt thực vượt tỷ lệ này."
+
+#. module: fsc_master_data
+#: model:ir.model,name:fsc_master_data.model_mrp_bom
+msgid "Bill of Material"
+msgstr "Định mức NVL"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_product_product__fsc_is_internal_supplier
+#: model:ir.model.fields,help:fsc_master_data.field_product_template__fsc_is_internal_supplier
+msgid "Can be produced internally (eligible for make-vs-buy comparison)."
+msgstr "Có thể sản xuất nội bộ (đủ điều kiện so sánh sx/mua)."
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.product_template_view_form_fsc
+msgid "Classification"
+msgstr "Phân loại"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_product_product__fsc_product_type
+#: model:ir.model.fields,help:fsc_master_data.field_product_template__fsc_product_type
+msgid ""
+"Classification used by the FSC supply chain: raw material, semi-finished "
+"output of preprocess, or finished meal."
+msgstr ""
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_res_partner__fsc_rating_score
+#: model:ir.model.fields,help:fsc_master_data.field_res_users__fsc_rating_score
+msgid "Composite score: on_time*0.4 + price*0.4 + (100-defect)*0.2."
+msgstr "Điểm tổng hợp: đúng_hạn*0.4 + giá*0.4 + (100-hỏng)*0.2."
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_res_partner__fsc_defect_rate
+#: model:ir.model.fields,help:fsc_master_data.field_res_users__fsc_defect_rate
+msgid "Computed from QC rejection history."
+msgstr "Tính từ lịch sử bị từ chối QC."
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_res_partner__fsc_on_time_rate
+#: model:ir.model.fields,help:fsc_master_data.field_res_users__fsc_on_time_rate
+msgid ""
+"Computed from purchase order history (overridden by procurement engine)."
+msgstr ""
+
+#. module: fsc_master_data
+#: model:ir.model,name:fsc_master_data.model_res_config_settings
+msgid "Config Settings"
+msgstr "Cài đặt"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Consolidation Debounce"
+msgstr "Thời gian chờ gộp nhu cầu"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_config_settings__fsc_consolidation_debounce_minutes
+msgid "Consolidation Debounce (minutes)"
+msgstr "Thời gian chờ gộp nhu cầu (phút)"
+
+#. module: fsc_master_data
+#: model:ir.model,name:fsc_master_data.model_res_partner
+msgid "Contact"
+msgstr "Liên hệ"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__product_template__fsc_processing_type__cooking
+msgid "Cooking"
+msgstr "Đang nấu"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__create_date
+msgid "Created on"
+msgstr "Ngày tạo"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__currency_id
+msgid "Currency"
+msgstr "Tiền tệ"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__log_date
+msgid "Date"
+msgstr "Ngày"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_config_settings__fsc_default_loss_threshold_semi
+msgid "Default Loss Threshold for Semi-finished (%)"
+msgstr "Ngưỡng hao hụt mặc định cho bán thành phẩm (%)"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Default Semi-finished Loss Threshold"
+msgstr "Ngưỡng hao hụt mặc định cho bán thành phẩm"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_res_config_settings__fsc_default_loss_threshold_semi
+msgid "Default value pre-filled when creating a new semi-finished product."
+msgstr "Giá trị mặc định khi tạo bán thành phẩm mới."
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Defaults"
+msgstr "Mặc định"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_partner__fsc_defect_rate
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_users__fsc_defect_rate
+msgid "Defect Rate (%)"
+msgstr "Tỷ lệ hỏng (%)"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Defect Weight"
+msgstr "Trọng số hỏng"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Demand Consolidation"
+msgstr "Gộp nhu cầu"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_mrp_bom__fsc_expected_loss
+msgid "Expected Loss (%)"
+msgstr "Hao hụt dự kiến (%)"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_mrp_bom__fsc_expected_yield
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_product__fsc_yield_expected
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_template__fsc_yield_expected
+msgid "Expected Yield (%)"
+msgstr "Sản lượng đạt (%)"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_product_product__fsc_yield_expected
+#: model:ir.model.fields,help:fsc_master_data.field_product_template__fsc_yield_expected
+msgid "Expected output ratio after processing. 100 = no loss."
+msgstr "Tỷ lệ đầu ra dự kiến sau chế biến. 100 = không hao."
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_mrp_bom__fsc_expected_yield
+msgid "Expected output ratio for this BOM. Used by preprocess loss tracking."
+msgstr "Tỷ lệ đầu ra dự kiến cho BOM này. Dùng cho theo dõi hao hụt sơ chế."
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_mrp_bom__fsc_processing_time
+msgid "Expected time to complete one batch."
+msgstr "Thời gian dự kiến hoàn thành 1 mẻ."
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.mrp_bom_view_form_fsc
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.product_template_view_form_fsc
+msgid "FSC"
+msgstr "FSC"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_product__fsc_product_type
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_template__fsc_product_type
+msgid "FSC Product Type"
+msgstr "Loại SP FSC"
+
+#. module: fsc_master_data
+#: model:ir.actions.act_window,name:fsc_master_data.fsc_config_settings_action
+msgid "FSC Settings"
+msgstr "Cài đặt FSC"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_partner_view_form_fsc
+msgid "FSC Vendor"
+msgstr "NCC FSC"
+
+#. module: fsc_master_data
+#: model:ir.model,name:fsc_master_data.model_fsc_vendor_price_log
+msgid "FSC Vendor Price Log"
+msgstr "Lịch sử giá NCC (FSC)"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__product_template__fsc_product_type__finished
+msgid "Finished"
+msgstr "Thành phẩm"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Food Supply Chain"
+msgstr "Chuỗi cung ứng thực phẩm"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.fsc_vendor_price_log_view_search
+msgid "Group By"
+msgstr "Nhóm theo"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__id
+msgid "ID"
+msgstr ""
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_product__fsc_is_internal_supplier
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_template__fsc_is_internal_supplier
+msgid "Internal Supplier"
+msgstr "NCC nội bộ"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật bởi"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lúc"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_product__fsc_loss_threshold
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_template__fsc_loss_threshold
+msgid "Loss Threshold (%)"
+msgstr "Ngưỡng hao hụt (%)"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__fsc_vendor_price_log__source__manual
+msgid "Manual Entry"
+msgstr "Nhập tay"
+
+#. module: fsc_master_data
+#: model:ir.ui.menu,name:fsc_master_data.menu_fsc_master_root
+msgid "Master Data"
+msgstr "Dữ liệu chủ"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__product_template__fsc_processing_type__none
+msgid "None"
+msgstr "Không"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__note
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.fsc_vendor_price_log_view_form
+msgid "Note"
+msgstr "Ghi chú"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_partner__fsc_on_time_rate
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_users__fsc_on_time_rate
+msgid "On-time Delivery Rate (%)"
+msgstr "Tỷ lệ giao đúng hạn (%)"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "On-time Weight"
+msgstr "Trọng số đúng hạn"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_partner_view_form_fsc
+msgid "Performance"
+msgstr "Hiệu suất"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Pre-filled when creating a new semi-finished product."
+msgstr "Tự điền khi tạo bán thành phẩm mới."
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__product_template__fsc_processing_type__preprocess
+msgid "Preprocess"
+msgstr "Sơ chế"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_partner__fsc_price_log_ids
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_users__fsc_price_log_ids
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_partner_view_form_fsc
+msgid "Price History"
+msgstr "Lịch sử giá"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Price Weight"
+msgstr "Trọng số giá"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.mrp_bom_view_form_fsc
+msgid "Processing"
+msgstr "Chế biến"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_mrp_bom__fsc_processing_time
+msgid "Processing Time (hours)"
+msgstr "Thời gian chế biến (giờ)"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_product__fsc_processing_type
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_template__fsc_processing_type
+msgid "Processing Type"
+msgstr "Loại chế biến"
+
+#. module: fsc_master_data
+#: model:ir.model,name:fsc_master_data.model_product_template
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__product_id
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.fsc_vendor_price_log_view_search
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__fsc_vendor_price_log__source__po
+msgid "Purchase Order"
+msgstr "Đơn mua hàng"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__fsc_vendor_price_log__source__rfq
+msgid "RFQ"
+msgstr "Yêu cầu báo giá"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__product_template__fsc_product_type__raw
+msgid "Raw"
+msgstr "Nguyên liệu"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Recommended weights sum to 1.0 — on_time + price + (100 - defect)."
+msgstr "Tổng trọng số đề xuất = 1.0 — đúng_hạn + giá + (100 - hỏng)."
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__product_template__fsc_product_type__semi_finished
+msgid "Semi-finished"
+msgstr "Bán thành phẩm"
+
+#. module: fsc_master_data
+#: model:ir.ui.menu,name:fsc_master_data.menu_fsc_config_settings
+msgid "Settings"
+msgstr "Cài đặt"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__source
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.fsc_vendor_price_log_view_search
+msgid "Source"
+msgstr "Nguồn"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__source_ref
+msgid "Source Reference"
+msgstr "Tham chiếu nguồn"
+
+#. module: fsc_master_data
+#: model:ir.model.fields.selection,name:fsc_master_data.selection__product_template__fsc_processing_type__thawing
+msgid "Thawing"
+msgstr "Rã đông"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_res_config_settings__fsc_consolidation_debounce_minutes
+msgid ""
+"Time the consolidation engine waits without new demand on a line before "
+"transitioning it from \"Accumulating\" to \"Open for processing\"."
+msgstr ""
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__price_unit
+msgid "Unit Price"
+msgstr "Đơn giá"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__uom_id
+msgid "UoM"
+msgstr "Đơn vị"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_product__fsc_use_consolidation
+#: model:ir.model.fields,field_description:fsc_master_data.field_product_template__fsc_use_consolidation
+msgid "Use Demand Consolidation"
+msgstr "Dùng gộp nhu cầu"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_fsc_vendor_price_log__partner_id
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.fsc_vendor_price_log_view_search
+msgid "Vendor"
+msgstr "Nhà cung cấp"
+
+#. module: fsc_master_data
+#: model:ir.actions.act_window,name:fsc_master_data.fsc_vendor_price_log_action
+#: model:ir.ui.menu,name:fsc_master_data.menu_fsc_vendor_price_log
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.fsc_vendor_price_log_view_form
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.fsc_vendor_price_log_view_list
+msgid "Vendor Price Log"
+msgstr "Lịch sử giá NCC"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid "Vendor Rating Formula"
+msgstr "Công thức xếp hạng NCC"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_partner__fsc_rating_score
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_users__fsc_rating_score
+msgid "Vendor Rating Score"
+msgstr "Điểm xếp hạng NCC"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_config_settings__fsc_vendor_weight_defect
+msgid "Vendor Rating Weight: Defect"
+msgstr "Trọng số NCC: Hỏng"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_config_settings__fsc_vendor_weight_on_time
+msgid "Vendor Rating Weight: On-time"
+msgstr "Trọng số NCC: Đúng hạn"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,field_description:fsc_master_data.field_res_config_settings__fsc_vendor_weight_price
+msgid "Vendor Rating Weight: Price"
+msgstr "Trọng số NCC: Giá"
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_res_config_settings__fsc_vendor_weight_defect
+msgid ""
+"Weights are used by the procurement engine to rank vendors. Recommended sum "
+"= 1.0."
+msgstr ""
+
+#. module: fsc_master_data
+#: model:ir.model.fields,help:fsc_master_data.field_product_product__fsc_use_consolidation
+#: model:ir.model.fields,help:fsc_master_data.field_product_template__fsc_use_consolidation
+msgid ""
+"When set, purchases for this product are intercepted by the FSC "
+"consolidation engine instead of generating an RFQ directly. The "
+"consolidation cron then groups demand across kitchens."
+msgstr ""
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.res_config_settings_view_form_fsc
+msgid ""
+"Window the consolidation engine waits before transitioning a line from "
+"Accumulating to Open."
+msgstr ""
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.mrp_bom_view_form_fsc
+msgid "Yield"
+msgstr "Sản lượng đạt"
+
+#. module: fsc_master_data
+#: model_terms:ir.ui.view,arch_db:fsc_master_data.product_template_view_form_fsc
+msgid "Yield & Loss"
+msgstr "Sản lượng & Hao hụt"

@@ -1,0 +1,257 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* fsc_warehouse_pda
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-26 12:31+0000\n"
+"PO-Revision-Date: 2026-05-26 12:31+0000\n"
+"Last-Translator: \n"
+"Language-Team: Vietnamese (vi_VN)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: vi_VN\n"
+"Plural-Forms: \n"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__state__accepted
+msgid "Accepted"
+msgstr "Đã chấp nhận"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_needaction
+msgid "Action Needed"
+msgstr "Cần xử lý"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__actual_qty
+msgid "Actual Qty"
+msgstr "SL thực"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_attachment_count
+msgid "Attachment Count"
+msgstr "Số tệp đính kèm"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__create_date
+msgid "Created on"
+msgstr "Ngày tạo"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__deviation_type__damage
+msgid "Damaged"
+msgstr "Hư hỏng"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__deviation_qty
+msgid "Deviation"
+msgstr "Sai lệch"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__deviation_pct
+msgid "Deviation (%)"
+msgstr "Sai lệch (%)"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__expected_qty
+msgid "Expected Qty"
+msgstr "SL dự kiến"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model,name:fsc_warehouse_pda.model_fsc_receipt_deviation
+msgid "FSC Receipt Deviation"
+msgstr "Sai lệch nhập hàng FSC"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_follower_ids
+msgid "Followers"
+msgstr "Người theo dõi"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__has_message
+msgid "Has Message"
+msgstr "Có tin nhắn"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__id
+msgid "ID"
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,help:fsc_warehouse_pda.field_fsc_receipt_deviation__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,help:fsc_warehouse_pda.field_fsc_receipt_deviation__message_has_error
+#: model:ir.model.fields,help:fsc_warehouse_pda.field_fsc_receipt_deviation__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_is_follower
+msgid "Is Follower"
+msgstr "Là người theo dõi"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật bởi"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lúc"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_has_error
+msgid "Message Delivery error"
+msgstr "Lỗi gửi tin nhắn"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_ids
+msgid "Messages"
+msgstr "Tin nhắn"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__move_line_id
+msgid "Move Line"
+msgstr "Dòng di chuyển"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Số hành động"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_has_error_counter
+msgid "Number of errors"
+msgstr "Số lỗi"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,help:fsc_warehouse_pda.field_fsc_receipt_deviation__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "Số tin cần xử lý"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,help:fsc_warehouse_pda.field_fsc_receipt_deviation__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Số tin lỗi gửi"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__state__open
+msgid "Open"
+msgstr "Mở"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__deviation_type__over
+msgid "Over Delivery"
+msgstr "Giao thừa"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__photo
+#: model_terms:ir.ui.view,arch_db:fsc_warehouse_pda.fsc_receipt_deviation_view_form
+msgid "Photo"
+msgstr "Ảnh"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__picking_id
+msgid "Picking"
+msgstr "Phiếu kho"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__product_id
+msgid "Product"
+msgstr "Sản phẩm"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__deviation_type__qc_fail
+msgid "QC Failed"
+msgstr "Không đạt QC"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__reason
+#: model_terms:ir.ui.view,arch_db:fsc_warehouse_pda.fsc_receipt_deviation_view_form
+msgid "Reason"
+msgstr "Lý do"
+
+#. module: fsc_warehouse_pda
+#: model_terms:ir.ui.view,arch_db:fsc_warehouse_pda.fsc_receipt_deviation_view_form
+msgid "Receipt Deviation"
+msgstr "Sai lệch nhập hàng"
+
+#. module: fsc_warehouse_pda
+#: model:ir.actions.act_window,name:fsc_warehouse_pda.fsc_receipt_deviation_action
+#: model:ir.ui.menu,name:fsc_warehouse_pda.menu_fsc_receipt_deviation
+#: model_terms:ir.ui.view,arch_db:fsc_warehouse_pda.fsc_receipt_deviation_view_list
+msgid "Receipt Deviations"
+msgstr "Sai lệch nhập hàng"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__state__rejected
+msgid "Rejected"
+msgstr "Đã từ chối"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__reviewer_id
+msgid "Reviewer"
+msgstr "Người duyệt"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__deviation_type__short
+msgid "Short Delivery"
+msgstr "Giao thiếu"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__state
+msgid "State"
+msgstr "Trạng thái"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__deviation_type
+msgid "Type"
+msgstr "Loại"
+
+#. module: fsc_warehouse_pda
+#: model:ir.ui.menu,name:fsc_warehouse_pda.menu_fsc_warehouse
+msgid "Warehouse"
+msgstr "Kho"
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,field_description:fsc_warehouse_pda.field_fsc_receipt_deviation__website_message_ids
+msgid "Website Messages"
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields,help:fsc_warehouse_pda.field_fsc_receipt_deviation__website_message_ids
+msgid "Website communication history"
+msgstr ""
+
+#. module: fsc_warehouse_pda
+#: model:ir.model.fields.selection,name:fsc_warehouse_pda.selection__fsc_receipt_deviation__deviation_type__wrong_lot
+msgid "Wrong Lot"
+msgstr "Sai lô"

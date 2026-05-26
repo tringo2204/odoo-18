@@ -13,6 +13,7 @@
                             <field name="fsc_product_type"/>
                             <field name="fsc_processing_type"/>
                             <field name="fsc_is_internal_supplier"/>
+                            <field name="fsc_use_consolidation"/>
                         </group>
                         <group string="Yield &amp; Loss">
                             <field name="fsc_yield_expected"/>

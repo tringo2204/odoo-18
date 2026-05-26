@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form_fsc" model="ir.ui.view">
+        <field name="name">res.config.settings.form.fsc</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Food Supply Chain"
+                     string="Food Supply Chain"
+                     name="fsc"
+                     groups="base.group_user">
+                    <block title="Demand Consolidation"
+                           name="fsc_consolidation">
+                        <setting id="fsc_consolidation_debounce"
+                                 string="Consolidation Debounce"
+                                 help="Window the consolidation engine waits before transitioning a line from Accumulating to Open.">
+                            <field name="fsc_consolidation_debounce_minutes"/>
+                            <span class="text-muted ms-1">minutes</span>
+                        </setting>
+                    </block>
+                    <block title="Defaults" name="fsc_defaults">
+                        <setting string="Default Semi-finished Loss Threshold"
+                                 help="Pre-filled when creating a new semi-finished product.">
+                            <field name="fsc_default_loss_threshold_semi"/>
+                            <span class="text-muted ms-1">%</span>
+                        </setting>
+                    </block>
+                    <block title="Vendor Rating Formula"
+                           name="fsc_vendor_rating">
+                        <setting string="On-time Weight"
+                                 help="Recommended weights sum to 1.0 — on_time + price + (100 - defect).">
+                            <field name="fsc_vendor_weight_on_time"/>
+                        </setting>
+                        <setting string="Price Weight">
+                            <field name="fsc_vendor_weight_price"/>
+                        </setting>
+                        <setting string="Defect Weight">
+                            <field name="fsc_vendor_weight_defect"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fsc_config_settings_action" model="ir.actions.act_window">
+        <field name="name">FSC Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'fsc', 'bin_size': False}</field>
+    </record>
+
+    <menuitem id="menu_fsc_config_settings"
+              name="Settings"
+              parent="fsc_audit_log.menu_fsc_config_root"
+              action="fsc_config_settings_action"
+              sequence="10"/>
+
+</odoo>

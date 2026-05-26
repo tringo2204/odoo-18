@@ -26,6 +26,7 @@ Master data layer for the Food Supply Chain ERP:
         'views/mrp_bom_views.xml',
         'views/res_partner_views.xml',
         'views/fsc_vendor_price_log_views.xml',
+        'views/res_config_settings_views.xml',
         'views/menu.xml',
     ],
     'installable': True,

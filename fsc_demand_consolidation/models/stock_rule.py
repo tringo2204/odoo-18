@@ -23,7 +23,11 @@ class StockRule(models.Model):
         to_consolidate = []
         to_pass = []
         for proc, rule in procurements:
-            if rule.fsc_consolidate and not self._fsc_is_urgent(proc):
+            wants_consolidation = (
+                rule.fsc_consolidate
+                or proc.product_id.product_tmpl_id.fsc_use_consolidation
+            )
+            if wants_consolidation and not self._fsc_is_urgent(proc):
                 to_consolidate.append((proc, rule))
             else:
                 to_pass.append((proc, rule))

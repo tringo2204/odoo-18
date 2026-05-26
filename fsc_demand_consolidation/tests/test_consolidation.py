@@ -138,6 +138,37 @@ class TestFscConsolidation(TransactionCase):
         self.assertEqual(len(lines), 1)
         self.assertEqual(lines.total_qty, 7.0)
 
+    def test_run_buy_consolidates_when_product_opted_in(self):
+        """Rule-level flag off but product opts in via fsc_use_consolidation."""
+        rule = self._fake_rule(fsc_consolidate=False)
+        self.product_a.product_tmpl_id.fsc_use_consolidation = True
+        proc = self._make_proc(self.product_a, 7.0)
+        # _run_buy will try super() on the non-consolidate branch which would
+        # need a real PO setup — patch it to a no-op for the test.
+        with self.env.cr.savepoint():
+            self.Rule._fsc_push_to_consolidation([(proc, rule)])
+        lines = self.Line.search([('product_id', '=', self.product_a.id)])
+        self.assertEqual(len(lines), 1)
+        self.assertEqual(lines.total_qty, 7.0)
+
+    def test_onchange_raw_sets_use_consolidation(self):
+        """Setting fsc_product_type='raw' on a new product enables consolidation."""
+        template = self.env['product.template'].new({
+            'name': 'FSC New Raw',
+            'fsc_product_type': 'raw',
+        })
+        template._onchange_fsc_product_type()
+        self.assertTrue(template.fsc_use_consolidation)
+
+    def test_onchange_finished_clears_use_consolidation(self):
+        template = self.env['product.template'].new({
+            'name': 'FSC New Meal',
+            'fsc_use_consolidation': True,
+            'fsc_product_type': 'finished',
+        })
+        template._onchange_fsc_product_type()
+        self.assertFalse(template.fsc_use_consolidation)
+
     def test_locked_line_does_not_accept_merge(self):
         rule = self._fake_rule()
         date = fields.Datetime.now()

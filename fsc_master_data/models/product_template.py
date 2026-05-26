@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 FSC_PRODUCT_TYPE = [
@@ -44,6 +44,13 @@ class ProductTemplate(models.Model):
         help='Can be produced internally (eligible for make-vs-buy comparison).',
         default=False,
     )
+    fsc_use_consolidation = fields.Boolean(
+        string='Use Demand Consolidation',
+        help='When set, purchases for this product are intercepted by the FSC '
+             'consolidation engine instead of generating an RFQ directly. The '
+             'consolidation cron then groups demand across kitchens.',
+        default=False,
+    )
 
     _fsc_audit_fields = (
         'fsc_product_type',
@@ -51,4 +58,13 @@ class ProductTemplate(models.Model):
         'fsc_yield_expected',
         'fsc_loss_threshold',
         'fsc_is_internal_supplier',
+        'fsc_use_consolidation',
     )
+
+    @api.onchange('fsc_product_type')
+    def _onchange_fsc_product_type(self):
+        """Default raw products to consolidation; clear it for finished meals."""
+        if self.fsc_product_type == 'raw':
+            self.fsc_use_consolidation = True
+        elif self.fsc_product_type == 'finished':
+            self.fsc_use_consolidation = False
