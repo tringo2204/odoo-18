@@ -78,6 +78,18 @@ class HrContract(models.Model):
         string='Khấu trừ lương hàng tháng',
         help='Khoản khấu trừ cố định hàng tháng (trả nợ, ứng lương,...)',
     )
+    deduction_type = fields.Selection(
+        selection=[
+            ('loan', 'Trả nợ vay'),
+            ('advance', 'Hoàn ứng lương'),
+            ('damage', 'Bồi thường thiệt hại'),
+            ('exclusion', 'Loại trừ'),
+            ('other', 'Khác'),
+        ],
+        string='Loại khấu trừ',
+        help='Phân loại khoản khấu trừ. "Loại trừ" dùng để đánh dấu các '
+             'khoản không tính vào lương kỳ này (ví dụ: tạm hoãn).',
+    )
     deduction_note = fields.Char(string='Lý do khấu trừ')
 
     def write(self, vals):

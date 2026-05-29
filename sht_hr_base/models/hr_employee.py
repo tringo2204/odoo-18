@@ -34,6 +34,7 @@ class HrEmployee(models.Model):
         string='Số BHXH',
         help='Số sổ BHXH',
         groups='hr.group_hr_user',
+        tracking=True,
     )
     seniority_start_date = fields.Date(
         string='Ngày bắt đầu thâm niên',
@@ -79,6 +80,19 @@ class HrEmployee(models.Model):
         compute='_compute_document_count',
         groups='hr.group_hr_user',
     )
+
+    @api.constrains('social_insurance_id', 'active', 'employee_type')
+    def _check_social_insurance_id_required(self):
+        for emp in self:
+            if not emp.active:
+                continue
+            if emp.employee_type and emp.employee_type != 'employee':
+                continue
+            if not (emp.social_insurance_id and emp.social_insurance_id.strip()):
+                raise ValidationError(_(
+                    'Số sổ BHXH là bắt buộc đối với nhân viên "%s". '
+                    'Vui lòng cập nhật tại tab "Thông tin phúc lợi".'
+                ) % (emp.name or _('(chưa đặt tên)')))
 
     @api.depends('seniority_start_date')
     def _compute_seniority_years(self):
