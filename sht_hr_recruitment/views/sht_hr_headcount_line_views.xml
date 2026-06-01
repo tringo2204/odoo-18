@@ -8,10 +8,10 @@
             <search string="Bảng định biên">
                 <field name="department_id"/>
                 <field name="job_id"/>
-                <field name="year" string="Năm" filter_domain="[('year', '=', self)]" options="{'enable_formatting': False}"/>
+                <field name="year" string="Năm" filter_domain="[('year', '=', self)]"/>
                 <separator/>
                 <filter string="Năm nay" name="current_year"
-                        domain="[('year', '=', context_today().year)]"/>
+                        domain="[('year', '=', context_today().strftime('%Y'))]"/>
                 <filter string="Chưa duyệt" name="draft"
                         domain="[('state', '=', 'draft')]"/>
                 <filter string="Đã duyệt" name="approved"
@@ -48,7 +48,7 @@
                   decoration-danger="state == 'draft' and gap > 0">
                 <field name="department_id" optional="show"/>
                 <field name="job_id"/>
-                <field name="year" string="Năm" options="{'enable_formatting': False}"/>
+                <field name="year" string="Năm"/>
                 <field name="month" string="Tháng"/>
                 <field name="planned_count" string="Định biên" sum="Tổng định biên"/>
                 <field name="current_count" string="Nhân sự hiện tại" sum="Tổng nhân sự"/>
@@ -104,7 +104,7 @@
                                    domain="[('department_id', '=', department_id)]"/>
                         </group>
                         <group string="Kỳ định biên">
-                            <field name="year" options="{'enable_formatting': False}"/>
+                            <field name="year"/>
                             <field name="month"/>
                         </group>
                     </group>
@@ -136,7 +136,7 @@
             <pivot string="Bảng định biên" disable_linking="0">
                 <field name="department_id" type="row"/>
                 <field name="job_id" type="row"/>
-                <field name="year" type="col" options="{'enable_formatting': False}"/>
+                <field name="year" type="col"/>
                 <field name="month" type="col"/>
                 <field name="planned_count" type="measure" string="Định biên"/>
                 <field name="current_count" type="measure" string="Nhân sự hiện tại"/>

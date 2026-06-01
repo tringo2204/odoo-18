@@ -33,10 +33,9 @@ class ShtHrHeadcountLine(models.Model):
         'hr.job', string='Vị trí công việc',
         required=True, ondelete='restrict', tracking=True,
     )
-    year = fields.Integer(
-        string='Năm', required=True,
-        default=lambda self: fields.Date.today().year,
-        group_operator='max',
+    year = fields.Char(
+        string='Năm', required=True, size=4,
+        default=lambda self: str(fields.Date.today().year),
     )
     month = fields.Selection(
         MONTHS, string='Tháng', required=True,
@@ -174,10 +173,11 @@ class ShtHrHeadcountLine(models.Model):
         for dept in departments:
             for job in jobs:
                 for m in range(1, 13):
+                    year_str = str(year)
                     existing = self.search([
                         ('department_id', '=', dept.id),
                         ('job_id', '=', job.id),
-                        ('year', '=', year),
+                        ('year', '=', year_str),
                         ('month', '=', str(m)),
                         ('company_id', '=', self.env.company.id),
                     ], limit=1)
@@ -185,7 +185,7 @@ class ShtHrHeadcountLine(models.Model):
                         self.create({
                             'department_id': dept.id,
                             'job_id': job.id,
-                            'year': year,
+                            'year': year_str,
                             'month': str(m),
                             'company_id': self.env.company.id,
                         })
