@@ -1,6 +1,6 @@
 {
     'name': 'Quản lý Quyết định Nhân sự',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'category': 'Human Resources',
     'summary': 'Quyết định bổ nhiệm, điều chuyển, điều chỉnh lương, khen thưởng, kỷ luật, chấm dứt HĐ',
     'author': 'SHT',
