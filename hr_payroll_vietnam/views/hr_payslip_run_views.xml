@@ -22,6 +22,27 @@
         <field name="name">Đợt trả lương</field>
     </record>
 
+    <!-- #TL#233: Đổi tên search view "Search Payslip Batches" → "Tìm kiếm Đợt trả lương" -->
+    <record id="hr_payslip_run_search_title_vn" model="ir.ui.view">
+        <field name="name">hr.payslip.run.search.title.vn</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_filter"/>
+        <field name="arch" type="xml">
+            <search position="attributes">
+                <attribute name="string">Tìm kiếm Đợt trả lương</attribute>
+            </search>
+            <field name="name" position="attributes">
+                <attribute name="string">Đợt trả lương</attribute>
+            </field>
+            <filter name="draft" position="attributes">
+                <attribute name="string">Nháp</attribute>
+            </filter>
+            <filter name="done_filter" position="attributes">
+                <attribute name="string">Đã đóng</attribute>
+            </filter>
+        </field>
+    </record>
+
     <!-- #Fix: Đổi tên list view title "Payslips Batches" → "Đợt trả lương" -->
     <record id="hr_payslip_run_list_title_vn" model="ir.ui.view">
         <field name="name">hr.payslip.run.list.title.vn</field>

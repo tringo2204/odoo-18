@@ -73,7 +73,8 @@ class ShtHrEvaluationCriteria(models.Model):
     @api.constrains('score')
     def _check_score_range(self):
         for rec in self:
-            if rec.score and (rec.score < 1 or rec.score > 5):
+            # Use != 0 so score=0 (blank/unscored) is also caught, not just falsy-skipped
+            if rec.score != 0 and (rec.score < 1 or rec.score > 5):
                 raise ValidationError(_(
                     'Điểm đánh giá phải nằm trong khoảng từ 1 đến 5. '
                     'Vui lòng nhập lại tiêu chí "%s".'
@@ -81,8 +82,7 @@ class ShtHrEvaluationCriteria(models.Model):
 
     @api.onchange('score')
     def _onchange_score_warning(self):
-        """Cảnh báo ngay khi user gõ điểm vượt thang 1-5, trước khi save."""
-        if self.score and (self.score < 1 or self.score > 5):
+        if self.score != 0 and (self.score < 1 or self.score > 5):
             return {
                 'warning': {
                     'title': _('Điểm vượt thang tham chiếu'),
