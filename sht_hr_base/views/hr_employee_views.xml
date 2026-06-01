@@ -19,6 +19,7 @@
                 <page name="sht_vietnam_info" string="Thông tin phúc lợi" groups="hr.group_hr_user">
                     <group>
                         <field name="tax_id"/>
+                        <field name="employee_type" invisible="1"/>
                         <field name="social_insurance_id"
                                required="employee_type == 'employee'"/>
                         <field name="seniority_start_date"/>

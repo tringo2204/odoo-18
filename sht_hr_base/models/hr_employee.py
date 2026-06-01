@@ -84,9 +84,11 @@ class HrEmployee(models.Model):
     @api.constrains('social_insurance_id', 'active', 'employee_type')
     def _check_social_insurance_id_required(self):
         for emp in self:
+            if self.env.context.get('skip_bhxh_check'):
+                continue
             if not emp.active:
                 continue
-            if emp.employee_type and emp.employee_type != 'employee':
+            if emp.employee_type != 'employee':
                 continue
             if not (emp.social_insurance_id and emp.social_insurance_id.strip()):
                 raise ValidationError(_(

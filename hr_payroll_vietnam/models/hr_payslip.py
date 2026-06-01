@@ -14,11 +14,6 @@ class HrPayslip(models.Model):
         string='Khấu trừ lương hàng tháng',
         readonly=True,
     )
-    deduction_type = fields.Selection(
-        related='contract_id.deduction_type',
-        string='Loại khấu trừ',
-        readonly=True,
-    )
     deduction_note = fields.Char(
         related='contract_id.deduction_note',
         string='Lý do khấu trừ',

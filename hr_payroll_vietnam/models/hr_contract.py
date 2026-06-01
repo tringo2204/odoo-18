@@ -1,6 +1,7 @@
 import logging
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -91,6 +92,21 @@ class HrContract(models.Model):
              'khoản không tính vào lương kỳ này (ví dụ: tạm hoãn).',
     )
     deduction_note = fields.Char(string='Lý do khấu trừ')
+
+    @api.constrains('monthly_deduction', 'deduction_type')
+    def _check_monthly_deduction_type(self):
+        for contract in self:
+            amount = contract.monthly_deduction or 0.0
+            if amount > 0 and not contract.deduction_type:
+                raise ValidationError(_(
+                    'Hợp đồng "%s": Phải chọn "Loại khấu trừ" khi có '
+                    '"Khấu trừ lương hàng tháng" lớn hơn 0.'
+                ) % (contract.name or contract.employee_id.name or ''))
+            if contract.deduction_type and amount <= 0:
+                raise ValidationError(_(
+                    'Hợp đồng "%s": Phải nhập "Khấu trừ lương hàng tháng" '
+                    'lớn hơn 0 khi đã chọn "Loại khấu trừ".'
+                ) % (contract.name or contract.employee_id.name or ''))
 
     def write(self, vals):
         """Auto-create SI history when insurance_salary changes."""
