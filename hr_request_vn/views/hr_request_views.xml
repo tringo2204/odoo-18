@@ -47,6 +47,15 @@
                            statusbar_visible="draft,submitted,approved,refused,cancelled"/>
                 </header>
                 <sheet>
+                    <div class="alert alert-info" role="alert"
+                         invisible="request_type_code != 'OTHER'">
+                        <strong>Lưu ý:</strong>
+                        Loại đơn này là <em>đơn từ chung</em> (không thuộc các
+                        loại đơn chuyên biệt). Sau khi duyệt, hệ thống chỉ ghi
+                        nhận đơn mà <strong>không tự sinh các bản ghi liên quan</strong>
+                        (nghỉ phép, chấm công, ca làm việc...). HR cần xử lý
+                        thủ công nếu cần.
+                    </div>
                     <div class="oe_title">
                         <h1><field name="name" readonly="state != 'draft'"/></h1>
                     </div>

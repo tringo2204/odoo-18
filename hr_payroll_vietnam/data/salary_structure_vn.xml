@@ -401,7 +401,7 @@ else:
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="struct_id" ref="structure_vn_payroll"/>
         <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.monthly_deduction &gt; 0</field>
+        <field name="condition_python">result = contract.monthly_deduction &gt; 0 and contract.deduction_type != 'exclusion'</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">result = -contract.monthly_deduction</field>
         <field name="appears_on_payslip">True</field>
