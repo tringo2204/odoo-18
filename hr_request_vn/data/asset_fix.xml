@@ -15,5 +15,6 @@
         <field name="bundle">web.dark_mode_variables</field>
         <field name="directive">remove</field>
         <field name="path">web_gantt/static/src/**/*.variables.dark.scss</field>
+        <field name="active" eval="False"/>
     </record>
 </odoo>
