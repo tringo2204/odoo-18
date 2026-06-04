@@ -66,28 +66,28 @@ class ShtHrEvaluationCriteria(models.Model):
     )
     name = fields.Char(string='Tiêu chí', required=True)
     sequence = fields.Integer(string='Thứ tự', default=10)
-    score = fields.Float(string='Điểm (1-5)')
+    score = fields.Float(string='Điểm (1-3)')
     weight = fields.Float(string='Trọng số', default=1.0)
     note = fields.Text(string='Nhận xét')
 
     @api.constrains('score')
     def _check_score_range(self):
         for rec in self:
-            if rec.score and (rec.score < 1 or rec.score > 5):
+            if rec.score and (rec.score < 1 or rec.score > 3):
                 raise ValidationError(_(
-                    'Điểm đánh giá phải nằm trong khoảng từ 1 đến 5. '
+                    'Điểm đánh giá phải nằm trong khoảng từ 1 đến 3. '
                     'Vui lòng nhập lại tiêu chí "%s".'
                 ) % rec.name)
 
     @api.onchange('score')
     def _onchange_score_warning(self):
-        """Cảnh báo ngay khi user gõ điểm vượt thang 1-5, trước khi save."""
-        if self.score and (self.score < 1 or self.score > 5):
+        """Cảnh báo ngay khi user gõ điểm vượt thang 1-3, trước khi save."""
+        if self.score and (self.score < 1 or self.score > 3):
             return {
                 'warning': {
                     'title': _('Điểm vượt thang tham chiếu'),
                     'message': _(
-                        'Điểm đánh giá "%s" = %s nằm ngoài thang 1-5. '
+                        'Điểm đánh giá "%s" = %s nằm ngoài thang 1-3. '
                         'Hệ thống sẽ không ghi nhận giá trị này khi lưu.'
                     ) % (self.name or '', self.score),
                 }
